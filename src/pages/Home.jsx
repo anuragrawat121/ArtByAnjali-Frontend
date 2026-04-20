@@ -205,12 +205,19 @@ const Home = () => {
                                             key={cIdx}
                                             initial={{ y: 20, opacity: 0, scale: 0.8 }}
                                             animate={{ y: 0, opacity: 1, scale: 1 }}
+                                            whileHover={{ 
+                                                color: pIdx === 0 ? "#ff6b6b" : "#4ecdc4", // Warm red for first part, cool teal for second
+                                                scale: 1.2,
+                                                y: -10,
+                                                rotate: [0, 5, -5, 0],
+                                                transition: { duration: 0.2 }
+                                            }}
                                             transition={{ 
                                                 duration: 0.8, 
                                                 delay: 0.2 + (pIdx * 0.15) + (cIdx * 0.03),
                                                 ease: [0.33, 1, 0.68, 1]
                                             }}
-                                            className="text-white block"
+                                            className="text-white block cursor-default transition-colors duration-300"
                                             style={{ willChange: "transform, opacity" }}
                                         >
                                             {char}
