@@ -6,9 +6,9 @@ html, body {
   overflow-x: hidden !important;
 }
 
-/* Let Lenis handle the smoothing */
+/* Enable Native Smooth Scroll */
 html {
-  scroll-behavior: auto !important;
+  scroll-behavior: smooth !important;
 }
 
 /* Hide custom cursor on mobile/touch devices */

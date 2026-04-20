@@ -72,8 +72,8 @@ const Loader = () => {
             <motion.div 
                 initial={{ width: 0 }}
                 animate={{ width: "100%" }}
-                transition={{ duration: 3, ease: "easeInOut" }}
-                className="absolute bottom-0 left-0 h-[2px] bg-white/20"
+                transition={{ duration: 3, ease: "linear" }}
+                className="absolute bottom-0 left-0 h-[2px] bg-white/40"
             />
         </div>
     );

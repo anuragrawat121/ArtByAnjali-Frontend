@@ -63,6 +63,7 @@ const Home = () => {
 
     // Initial Studio Sync
     useEffect(() => {
+        const startTime = Date.now();
         const fetchData = async () => {
             try {
                 const [artRes, profRes] = await Promise.all([getArtworks(), getProfile()]);
@@ -71,7 +72,10 @@ const Home = () => {
             } catch (err) {
                 // Production-silent sync failure
             } finally {
-                setLoading(false);
+                const endTime = Date.now();
+                const elapsed = endTime - startTime;
+                const remaining = Math.max(0, 3000 - elapsed);
+                setTimeout(() => setLoading(false), remaining);
             }
         };
         fetchData();
@@ -141,7 +145,7 @@ const Home = () => {
     return (
         <div className="min-h-screen bg-[#0f0f0f] text-white selection:bg-white selection:text-black overflow-x-hidden relative">
             {/* GLOBAL ARCHIVAL GRAIN */}
-            <div className="fixed inset-0 z-[1] pointer-events-none opacity-[0.03] mix-blend-overlay">
+            <div className="fixed inset-0 z-[1] pointer-events-none opacity-[0.03] mix-blend-overlay hidden md:block">
                 <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
                     <filter id="noise">
                         <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" />
@@ -154,11 +158,12 @@ const Home = () => {
             {/* CURSOR AMBIENT LIGHT */}
             <motion.div 
                 className="fixed w-[600px] h-[600px] rounded-full pointer-events-none z-0 opacity-10 bg-[radial-gradient(circle,rgba(255,255,255,0.15)_0%,transparent_70%)]"
+                style={{ willChange: "transform" }}
                 animate={{
                     x: mousePos.x - 300,
                     y: mousePos.y - 300
                 }}
-                transition={{ type: "tween", ease: "backOut", duration: 2 }}
+                transition={{ type: "tween", ease: "backOut", duration: 1.5 }} // Slightly faster for responsiveness
             />
 
             <AnimatePresence>
@@ -179,6 +184,7 @@ const Home = () => {
                             transition={{ duration: 4, ease: "easeInOut" }}
                             className="absolute inset-0 z-0 w-full h-full"
                         >
+
                                 <img 
                                     src={artworks[bgIndex]?.imageUrl || "https://images.unsplash.com/photo-1547826039-bfc35e0f1ea8?q=80&w=1972&auto=format&fit=crop"} 
                                     alt="Background Art" 
@@ -200,11 +206,12 @@ const Home = () => {
                                             initial={{ y: 20, opacity: 0, scale: 0.8 }}
                                             animate={{ y: 0, opacity: 1, scale: 1 }}
                                             transition={{ 
-                                                duration: 1, 
-                                                delay: 0.8 + (pIdx * 0.2) + (cIdx * 0.05),
+                                                duration: 0.8, 
+                                                delay: 0.2 + (pIdx * 0.15) + (cIdx * 0.03),
                                                 ease: [0.33, 1, 0.68, 1]
                                             }}
                                             className="text-white block"
+                                            style={{ willChange: "transform, opacity" }}
                                         >
                                             {char}
                                         </motion.span>
