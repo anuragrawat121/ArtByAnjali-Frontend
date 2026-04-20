@@ -269,7 +269,7 @@ const AdminDashboard = () => {
   if (pageLoading) return <Loader />;
 
   return (
-    <div className="min-h-screen bg-[#0f0f0f] text-white font-['Syne'] relative flex flex-col selection:bg-white/10 cursor-none">
+    <div className="min-h-screen bg-[#0c0c0e] text-white font-['Syne'] relative flex flex-col selection:bg-white/10 cursor-none">
       {/* GLOBAL STYLES */}
       <style>{`.no-scrollbar::-webkit-scrollbar { display: none; } .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }`}</style>
       
@@ -298,7 +298,7 @@ const AdminDashboard = () => {
             />
           </motion.div>
         </AnimatePresence>
-        <div className="absolute inset-0 bg-[#0f0f0f]/60 backdrop-blur-[1px]" />
+        <div className="absolute inset-0 bg-[#0c0c0e]/60 backdrop-blur-[1px]" />
       </div>
 
       {/* GATEKEEPER VIEW */}
@@ -311,7 +311,7 @@ const AdminDashboard = () => {
                 <input 
                   type={showKey ? "text" : "password"} 
                   required 
-                  className="w-full bg-[#0f0f0f]/60 border border-white/10 rounded-full px-8 py-3 text-center focus:outline-none focus:border-white/30 text-sm text-white pr-14" 
+                  className="w-full bg-[#0c0c0e]/60 border border-white/10 rounded-full px-8 py-3 text-center focus:outline-none focus:border-white/30 text-sm text-white pr-14" 
                   placeholder="STUDIO KEY" 
                   value={secretKey} 
                   onChange={(e) => setSecretKey(e.target.value)} 
@@ -324,7 +324,7 @@ const AdminDashboard = () => {
                   {showKey ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
-              <button disabled={loginLoading} className="w-full bg-white text-black font-bold py-3 rounded-full text-[10px] uppercase tracking-widest hover:bg-neutral-200 transition-all">
+              <button disabled={loginLoading} className="w-full bg-[#d4af37] text-[#0c0c0e] font-bold py-3 rounded-full text-[10px] uppercase tracking-widest hover:bg-neutral-200 transition-all">
                 {loginLoading ? "Unlocking Atelier..." : "Unlock Atelier"}
               </button>
             </form>
@@ -339,14 +339,13 @@ const AdminDashboard = () => {
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} className="flex flex-col min-h-screen">
           
           {/* NAVIGATION BAR */}
-          <header className="relative z-50 border-b border-white/5 bg-[#12100e]/40 backdrop-blur-xl px-4 md:px-10 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <header className="relative z-50 border-b border-[#eadcc9]/5 bg-[#12100e]/40 backdrop-blur-xl px-4 md:px-10 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+          <header className="relative z-50 border-b border-white/5 bg-[#0c0c0e]/40 backdrop-blur-xl px-4 md:px-10 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
             <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-[#eadcc9] text-[#12100e] rounded-lg flex items-center justify-center"><Brush size={18} /></div>
-              <h1 className="text-lg font-['Mogra'] text-[#eadcc9]">ArtByAnjali</h1>
+              <div className="w-8 h-8 bg-[#d4af37] text-[#0c0c0e] rounded-lg flex items-center justify-center"><Brush size={18} /></div>
+              <h1 className="text-lg font-['Mogra'] text-white">ArtByAnjali</h1>
             </motion.div>
             
-            <nav className="flex bg-[#eadcc9]/5 p-1 rounded-full border border-[#eadcc9]/10">
+            <nav className="flex bg-white/5 p-1 rounded-full border border-white/10">
               {[ 
                 { id: "artworks", icon: ImageIcon, label: "Exhibits" }, 
                 { id: "profile", icon: User, label: "Atelier" }, 
@@ -365,7 +364,7 @@ const AdminDashboard = () => {
                       <motion.span 
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
-                        className="absolute -top-1 -right-1 w-4 h-4 bg-white text-black text-[8px] flex items-center justify-center rounded-full font-bold shadow-lg"
+                        className="absolute -top-1 -right-1 w-4 h-4 bg-[#d4af37] text-[#0c0c0e] text-[8px] flex items-center justify-center rounded-full font-bold shadow-lg"
                       >
                         {tab.count}
                       </motion.span>
@@ -416,7 +415,7 @@ const AdminDashboard = () => {
                             <input type="file" className="absolute inset-0 opacity-0 cursor-pointer" onChange={(e) => setArtworkFile(e.target.files[0])} />
                           </div>
                           <div className="relative"><span className="absolute left-8 top-1/2 -translate-y-1/2 text-white/30 font-bold">₹</span><input type="text" className="w-full bg-white/5 border border-white/10 rounded-full px-12 py-3.5 text-center font-bold text-white focus:outline-none transition-all" value={newArtwork.price} onChange={(e) => setNewArtwork({ ...newArtwork, price: e.target.value })} /></div>
-                          <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} disabled={loginLoading} className={`w-full font-bold py-4 rounded-full text-[11px] uppercase tracking-[0.3em] transition-all shadow-lg shadow-white/5 ${loginLoading ? "bg-white/10 text-white/40" : "bg-white text-black"}`}>{loginLoading ? "Publishing..." : "Publish"}</motion.button>
+                          <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} disabled={loginLoading} className={`w-full font-bold py-4 rounded-full text-[11px] uppercase tracking-[0.3em] transition-all shadow-lg shadow-white/5 ${loginLoading ? "bg-white/10 text-white/40" : "bg-[#d4af37] text-[#0c0c0e]"}`}>{loginLoading ? "Publishing..." : "Publish"}</motion.button>
                         </div>
                       </div>
                     </motion.form>
@@ -465,7 +464,7 @@ const AdminDashboard = () => {
                             ))}
                           </AnimatePresence>
                         </div>
-                        <div className="flex gap-2"><input type="text" value={skillInput} onChange={(e) => setSkillInput(e.target.value)} className="flex-1 bg-white/5 border border-white/10 rounded-full px-6 py-3 text-sm focus:border-white/20 focus:outline-none transition-all" placeholder="Add Skill..." onKeyPress={(e) => { if (e.key === "Enter") { e.preventDefault(); addSkill(); } }} /><button type="button" onClick={addSkill} className="w-11 h-11 bg-white text-black rounded-full flex items-center justify-center font-bold text-lg hover:scale-105 transition-transform">+</button></div>
+                        <div className="flex gap-2"><input type="text" value={skillInput} onChange={(e) => setSkillInput(e.target.value)} className="flex-1 bg-white/5 border border-white/10 rounded-full px-6 py-3 text-sm focus:border-white/20 focus:outline-none transition-all" placeholder="Add Skill..." onKeyPress={(e) => { if (e.key === "Enter") { e.preventDefault(); addSkill(); } }} /><button type="button" onClick={addSkill} className="w-11 h-11 bg-[#d4af37] text-[#0c0c0e] rounded-full flex items-center justify-center font-bold text-lg hover:scale-105 transition-transform">+</button></div>
                       </div>
                       <div className="space-y-1"><label className="text-[9px] uppercase tracking-widest text-neutral-600 ml-4 font-bold">Bio</label><textarea className="w-full bg-white/5 border border-white/10 rounded-[24px] px-6 py-6 h-56 font-['Caveat'] text-2xl text-neutral-400 focus:outline-none leading-tight resize-none transition-all" value={profile.bio || ""} onChange={(e) => setProfile({ ...profile, bio: e.target.value })} /></div>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -490,7 +489,7 @@ const AdminDashboard = () => {
                           <input type="text" className="w-full bg-white/5 border border-white/10 rounded-full pl-14 pr-6 py-3 text-[11px] transition-all" value={profile.socialLinks?.linkedin || ""} onChange={(e) => setProfile({ ...profile, socialLinks: { ...profile.socialLinks, linkedin: e.target.value } })} placeholder="LinkedIn URL" />
                         </div>
                       </div>
-                      <motion.button whileHover={{ scale: 1.01 }} className="hidden md:block w-full bg-white text-black font-black py-4 rounded-full uppercase tracking-widest text-[11px] shadow-lg shadow-white/5">Save Atelier</motion.button>
+                      <motion.button whileHover={{ scale: 1.01 }} className="hidden md:block w-full bg-[#d4af37] text-[#0c0c0e] font-black py-4 rounded-full uppercase tracking-widest text-[11px] shadow-lg shadow-white/5">Save Atelier</motion.button>
                     </div>
                     <div className="flex flex-col items-center justify-center space-y-8">
                       <motion.div whileHover={{ rotate: 2 }} className="w-48 h-48 sm:w-60 sm:h-60 rounded-full border-4 border-dashed border-white/5 flex items-center justify-center relative overflow-hidden bg-white/5 group shadow-xl">
@@ -500,7 +499,7 @@ const AdminDashboard = () => {
                       <div className="w-full text-center space-y-6">
                         <div className="flex justify-center gap-3">{["top", "center", "bottom"].map((pos) => (<button key={pos} type="button" onClick={() => setProfile({ ...profile, imagePosition: pos })} className={`relative px-6 py-2 rounded-full text-[9px] uppercase tracking-widest transition-all ${profile.imagePosition === pos ? "text-black font-black" : "text-neutral-600 hover:text-white"}`}>{profile.imagePosition === pos && <motion.div layoutId="pos-bg" className="absolute inset-0 bg-white rounded-full z-0" /> }<span className="relative z-10">{pos}</span></button>))}</div>
                       </div>
-                      <motion.button whileHover={{ scale: 1.01 }} className="md:hidden w-full bg-white text-black font-black py-4 rounded-full uppercase tracking-widest text-[11px]">Save Atelier</motion.button>
+                      <motion.button whileHover={{ scale: 1.01 }} className="md:hidden w-full bg-[#d4af37] text-[#0c0c0e] font-black py-4 rounded-full uppercase tracking-widest text-[11px]">Save Atelier</motion.button>
                     </div>
                   </motion.form>
                 </motion.div>
@@ -533,7 +532,7 @@ const AdminDashboard = () => {
                              <span className="text-[7px] font-black uppercase text-white/20 tracking-tighter -rotate-45 mt-16">New Echo</span>
                           </div>
                         )}
-                        <div className="flex justify-between items-center mb-6"><div className="flex items-center gap-4"><div className="w-12 h-12 bg-white text-black rounded-full flex items-center justify-center font-['Mogra'] text-xl">{m.name.charAt(0)}</div><div><span className="text-lg font-['Mogra'] text-white block truncate max-w-[150px]">{m.name}</span><span className="text-[9px] uppercase tracking-widest text-neutral-500 font-bold">{m.email}</span></div></div><span className="text-[9px] font-medium text-neutral-700">{new Date(m.createdAt).toLocaleDateString()}</span></div>
+                        <div className="flex justify-between items-center mb-6"><div className="flex items-center gap-4"><div className="w-12 h-12 bg-[#d4af37] text-[#0c0c0e] rounded-full flex items-center justify-center font-['Mogra'] text-xl">{m.name.charAt(0)}</div><div><span className="text-lg font-['Mogra'] text-white block truncate max-w-[150px]">{m.name}</span><span className="text-[9px] uppercase tracking-widest text-neutral-500 font-bold">{m.email}</span></div></div><span className="text-[9px] font-medium text-neutral-700">{new Date(m.createdAt).toLocaleDateString()}</span></div>
                         <p className="font-['Caveat'] text-3xl text-neutral-300 leading-snug pl-6 border-l-2 border-white/10 group-hover:border-white/30 transition-colors">"{m.message}"</p>
                       </motion.div>
                     ))}

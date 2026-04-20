@@ -32,7 +32,7 @@ const PublicNavbar = () => {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="fixed top-0 left-0 w-full z-50 px-6 py-6 md:px-12 md:py-8"
         >
-            <div className="max-w-7xl mx-auto flex justify-between items-center bg-[#12100e]/40 backdrop-blur-xl border border-white/5 px-8 py-4 rounded-full shadow-2xl">
+            <div className="max-w-7xl mx-auto flex justify-between items-center bg-[#0c0c0e]/40 backdrop-blur-xl border border-white/5 px-8 py-4 rounded-full shadow-2xl">
                 {/* LOGO */}
                 <div 
                     onClick={() => window.location.href = '/'} 
@@ -40,7 +40,7 @@ const PublicNavbar = () => {
                 >
                     <motion.div 
                         whileHover={{ rotate: 180 }}
-                        className="w-8 h-8 rounded-lg bg-[#eadcc9] flex items-center justify-center text-[#12100e] shadow-lg"
+                        className="w-8 h-8 rounded-lg bg-[#d4af37] flex items-center justify-center text-[#0c0c0e] shadow-lg"
                     >
                         <Brush size={18} />
                     </motion.div>
@@ -81,7 +81,7 @@ const PublicNavbar = () => {
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: '100%' }}
                         transition={{ type: "spring", stiffness: 100, damping: 20 }}
-                        className="fixed inset-0 bg-[#12100e] z-[90] flex flex-col items-center justify-center gap-12"
+                        className="fixed inset-0 bg-[#0c0c0e] z-[90] flex flex-col items-center justify-center gap-12"
                     >
                         <div className="flex flex-col items-center gap-8">
                             {navLinks.map((link, idx) => (
