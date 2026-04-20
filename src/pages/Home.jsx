@@ -143,7 +143,7 @@ const Home = () => {
     if (loading) return <Loader />;
 
     return (
-        <div className="min-h-screen bg-[#0f0f0f] text-white selection:bg-white selection:text-black overflow-x-hidden relative">
+        <div className="min-h-screen bg-[#FCFAF2] text-[#1A1A1A] selection:bg-black selection:text-white overflow-x-hidden relative">
             {/* GLOBAL ARCHIVAL GRAIN */}
             <div className="fixed inset-0 z-[1] pointer-events-none opacity-[0.03] mix-blend-overlay hidden md:block">
                 <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
@@ -157,7 +157,7 @@ const Home = () => {
 
             {/* CURSOR AMBIENT LIGHT */}
             <motion.div 
-                className="fixed w-[600px] h-[600px] rounded-full pointer-events-none z-0 opacity-10 bg-[radial-gradient(circle,rgba(255,255,255,0.15)_0%,transparent_70%)]"
+                className="fixed w-[600px] h-[600px] rounded-full pointer-events-none z-0 opacity-10 bg-[radial-gradient(circle,rgba(0,0,0,0.05)_0%,transparent_70%)]"
                 style={{ willChange: "transform" }}
                 animate={{
                     x: mousePos.x - 300,
@@ -188,11 +188,11 @@ const Home = () => {
                                 <img 
                                     src={artworks[bgIndex]?.imageUrl || "https://images.unsplash.com/photo-1547826039-bfc35e0f1ea8?q=80&w=1972&auto=format&fit=crop"} 
                                     alt="Background Art" 
-                                    className="w-full h-full object-cover max-md:grayscale md:grayscale md:scale-105"
+                                    className="w-full h-full object-cover md:scale-105"
                                 />
                         </motion.div>
                     </AnimatePresence>
-                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0f0f0f]/80 to-[#0f0f0f]" />
+                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#FCFAF2]/80 to-[#FCFAF2]" />
                 </div>
 
                 <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.5 }} className="relative z-10 text-center px-6">
@@ -217,7 +217,7 @@ const Home = () => {
                                                 delay: 0.2 + (pIdx * 0.15) + (cIdx * 0.03),
                                                 ease: [0.33, 1, 0.68, 1]
                                             }}
-                                            className="text-white block cursor-default transition-colors duration-300"
+                                            className="text-[#1A1A1A] block cursor-default transition-colors duration-300"
                                             style={{ willChange: "transform, opacity" }}
                                         >
                                             {char}
@@ -239,14 +239,14 @@ const Home = () => {
                         <p className="text-[10px] uppercase tracking-[0.6em] font-black">Where Colors Tell Stories</p>
                     </motion.div>
 
-                    <div className="max-w-xl mx-auto h-[1px] bg-white/10 mb-12 relative overflow-hidden">
-                        <motion.div initial={{ width: 0 }} animate={{ width: "100%" }} transition={{ duration: 2, delay: 1.5 }} className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent" />
+                    <div className="max-w-xl mx-auto h-[1px] bg-black/10 mb-12 relative overflow-hidden">
+                        <motion.div initial={{ width: 0 }} animate={{ width: "100%" }} transition={{ duration: 2, delay: 1.5 }} className="absolute inset-0 bg-gradient-to-r from-transparent via-black/20 to-transparent" />
                     </div>
                     <div className="flex flex-col sm:flex-row justify-center gap-6 items-center">
-                        <a href="#gallery" className="group px-10 py-5 bg-white text-black font-black uppercase text-[10px] tracking-[0.3em] rounded-full hover:bg-neutral-200 transition-all flex items-center gap-3 shadow-2xl">
+                        <a href="#gallery" className="group px-10 py-5 bg-[#1A1A1A] text-white font-black uppercase text-[10px] tracking-[0.3em] rounded-full hover:bg-neutral-800 transition-all flex items-center gap-3 shadow-2xl">
                             Enter Gallery <ChevronDown size={14} className="group-hover:translate-y-1 transition-transform" />
                         </a>
-                        <a href="#contact" className="px-10 py-5 border border-white/10 hover:bg-white/5 transition-all uppercase text-[10px] tracking-[0.3em] font-black rounded-full backdrop-blur-sm">Begin Inquiry</a>
+                        <a href="#contact" className="px-10 py-5 border border-black/10 hover:bg-black/5 transition-all uppercase text-[10px] tracking-[0.3em] font-black rounded-full backdrop-blur-sm">Begin Inquiry</a>
                     </div>
                 </motion.div>
                 <motion.div animate={{ y: [0, 10, 0] }} transition={{ repeat: Infinity, duration: 2 }} className="absolute bottom-10 left-1/2 -translate-x-1/2 opacity-20">
@@ -265,12 +265,12 @@ const Home = () => {
                     </h2>
                     
                     {/* ATELIER PILL TOGGLE */}
-                    <div className="flex bg-white/5 p-1.5 rounded-full border border-white/10 backdrop-blur-3xl mb-4 overflow-x-auto no-scrollbar max-w-full">
+                    <div className="flex bg-black/5 p-1.5 rounded-full border border-black/5 backdrop-blur-3xl mb-4 overflow-x-auto no-scrollbar max-w-full">
                         <button 
                             onClick={() => setSelectedCategory(null)}
-                            className={`relative px-8 py-3 rounded-full text-[9px] uppercase tracking-widest transition-all ${!selectedCategory ? "text-black font-black" : "text-neutral-500 hover:text-white"}`}
+                            className={`relative px-8 py-3 rounded-full text-[9px] uppercase tracking-widest transition-all ${!selectedCategory ? "text-white font-black" : "text-neutral-500 hover:text-black"}`}
                         >
-                            {!selectedCategory && <motion.div layoutId="room-bg" className="absolute inset-0 bg-white rounded-full z-0" />}
+                            {!selectedCategory && <motion.div layoutId="room-bg" className="absolute inset-0 bg-[#1A1A1A] rounded-full z-0" />}
                             <span className="relative z-10 flex items-center gap-2"><Palette size={12} /> All Collections</span>
                         </button>
                         {folders.map((folder) => (
@@ -291,17 +291,17 @@ const Home = () => {
                         <motion.div key="folders" variants={containerVariants} initial="hidden" animate="show" exit={{ opacity: 0, scale: 0.95 }} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-14">
                             {folders.map((folder) => (
                                 <motion.div key={folder.name} variants={itemVariants} whileHover={isMobile ? {} : { y: -10 }} onClick={() => setSelectedCategory(folder.name)} className="group cursor-none">
-                                    <div className="relative aspect-[3/4] overflow-hidden bg-white/[0.01] rounded-[30px] mb-8 border border-white/5 shadow-2xl">
-                                        <img src={folder.cover} className="w-full h-full object-cover md:grayscale group-hover:grayscale-0 transition-all duration-1000 ease-out" />
-                                        <div className="absolute inset-0 bg-[#0f0f0f]/40 md:group-hover:bg-[#0f0f0f]/60 transition-all" />
+                                    <div className="relative aspect-[3/4] overflow-hidden bg-black/[0.02] rounded-[30px] mb-8 border border-black/5 shadow-2xl">
+                                        <img src={folder.cover} className="w-full h-full object-cover group-hover:scale-105 transition-all duration-1000 ease-out" />
+                                        <div className="absolute inset-0 bg-black/10 transition-all" />
                                         <div className="absolute inset-0 flex items-center justify-center">
                                             <div className="text-center">
-                                                <h3 className="text-3xl font-['Mogra'] tracking-wider uppercase mb-2">{folder.name}</h3>
-                                                <p className="text-[10px] uppercase tracking-[0.4em] opacity-40 font-black">{folder.count} Artworks</p>
+                                                <h3 className="text-3xl font-['Mogra'] tracking-wider uppercase mb-2 text-white">{folder.name}</h3>
+                                                <p className="text-[10px] uppercase tracking-[0.4em] text-white/60 font-black">{folder.count} Artworks</p>
                                             </div>
                                         </div>
                                         <div className="absolute bottom-10 left-1/2 -translate-x-1/2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all translate-y-0 md:translate-y-4 md:group-hover:translate-y-0">
-                                             <span className="px-8 py-3 bg-white text-black rounded-full text-[9px] uppercase font-black tracking-widest">Explore Exhibit</span>
+                                              <span className="px-8 py-3 bg-[#1A1A1A] text-white rounded-full text-[9px] uppercase font-black tracking-widest">Explore Exhibit</span>
                                         </div>
                                     </div>
                                 </motion.div>
@@ -348,8 +348,8 @@ const Home = () => {
                                     onClick={() => setSelectedArtwork(art)}
                                     className="group cursor-none active:scale-95 transition-transform"
                                 >
-                                    <div className="relative aspect-[3/4] overflow-hidden bg-white/[0.01] rounded-[30px] mb-8 border border-white/5 shadow-2xl">
-                                        <img src={art.imageUrl} alt={art.title} className="w-full h-full object-cover md:grayscale group-hover:grayscale-0 md:group-hover:scale-110 transition-all duration-1000 ease-out" />
+                                    <div className="relative aspect-[3/4] overflow-hidden bg-black/[0.02] rounded-[30px] mb-8 border border-black/5 shadow-2xl">
+                                        <img src={art.imageUrl} alt={art.title} className="w-full h-full object-cover md:group-hover:scale-110 transition-all duration-1000 ease-out" />
                                     </div>
                                     <div className="px-4">
                                         <div className="flex justify-between items-start">
@@ -422,11 +422,11 @@ const Home = () => {
                             transition={{ duration: 1.2, ease: [0.33, 1, 0.68, 1] }}
                             className="lg:col-span-5 flex justify-center lg:justify-start relative"
                         >
-                            <div className="relative w-56 h-56 md:w-[360px] md:h-[360px] rounded-full overflow-hidden border border-white/10 shadow-2xl bg-white/5 group">
+                            <div className="relative w-56 h-56 md:w-[360px] md:h-[360px] rounded-full overflow-hidden border border-black/10 shadow-2xl bg-black/5 group">
                                 <motion.img 
                                     whileHover={isMobile ? {} : { scale: 1.05 }}
                                     src={profile?.profileImageUrl || "https://images.unsplash.com/photo-1544005313-94ddf0286df2"} 
-                                    className="w-full h-full object-cover md:grayscale hover:grayscale-0 transition-all duration-[2s] ease-out"
+                                    className="w-full h-full object-cover group-hover:scale-105 transition-all duration-[2s] ease-out"
                                     style={{ objectPosition: profile?.imagePosition || "center" }}
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-[#0f0f0f]/40 via-transparent to-transparent" />
@@ -528,8 +528,8 @@ const Home = () => {
                             ))}
                         </motion.div>
                     </div>
-                    <div className="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-[#0f0f0f] to-transparent z-10 pointer-events-none" />
-                    <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-[#0f0f0f] to-transparent z-10 pointer-events-none" />
+                    <div className="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-[#FCFAF2] to-transparent z-10 pointer-events-none" />
+                    <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-[#FCFAF2] to-transparent z-10 pointer-events-none" />
                 </div>
             </section>
 
@@ -557,16 +557,16 @@ const Home = () => {
                 >
                     <div className="space-y-6">
                         <div className="space-y-2">
-                             <label className="text-[9px] uppercase tracking-widest text-neutral-600 ml-6 font-black">Full Name</label>
-                             <input type="text" placeholder="John Doe" required className="w-full bg-[#0f0f0f]/40 border border-white/10 rounded-full px-8 py-4 focus:outline-none focus:border-white/30 transition-all text-sm" value={contactForm.name} onChange={(e) => setContactForm({...contactForm, name: e.target.value})} />
+                             <label className="text-[9px] uppercase tracking-widest text-[#D4AF37] ml-6 font-black">Full Name</label>
+                             <input type="text" placeholder="John Doe" required className="w-full bg-[#FCFAF2] border border-black/10 rounded-full px-8 py-4 focus:outline-none focus:border-[#D4AF37] transition-all text-sm" value={contactForm.name} onChange={(e) => setContactForm({...contactForm, name: e.target.value})} />
                         </div>
                         <div className="space-y-2">
-                             <label className="text-[9px] uppercase tracking-widest text-neutral-600 ml-6 font-black">Email Address</label>
-                             <input type="email" placeholder="john@example.com" required className="w-full bg-[#0f0f0f]/40 border border-white/10 rounded-full px-8 py-4 focus:outline-none focus:border-white/30 transition-all text-sm" value={contactForm.email} onChange={(e) => setContactForm({...contactForm, email: e.target.value})} />
+                             <label className="text-[9px] uppercase tracking-widest text-[#D4AF37] ml-6 font-black">Email Address</label>
+                             <input type="email" placeholder="john@example.com" required className="w-full bg-[#FCFAF2] border border-black/10 rounded-full px-8 py-4 focus:outline-none focus:border-[#D4AF37] transition-all text-sm" value={contactForm.email} onChange={(e) => setContactForm({...contactForm, email: e.target.value})} />
                         </div>
                         <div className="space-y-2">
-                             <label className="text-[9px] uppercase tracking-widest text-neutral-600 ml-6 font-black">Message</label>
-                             <textarea placeholder="Describe your vision..." required className="w-full bg-[#0f0f0f]/40 border border-white/10 rounded-[30px] px-8 py-6 h-32 focus:outline-none focus:border-white/30 transition-all resize-none text-lg font-['Caveat'] text-neutral-300" value={contactForm.message} onChange={(e) => setContactForm({...contactForm, message: e.target.value})} />
+                             <label className="text-[9px] uppercase tracking-widest text-[#D4AF37] ml-6 font-black">Message</label>
+                             <textarea placeholder="Describe your vision..." required className="w-full bg-[#FCFAF2] border border-black/10 rounded-[30px] px-8 py-6 h-32 focus:outline-none focus:border-[#D4AF37] transition-all resize-none text-lg font-['Caveat'] text-[#1A1A1A]" value={contactForm.message} onChange={(e) => setContactForm({...contactForm, message: e.target.value})} />
                         </div>
                     </div>
                     <motion.button whileHover={isMobile ? {} : { scale: 1.02 }} whileTap={{ scale: 0.98 }} type="submit" disabled={sending} className="w-full bg-white text-black py-5 rounded-full font-black uppercase tracking-[0.4em] text-[10px] flex items-center justify-center gap-4 hover:bg-neutral-200 transition-all shadow-xl shadow-white/5">
@@ -578,8 +578,8 @@ const Home = () => {
             {/* --- FINAL FOOTER --- */}
             <footer className="py-24 border-t border-white/5 text-center relative">
                 <motion.div animate={{ opacity: [0.1, 0.4, 0.1] }} transition={{ repeat: Infinity, duration: 4 }} className="mb-6"><Brush size={24} className="mx-auto" /></motion.div>
-                <div className="text-xl font-['Mogra'] tracking-widest text-white mb-2">ArtByAnjali</div>
-                <p className="text-[8px] uppercase tracking-[0.5em] text-neutral-600">&copy; 2026 Noir Exhibitionhall. All Rights Reserved.</p>
+                <div className="text-xl font-['Mogra'] tracking-widest text-[#1A1A1A] mb-2">ArtByAnjali</div>
+                <p className="text-[8px] uppercase tracking-[0.5em] text-neutral-400">&copy; 2026 Noir Exhibitionhall. All Rights Reserved.</p>
                 <div className="mt-8 flex justify-center">
                     <a href="https://instagram.com/RWT._.ANURAG" target="_blank" rel="noreferrer" className="group flex items-center gap-2">
                         <span className="text-[7px] uppercase tracking-[0.4em] text-white/20">/</span>

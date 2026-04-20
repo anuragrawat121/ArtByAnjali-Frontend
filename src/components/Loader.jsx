@@ -7,16 +7,16 @@ import { Palette } from 'lucide-react';
  */
 const Loader = () => {
     return (
-        <div className="fixed inset-0 z-[99999] bg-[#0f0f0f] flex flex-col items-center justify-center overflow-hidden">
+        <div className="fixed inset-0 z-[99999] bg-[#FCFAF2] flex flex-col items-center justify-center overflow-hidden">
             {/* AMBIENT BACKGROUND GLOW */}
             <motion.div 
                 animate={{ 
-                    scale: [1, 1.1, 1], // Reduced scale range
-                    opacity: [0.08, 0.15, 0.08] // Lower opacity for better blending
+                    scale: [1, 1.1, 1],
+                    opacity: [0.3, 0.5, 0.3]
                 }}
                 transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
                 style={{ willChange: "transform, opacity" }}
-                className="absolute w-[300px] h-[300px] md:w-[500px] md:h-[500px] bg-white rounded-full blur-[60px] md:blur-[120px] pointer-events-none"
+                className="absolute w-[300px] h-[300px] md:w-[500px] md:h-[500px] bg-[#D4AF37]/20 rounded-full blur-[60px] md:blur-[120px] pointer-events-none"
             />
 
             <div className="relative z-10 flex flex-col items-center">
@@ -25,7 +25,7 @@ const Loader = () => {
                     animate={{ rotate: 360 }}
                     transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
                     style={{ willChange: "transform" }}
-                    className="text-white/10 mb-12"
+                    className="text-[#D4AF37]/20 mb-12"
                 >
                     <Palette size={64} strokeWidth={1} />
                 </motion.div>
@@ -39,7 +39,7 @@ const Loader = () => {
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ duration: 0.8, delay: idx * 0.05, ease: [0.33, 1, 0.68, 1] }}
                             style={{ willChange: "transform, opacity" }}
-                            className="text-5xl md:text-8xl font-['Mogra'] text-white/30 tracking-[0.1em] block"
+                            className="text-5xl md:text-8xl font-['Mogra'] text-[#D4AF37] tracking-[0.1em] block"
                         >
                             {letter}
                         </motion.span>
@@ -51,7 +51,7 @@ const Loader = () => {
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ duration: 0.8, delay: (idx + 5) * 0.05, ease: [0.33, 1, 0.68, 1] }}
                             style={{ willChange: "transform, opacity" }}
-                            className="text-5xl md:text-8xl font-['Mogra'] text-white tracking-[0.1em] block"
+                            className="text-5xl md:text-8xl font-['Mogra'] text-[#1A1A1A] tracking-[0.1em] block"
                         >
                             {letter}
                         </motion.span>
@@ -65,8 +65,8 @@ const Loader = () => {
                     transition={{ delay: 1, duration: 2 }}
                     className="mt-8 flex flex-col items-center gap-4 text-center"
                 >
-                    <div className="w-12 h-[1px] bg-white/20" />
-                    <p className="text-[10px] md:text-[12px] uppercase tracking-[0.5em] md:tracking-[0.8em] font-light text-white italic font-['Syne']">
+                    <div className="w-12 h-[1px] bg-black/10" />
+                    <p className="text-[10px] md:text-[12px] uppercase tracking-[0.5em] md:tracking-[0.8em] font-light text-black italic font-['Syne']">
                         Where Colors Tell Stories
                     </p>
                 </motion.div>
@@ -77,7 +77,7 @@ const Loader = () => {
                 initial={{ width: 0 }}
                 animate={{ width: "100%" }}
                 transition={{ duration: 3, ease: "linear" }}
-                className="absolute bottom-0 left-0 h-[2px] bg-white/40"
+                className="absolute bottom-0 left-0 h-[2px] bg-[#D4AF37]/40"
             />
         </div>
     );
