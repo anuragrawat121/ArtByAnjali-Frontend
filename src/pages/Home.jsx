@@ -453,7 +453,7 @@ const Home = () => {
                                 </h2>
                             </div>
 
-                            <p className="font-['Caveat'] text-2xl md:text-[2.5rem] leading-[1.2] text-neutral-400 max-w-4xl mx-auto lg:mx-0">
+                            <p className="font-['Caveat'] text-2xl md:text-4xl leading-[1.2] text-neutral-400 max-w-4xl mx-auto lg:mx-0">
                                 {profile?.bio || "Every stroke is a secret whispered in the language of color, found in the heart of the Atelier."}
                             </p>
 
