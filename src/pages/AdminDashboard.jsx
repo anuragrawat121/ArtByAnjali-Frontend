@@ -547,7 +547,7 @@ const AdminDashboard = () => {
             <h2 className="text-lg font-['Mogra'] text-white tracking-[0.2em]">ArtByAnjali</h2>
             <p className="text-[8px] uppercase tracking-[0.4em] mt-2">Noir Atelier Console</p>
             <div className="mt-4">
-              <a href="https://github.com/anuragrawat121" target="_blank" rel="noreferrer" className="text-[7px] uppercase tracking-[0.4em] text-white/50 hover:text-white transition-opacity font-bold">Made By Code Magecian Anurag</a>
+              <a href="https://instagram.com/RWT._.ANURAG" target="_blank" rel="noreferrer" className="text-[7px] uppercase tracking-[0.4em] text-white/50 hover:text-white transition-opacity font-bold">made by the code magicien ANU₹AG</a>
             </div>
           </footer>
         </motion.div>

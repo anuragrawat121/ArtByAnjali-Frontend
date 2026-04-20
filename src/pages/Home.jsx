@@ -581,7 +581,7 @@ const Home = () => {
                 <div className="text-xl font-['Mogra'] tracking-widest text-white mb-2">ArtByAnjali</div>
                 <p className="text-[8px] uppercase tracking-[0.5em] text-neutral-600">&copy; 2026 Noir Exhibitionhall. All Rights Reserved.</p>
                 <div className="mt-8 flex justify-center">
-                    <a href="https://github.com/anuragrawat121" target="_blank" rel="noreferrer" className="group flex items-center gap-2">
+                    <a href="https://instagram.com/RWT._.ANURAG" target="_blank" rel="noreferrer" className="group flex items-center gap-2">
                         <span className="text-[7px] uppercase tracking-[0.4em] text-white/20">/</span>
                         <motion.div 
                             initial="hidden" 
@@ -589,7 +589,7 @@ const Home = () => {
                             viewport={{ once: true }}
                             className="flex overflow-hidden"
                         >
-                            {"Made By Code Magecian Anurag".split("").map((char, idx) => (
+                            {"made by the code magicien ANU₹AG".split("").map((char, idx) => (
                                 <motion.span
                                     key={idx}
                                     variants={{
