@@ -51,26 +51,35 @@ const CustomCursor = () => {
 
   return (
     <>
-      {/* Central Paint Tip */}
+      {/* MINIMAL MICRO-DOT CURSOR */}
       <motion.div
-        className="fixed top-0 left-0 w-1.5 h-1.5 bg-white rounded-full pointer-events-none z-[9999] mix-blend-difference"
-        style={{ willChange: "transform" }}
-        animate={{ x: mousePos.x - 3, y: mousePos.y - 3 }}
-        transition={{ type: "spring", damping: 30, stiffness: 400, mass: 0.1 }}
-      />
-      
-      {/* Outer Atmospheric Aura */}
-      <motion.div
-        className="fixed top-0 left-0 w-8 h-8 border border-white/30 rounded-full pointer-events-none z-[9998]"
+        className="fixed top-0 left-0 w-4 h-4 border border-white/40 rounded-full pointer-events-none z-[9999] flex items-center justify-center backdrop-blur-[1px]"
         style={{ willChange: "transform" }}
         animate={{
-          x: mousePos.x - 16,
-          y: mousePos.y - 16,
-          scale: isHovering ? 2.5 : 1,
-          borderColor: isHovering ? "rgba(255,255,255,1)" : "rgba(255,255,255,0.3)",
-          backgroundColor: isHovering ? "rgba(255,255,255,0.05)" : "transparent",
+          x: mousePos.x - 8,
+          y: mousePos.y - 8,
+          scale: isHovering ? 1.5 : 1,
+          borderColor: isHovering ? "rgba(255,255,255,1)" : "rgba(255,255,255,0.4)",
+          backgroundColor: isHovering ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.05)",
         }}
-        transition={{ type: "spring", damping: 25, stiffness: 200, mass: 0.5 }}
+        transition={{ type: "spring", damping: 30, stiffness: 300, mass: 0.2 }}
+      >
+        <motion.div 
+            animate={{ scale: isHovering ? 0.5 : 1 }}
+            className="w-1 h-1 bg-white rounded-full" 
+        />
+      </motion.div>
+      
+      {/* SOFT GLOW TRAIL */}
+      <motion.div
+        className="fixed top-0 left-0 w-12 h-12 bg-white/5 rounded-full blur-xl pointer-events-none z-[9998]"
+        style={{ willChange: "transform" }}
+        animate={{
+          x: mousePos.x - 24,
+          y: mousePos.y - 24,
+          scale: isHovering ? 2 : 1,
+        }}
+        transition={{ type: "spring", damping: 40, stiffness: 150, mass: 1 }}
       />
     </>
   );
