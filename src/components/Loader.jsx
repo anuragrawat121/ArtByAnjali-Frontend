@@ -66,7 +66,7 @@ const Loader = () => {
                     className="mt-8 flex flex-col items-center gap-4 text-center"
                 >
                     <div className="w-12 h-[1px] bg-white/20" />
-                    <p className="text-[10px] md:text-[12px] uppercase tracking-[0.5em] md:tracking-[0.8em] font-light text-white italic font-['Poppins']">
+                    <p className="text-[10px] md:text-[12px] uppercase tracking-[0.5em] md:tracking-[0.8em] font-light text-white italic font-['Syne']">
                         Where Colors Tell Stories
                     </p>
                 </motion.div>

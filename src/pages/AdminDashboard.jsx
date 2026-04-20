@@ -269,7 +269,7 @@ const AdminDashboard = () => {
   if (pageLoading) return <Loader />;
 
   return (
-    <div className="min-h-screen bg-[#0f0f0f] text-white font-['Poppins'] relative flex flex-col selection:bg-white/10 cursor-none">
+    <div className="min-h-screen bg-[#0f0f0f] text-white font-['Syne'] relative flex flex-col selection:bg-white/10 cursor-none">
       {/* GLOBAL STYLES */}
       <style>{`.no-scrollbar::-webkit-scrollbar { display: none; } .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }`}</style>
       
