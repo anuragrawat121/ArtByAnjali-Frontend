@@ -546,6 +546,9 @@ const AdminDashboard = () => {
           <footer className="relative z-50 py-12 text-center opacity-20 hover:opacity-50 transition-all border-t border-white/5 mt-20">
             <h2 className="text-lg font-['Mogra'] text-white tracking-[0.2em]">ArtByAnjali</h2>
             <p className="text-[8px] uppercase tracking-[0.4em] mt-2">Noir Atelier Console</p>
+            <div className="mt-4">
+              <a href="https://github.com/anuragrawat121" target="_blank" rel="noreferrer" className="text-[7px] uppercase tracking-[0.4em] text-white/50 hover:text-white transition-opacity font-bold">Made By Code Magecian Anurag</a>
+            </div>
           </footer>
         </motion.div>
       )}

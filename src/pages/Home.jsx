@@ -573,6 +573,9 @@ const Home = () => {
                 <motion.div animate={{ opacity: [0.1, 0.4, 0.1] }} transition={{ repeat: Infinity, duration: 4 }} className="mb-6"><Brush size={24} className="mx-auto" /></motion.div>
                 <div className="text-xl font-['Mogra'] uppercase tracking-widest text-white mb-2">ArtByAnjali</div>
                 <p className="text-[8px] uppercase tracking-[0.5em] text-neutral-600">&copy; 2026 Noir Exhibitionhall. All Rights Reserved.</p>
+                <div className="mt-4">
+                    <a href="https://github.com/anuragrawat121" target="_blank" rel="noreferrer" className="text-[7px] uppercase tracking-[0.4em] text-white/20 hover:text-white transition-opacity">Made By Code Magecian Anurag</a>
+                </div>
             </footer>
             {/* --- LIGHTBOX MODAL --- */}
             <AnimatePresence>
@@ -626,6 +629,18 @@ const Home = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
+            {/* FIXED DEVELOPER SIGNATURE */}
+            <div className="fixed bottom-6 right-6 z-[50] hidden md:block">
+                <a 
+                    href="https://github.com/anuragrawat121" 
+                    target="_blank" 
+                    rel="noreferrer" 
+                    className="text-[8px] uppercase tracking-[0.5em] text-white/10 hover:text-white transition-all font-black vertical-text"
+                    style={{ writingMode: 'vertical-rl' }}
+                >
+                    Made By Code Magecian Anurag
+                </a>
+            </div>
         </div>
     );
 };
