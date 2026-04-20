@@ -573,8 +573,39 @@ const Home = () => {
                 <motion.div animate={{ opacity: [0.1, 0.4, 0.1] }} transition={{ repeat: Infinity, duration: 4 }} className="mb-6"><Brush size={24} className="mx-auto" /></motion.div>
                 <div className="text-xl font-['Mogra'] uppercase tracking-widest text-white mb-2">ArtByAnjali</div>
                 <p className="text-[8px] uppercase tracking-[0.5em] text-neutral-600">&copy; 2026 Noir Exhibitionhall. All Rights Reserved.</p>
-                <div className="mt-4">
-                    <a href="https://github.com/anuragrawat121" target="_blank" rel="noreferrer" className="text-[7px] uppercase tracking-[0.4em] text-white/20 hover:text-white transition-opacity">Made By Code Magecian Anurag</a>
+                <div className="mt-8 flex justify-center">
+                    <a href="https://github.com/anuragrawat121" target="_blank" rel="noreferrer" className="group flex items-center gap-2">
+                        <span className="text-[7px] uppercase tracking-[0.4em] text-white/20">/</span>
+                        <motion.div 
+                            initial="hidden" 
+                            whileInView="show" 
+                            viewport={{ once: true }}
+                            className="flex overflow-hidden"
+                        >
+                            {"Made By Code Magecian Anurag".split("").map((char, idx) => (
+                                <motion.span
+                                    key={idx}
+                                    variants={{
+                                        hidden: { opacity: 0, x: -5 },
+                                        show: { opacity: 1, x: 0 }
+                                    }}
+                                    transition={{ 
+                                        delay: idx * 0.05,
+                                        duration: 0.1,
+                                        ease: "linear"
+                                    }}
+                                    className="text-[7px] uppercase tracking-[0.4em] text-white/30 group-hover:text-white transition-colors block whitespace-pre"
+                                >
+                                    {char}
+                                </motion.span>
+                            ))}
+                        </motion.div>
+                        <motion.span 
+                            animate={{ opacity: [1, 0] }} 
+                            transition={{ repeat: Infinity, duration: 0.6 }} 
+                            className="w-1 h-3 bg-white/40" 
+                        />
+                    </a>
                 </div>
             </footer>
             {/* --- LIGHTBOX MODAL --- */}
@@ -629,17 +660,6 @@ const Home = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
-            {/* FIXED DEVELOPER SIGNATURE */}
-            <div className="fixed bottom-6 right-6 md:right-10 z-[50] opacity-40 hover:opacity-100 transition-opacity">
-                <a 
-                    href="https://github.com/anuragrawat121" 
-                    target="_blank" 
-                    rel="noreferrer" 
-                    className="text-[9px] uppercase tracking-[0.4em] text-white hover:text-white transition-all font-black"
-                >
-                    Made By Code Magecian Anurag
-                </a>
-            </div>
         </div>
     );
 };
