@@ -7,7 +7,7 @@ import { Palette } from 'lucide-react';
  */
 const Loader = () => {
     return (
-        <div className="fixed inset-0 z-[99999] bg-[#FCFAF2] flex flex-col items-center justify-center overflow-hidden">
+        <div className="fixed inset-0 z-[99999] bg-[#231C18] flex flex-col items-center justify-center overflow-hidden">
             {/* AMBIENT BACKGROUND GLOW */}
             <motion.div 
                 animate={{ 
@@ -16,7 +16,7 @@ const Loader = () => {
                 }}
                 transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
                 style={{ willChange: "transform, opacity" }}
-                className="absolute w-[300px] h-[300px] md:w-[500px] md:h-[500px] bg-[#D4AF37]/20 rounded-full blur-[60px] md:blur-[120px] pointer-events-none"
+                className="absolute w-[300px] h-[300px] md:w-[500px] md:h-[500px] bg-[#D4AF37]/10 rounded-full blur-[20px] md:blur-[40px] pointer-events-none"
             />
 
             <div className="relative z-10 flex flex-col items-center">
@@ -25,7 +25,7 @@ const Loader = () => {
                     animate={{ rotate: 360 }}
                     transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
                     style={{ willChange: "transform" }}
-                    className="text-[#D4AF37]/20 mb-12"
+                    className="text-[#D4AF37]/10 mb-12"
                 >
                     <Palette size={64} strokeWidth={1} />
                 </motion.div>
@@ -51,7 +51,7 @@ const Loader = () => {
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ duration: 0.8, delay: (idx + 5) * 0.05, ease: [0.33, 1, 0.68, 1] }}
                             style={{ willChange: "transform, opacity" }}
-                            className="text-5xl md:text-8xl font-['Mogra'] text-[#1A1A1A] tracking-[0.1em] block"
+                            className="text-5xl md:text-8xl font-['Mogra'] text-[#E8D5C4] tracking-[0.1em] block"
                         >
                             {letter}
                         </motion.span>
@@ -61,13 +61,13 @@ const Loader = () => {
                 {/* THE SUBTITLE */}
                 <motion.div 
                     initial={{ opacity: 0 }}
-                    animate={{ opacity: 0.5 }}
+                    animate={{ opacity: 0.7 }}
                     transition={{ delay: 1, duration: 2 }}
                     className="mt-8 flex flex-col items-center gap-4 text-center"
                 >
-                    <div className="w-12 h-[1px] bg-black/10" />
-                    <p className="text-[10px] md:text-[12px] uppercase tracking-[0.5em] md:tracking-[0.8em] font-light text-black italic font-['Syne']">
-                        Where Colors Tell Stories
+                    <div className="w-12 h-[1px] bg-white/10" />
+                    <p className="text-xl md:text-2xl text-[#E8D5C4] font-['Mogra']">
+                        Sculpting Light & Shadow
                     </p>
                 </motion.div>
             </div>

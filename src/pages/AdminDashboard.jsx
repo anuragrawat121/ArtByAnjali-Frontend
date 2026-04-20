@@ -269,11 +269,10 @@ const AdminDashboard = () => {
   if (pageLoading) return <Loader />;
 
   return (
-    <div className="min-h-screen bg-[#FCFAF2] text-[#1A1A1A] font-['Syne'] relative flex flex-col selection:bg-black/5 cursor-none">
+    <div className="min-h-screen bg-[#231C18] text-[#E8D5C4] font-['Mogra'] relative flex flex-col selection:bg-[#D4AF37] selection:text-[#231C12]">
       {/* GLOBAL STYLES */}
       <style>{`.no-scrollbar::-webkit-scrollbar { display: none; } .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }`}</style>
       
-      <CustomCursor />
       
       {/* OVERLAY ELEMENTS */}
       <AnimatePresence>
@@ -298,7 +297,7 @@ const AdminDashboard = () => {
             />
           </motion.div>
         </AnimatePresence>
-        <div className="absolute inset-0 bg-[#0f0f0f]/60 backdrop-blur-[1px]" />
+        <div className="absolute inset-0 bg-[#231C18]/60 backdrop-blur-[1px]" />
       </div>
 
       {/* GATEKEEPER VIEW */}
@@ -324,7 +323,7 @@ const AdminDashboard = () => {
                   {showKey ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
-              <button disabled={loginLoading} className="w-full bg-white text-black font-bold py-3 rounded-full text-[10px] uppercase tracking-widest hover:bg-neutral-200 transition-all">
+              <button disabled={loginLoading} className="w-full bg-[#D4AF37] text-[#1A1512] font-bold py-3 rounded-full text-[10px] uppercase tracking-widest hover:bg-white transition-all shadow-[0_0_20px_rgba(212,175,55,0.2)]">
                 {loginLoading ? "Unlocking Atelier..." : "Unlock Atelier"}
               </button>
             </form>
@@ -337,15 +336,15 @@ const AdminDashboard = () => {
         </div>
       ) : (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} className="flex flex-col min-h-screen">
-          
+          <CustomCursor />
           {/* NAVIGATION BAR */}
-          <header className="relative z-50 border-b border-white/5 bg-[#0f0f0f]/40 backdrop-blur-xl px-4 md:px-10 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
-            <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-white text-black rounded-lg flex items-center justify-center"><Brush size={18} /></div>
-              <h1 className="text-lg font-['Mogra'] text-white">ArtByAnjali</h1>
+          <header className="relative z-50 border-b border-white/5 bg-[#0f0f0f]/40 backdrop-blur-xl px-4 md:px-12 py-6 md:py-10 flex flex-col lg:flex-row justify-between items-center gap-8">
+            <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} className="flex items-center gap-4">
+              <div className="w-12 h-12 bg-white text-black rounded-xl flex items-center justify-center shadow-2xl shadow-white/5"><Brush size={24} /></div>
+              <h1 className="text-2xl md:text-3xl font-['Mogra'] text-white tracking-tighter">ArtByAnjali</h1>
             </motion.div>
             
-            <nav className="flex bg-white/5 p-1 rounded-full border border-white/10">
+            <nav className="flex bg-white/5 p-2 rounded-full border border-white/10 backdrop-blur-3xl">
               {[ 
                 { id: "artworks", icon: ImageIcon, label: "Exhibits" }, 
                 { id: "profile", icon: User, label: "Atelier" }, 
@@ -354,17 +353,17 @@ const AdminDashboard = () => {
                 <motion.button 
                   initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + (idx * 0.1) }}
                   key={tab.id} onClick={() => setActiveTab(tab.id)} 
-                  className={`relative flex items-center gap-2 px-6 py-2 rounded-full text-[9px] uppercase tracking-widest transition-all ${activeTab === tab.id ? "text-black font-black" : "text-neutral-500 hover:text-white"}`}
+                  className={`relative flex items-center gap-3 px-10 py-4 rounded-full text-[11px] md:text-[12px] uppercase tracking-widest transition-all ${activeTab === tab.id ? "text-[#1A1512] font-black" : "text-white/40 hover:text-white"}`}
                 >
-                  {activeTab === tab.id && <motion.div layoutId="nav-bg" className="absolute inset-0 bg-white rounded-full z-0" />}
-                  <span className="relative z-10 flex items-center gap-2">
-                    <tab.icon size={12} />
+                  {activeTab === tab.id && <motion.div layoutId="nav-bg" className="absolute inset-0 bg-[#D4AF37] rounded-full z-0 shadow-[0_0_20px_rgba(212,175,55,0.3)]" />}
+                  <span className="relative z-10 flex items-center gap-3">
+                    <tab.icon size={16} />
                     <span className="hidden sm:inline">{tab.label}</span>
                     {tab.count > 0 && (
                       <motion.span 
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
-                        className="absolute -top-1 -right-1 w-4 h-4 bg-white text-black text-[8px] flex items-center justify-center rounded-full font-bold shadow-lg"
+                        className="absolute -top-1 -right-1 w-4 h-4 bg-[#D4AF37] text-[#1A1512] text-[8px] flex items-center justify-center rounded-full font-bold shadow-lg"
                       >
                         {tab.count}
                       </motion.span>
@@ -373,11 +372,11 @@ const AdminDashboard = () => {
                 </motion.button>
               ))}
             </nav>
-            <div className="flex items-center gap-6">
-               <a href="/" target="_blank" className="text-[9px] uppercase tracking-widest text-white/40 hover:text-white transition-all flex items-center gap-2">
-                 <ExternalLink size={12} /> View Exhibition
+            <div className="flex items-center gap-8 lg:gap-12">
+               <a href="/" target="_blank" className="text-[10px] md:text-[11px] uppercase tracking-[0.2em] text-white/40 hover:text-white transition-all flex items-center gap-3 group font-bold">
+                 <ExternalLink size={14} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" /> View Exhibition
                </a>
-               <motion.button initial={{ opacity: 0 }} animate={{ opacity: 0.4 }} whileHover={{ opacity: 1 }} onClick={() => { localStorage.removeItem("admin_key"); window.location.reload(); }} className="text-[9px] uppercase tracking-widest transition-all">Sign Out</motion.button>
+               <motion.button initial={{ opacity: 0 }} animate={{ opacity: 0.4 }} whileHover={{ opacity: 1 }} onClick={() => { localStorage.removeItem("admin_key"); window.location.reload(); }} className="text-[10px] md:text-[11px] uppercase tracking-[0.2em] transition-all font-bold">Sign Out</motion.button>
             </div>
           </header>
 
@@ -388,8 +387,8 @@ const AdminDashboard = () => {
               {activeTab === "artworks" && (
                 <motion.div key="artworks" variants={containerVariants} initial="hidden" animate="show" exit="exit" className="space-y-12">
                   <motion.div variants={itemVariants} className="mb-8 text-center sm:text-left">
-                    <h1 className="text-3xl font-['Mogra'] mb-1">New Exhibition</h1>
-                    <p className="text-neutral-600 text-[9px] uppercase tracking-[0.5em] pl-1">Capture inspiration</p>
+                     <h1 className="text-3xl font-['Mogra'] mb-1 text-[#D4AF37]">New Exhibition</h1>
+                    <p className="text-white/20 text-[9px] uppercase tracking-[0.5em] pl-1">Capture inspiration</p>
                   </motion.div>
                   
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
@@ -397,8 +396,8 @@ const AdminDashboard = () => {
                     <motion.form variants={sectionVariants} onSubmit={handleArtworkUpload} className="lg:col-span-8 bg-white/[0.01] p-8 md:p-10 rounded-[30px] border border-white/5 backdrop-blur-2xl">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                         <div className="space-y-6">
-                           <div className="space-y-1"><label className="text-[9px] uppercase font-bold tracking-widest text-neutral-600 ml-4">Title</label><input type="text" className="w-full bg-white/5 border border-white/10 rounded-full px-6 py-3.5 focus:border-white/20 focus:outline-none text-sm transition-all" value={newArtwork.title} onChange={(e) => setNewArtwork({ ...newArtwork, title: e.target.value })} /></div>
-                           <div className="space-y-1 relative z-[60]"><label className="text-[9px] uppercase font-bold tracking-widest text-neutral-600 ml-4">Category</label>
+                           <div className="space-y-1"><label className="text-[9px] uppercase font-bold tracking-widest text-[#D4AF37] ml-4 opacity-70">Title</label><input type="text" className="w-full bg-white/5 border border-white/10 rounded-full px-6 py-3.5 focus:border-[#D4AF37]/30 focus:outline-none text-sm transition-all" value={newArtwork.title} onChange={(e) => setNewArtwork({ ...newArtwork, title: e.target.value })} /></div>
+                           <div className="space-y-1 relative z-[60]"><label className="text-[9px] uppercase font-bold tracking-widest text-[#D4AF37] ml-4 opacity-70">Category</label>
                             <div onClick={() => setIsDropdownOpen(!isDropdownOpen)} className="w-full bg-white/5 border border-white/10 rounded-full px-6 py-3.5 flex justify-between items-center cursor-pointer text-sm hover:border-white/20 transition-all"><span className="text-neutral-400">{isCustomCategory ? newArtwork.customCategory || "Custom..." : newArtwork.category}</span><ChevronDown size={14} className="text-white/20" /></div>
                             <AnimatePresence>{isDropdownOpen && (
                               <motion.div initial={{ opacity: 0, y: 10, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 10, scale: 0.95 }} className="absolute top-full left-0 w-full mt-2 bg-neutral-900 border border-white/10 rounded-[24px] p-2 z-[999] shadow-2xl backdrop-blur-3xl max-h-64 overflow-y-auto no-scrollbar">
@@ -407,15 +406,15 @@ const AdminDashboard = () => {
                             )}</AnimatePresence>
                           </div>
                           {isCustomCategory && <motion.input initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} type="text" placeholder="Folder Name..." className="w-full bg-white/10 border border-white/20 rounded-full px-6 py-3.5 focus:outline-none text-sm" value={newArtwork.customCategory} onChange={(e) => setNewArtwork({ ...newArtwork, customCategory: e.target.value })} />}
-                          <div className="space-y-1"><label className="text-[9px] uppercase font-bold tracking-widest text-neutral-600 ml-4">Artist Note</label><textarea className="w-full bg-white/5 border border-white/10 rounded-[24px] px-6 py-6 h-32 focus:border-white/20 focus:outline-none resize-none font-['Caveat'] text-2xl text-neutral-300 leading-tight transition-all" value={newArtwork.description} onChange={(e) => setNewArtwork({ ...newArtwork, description: e.target.value })} /></div>
+                          <div className="space-y-1"><label className="text-[9px] uppercase font-bold tracking-widest text-[#D4AF37] ml-4 opacity-70">Artist Note</label><textarea className="w-full bg-white/5 border border-white/10 rounded-[24px] px-6 py-6 h-32 focus:border-[#D4AF37]/30 focus:outline-none resize-none font-['Mogra'] text-sm text-neutral-300 leading-tight transition-all" value={newArtwork.description} onChange={(e) => setNewArtwork({ ...newArtwork, description: e.target.value })} /></div>
                         </div>
                         <div className="flex flex-col gap-6">
                            <div className="flex-1 min-h-[200px] border-2 border-dashed border-white/5 rounded-[30px] flex items-center justify-center relative hover:border-white/10 transition-all overflow-hidden bg-white/5 group">
                             {artworkFile ? <motion.img initial={{ scale: 1.1, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} src={URL.createObjectURL(artworkFile)} className="absolute inset-0 w-full h-full object-cover" /> : <div className="text-center opacity-20 group-hover:opacity-40 transition-opacity"><Upload size={24} className="mx-auto mb-2" /><p className="text-[10px] font-['Mogra'] tracking-widest uppercase">Canvas</p></div>}
                             <input type="file" className="absolute inset-0 opacity-0 cursor-pointer" onChange={(e) => setArtworkFile(e.target.files[0])} />
                           </div>
-                          <div className="relative"><span className="absolute left-8 top-1/2 -translate-y-1/2 text-white/30 font-bold">₹</span><input type="text" className="w-full bg-white/5 border border-white/10 rounded-full px-12 py-3.5 text-center font-bold text-white focus:outline-none transition-all" value={newArtwork.price} onChange={(e) => setNewArtwork({ ...newArtwork, price: e.target.value })} /></div>
-                          <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} disabled={loginLoading} className={`w-full font-bold py-4 rounded-full text-[11px] uppercase tracking-[0.3em] transition-all shadow-lg shadow-white/5 ${loginLoading ? "bg-white/10 text-white/40" : "bg-white text-black"}`}>{loginLoading ? "Publishing..." : "Publish"}</motion.button>
+                          <div className="relative"><span className="absolute left-8 top-1/2 -translate-y-1/2 text-[#D4AF37] font-bold">₹</span><input type="text" className="w-full bg-white/5 border border-white/10 rounded-full px-12 py-3.5 text-center font-bold text-white focus:outline-none transition-all" value={newArtwork.price} onChange={(e) => setNewArtwork({ ...newArtwork, price: e.target.value })} /></div>
+                          <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} disabled={loginLoading} className={`w-full font-bold py-4 rounded-full text-[11px] uppercase tracking-[0.3em] transition-all shadow-lg shadow-white/5 ${loginLoading ? "bg-white/10 text-white/40" : "bg-[#D4AF37] text-[#1A1512]"}`}>{loginLoading ? "Publishing..." : "Publish Masterpiece"}</motion.button>
                         </div>
                       </div>
                     </motion.form>
@@ -423,12 +422,12 @@ const AdminDashboard = () => {
                     {/* STUDIO STATS */}
                     <div className="lg:col-span-4 flex lg:flex-col gap-6">
                       <motion.div variants={sectionVariants} className="flex-1 bg-white/[0.01] p-8 rounded-[40px] border border-white/5 text-center flex flex-col items-center justify-center backdrop-blur-xl">
-                        <motion.h4 initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.5 }} className="text-5xl font-['Mogra'] text-white leading-none">{artworks.length}</motion.h4>
-                        <p className="text-[9px] uppercase tracking-widest text-neutral-600 mt-1 font-bold">Exhibits</p>
+                        <motion.h4 initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.5 }} className="text-5xl font-['Mogra'] text-[#D4AF37] leading-none">{artworks.length}</motion.h4>
+                        <p className="text-[10px] uppercase tracking-widest text-[#E8D5C4] mt-1 font-bold">Exhibits</p>
                       </motion.div>
-                      <motion.div variants={sectionVariants} className="hidden sm:flex flex-1 bg-black/40 border border-white/10 p-6 rounded-[40px] flex-col items-center justify-center text-center">
-                        <motion.div animate={{ rotate: [0, 10, -10, 0] }} transition={{ repeat: Infinity, duration: 4 }}><Sparkles size={20} className="text-white/20 mb-2" /></motion.div>
-                        <p className="text-[8px] font-['Mogra'] uppercase tracking-widest text-white/20">80MB Studio</p>
+                      <motion.div variants={sectionVariants} className="hidden sm:flex flex-1 bg-white/5 border border-white/10 p-6 rounded-[40px] flex-col items-center justify-center text-center">
+                        <motion.div animate={{ rotate: [0, 10, -10, 0] }} transition={{ repeat: Infinity, duration: 4 }}><Sparkles size={20} className="text-[#D4AF37]/40 mb-2" /></motion.div>
+                        <p className="text-[8px] font-['Mogra'] uppercase tracking-widest text-[#E8D5C4]/40">Studio Storage</p>
                       </motion.div>
                     </div>
                   </div>
@@ -438,9 +437,9 @@ const AdminDashboard = () => {
                     {artworks.map((art) => (
                       <motion.div variants={itemVariants} key={art._id} className="relative aspect-[3/4] rounded-[30px] overflow-hidden border border-white/5 bg-white/[0.01] group cursor-pointer hover:border-white/20 transition-all">
                         <img src={art.imageUrl} className="w-full h-full object-cover transition-all duration-700 grayscale-0 md:grayscale md:group-hover:grayscale-0 group-hover:scale-110" />
-                        <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black via-black/40 to-transparent">
-                          <p className="font-['Caveat'] text-sm text-neutral-400 truncate">{art.category}</p>
-                          <h4 className="font-['Mogra'] text-[11px] text-white truncate uppercase tracking-tighter">{art.title}</h4>
+                        <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black via-black/80 to-transparent">
+                          <p className="font-['Mogra'] text-[9px] text-[#D4AF37] truncate uppercase tracking-widest">{art.category}</p>
+                          <h4 className="font-['Mogra'] text-[11px] text-[#E8D5C4] truncate uppercase tracking-tighter">{art.title}</h4>
                         </div>
                         <button onClick={(e) => { e.stopPropagation(); setDeleteConfirm({ show: true, id: art._id }); }} className="absolute top-4 right-4 w-10 h-10 bg-black/60 backdrop-blur-md border border-white/10 rounded-full flex items-center justify-center text-white/40 hover:text-white hover:bg-red-500/20 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all cursor-pointer z-20"><Trash2 size={16} /></button>
                       </motion.div>
@@ -456,7 +455,7 @@ const AdminDashboard = () => {
                   <motion.form variants={sectionVariants} onSubmit={handleProfileUpdate} className="flex flex-col-reverse md:grid md:grid-cols-2 gap-10 bg-white/[0.01] p-8 md:p-10 rounded-[40px] border border-white/5 backdrop-blur-2xl">
                     <div className="space-y-6">
                       <div className="space-y-2">
-                        <label className="text-[9px] uppercase tracking-widest text-neutral-600 ml-4 font-bold">Expertise Palette</label>
+                        <label className="text-[9px] uppercase tracking-widest text-[#D4AF37] ml-4 font-bold opacity-70">Expertise Palette</label>
                         <div className="flex flex-wrap gap-2 mb-3">
                           <AnimatePresence>
                             {Array.isArray(profile.expertise) && profile.expertise.map((skill) => (
@@ -466,7 +465,7 @@ const AdminDashboard = () => {
                         </div>
                         <div className="flex gap-2"><input type="text" value={skillInput} onChange={(e) => setSkillInput(e.target.value)} className="flex-1 bg-white/5 border border-white/10 rounded-full px-6 py-3 text-sm focus:border-white/20 focus:outline-none transition-all" placeholder="Add Skill..." onKeyPress={(e) => { if (e.key === "Enter") { e.preventDefault(); addSkill(); } }} /><button type="button" onClick={addSkill} className="w-11 h-11 bg-white text-black rounded-full flex items-center justify-center font-bold text-lg hover:scale-105 transition-transform">+</button></div>
                       </div>
-                      <div className="space-y-1"><label className="text-[9px] uppercase tracking-widest text-neutral-600 ml-4 font-bold">Bio</label><textarea className="w-full bg-white/5 border border-white/10 rounded-[24px] px-6 py-6 h-56 font-['Caveat'] text-2xl text-neutral-400 focus:outline-none leading-tight resize-none transition-all" value={profile.bio || ""} onChange={(e) => setProfile({ ...profile, bio: e.target.value })} /></div>
+                      <div className="space-y-1"><label className="text-[9px] uppercase tracking-widest text-neutral-600 ml-4 font-bold">Bio</label><textarea className="w-full bg-white/5 border border-white/10 rounded-[24px] px-6 py-6 h-56 font-['Mogra'] text-sm text-neutral-400 focus:outline-none leading-tight resize-none transition-all" value={profile.bio || ""} onChange={(e) => setProfile({ ...profile, bio: e.target.value })} /></div>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <input type="email" className="w-full bg-white/5 border border-white/10 rounded-full px-6 py-3 text-sm transition-all" value={profile.email || ""} onChange={(e) => setProfile({ ...profile, email: e.target.value })} placeholder="Email" />
                         <input type="text" className="w-full bg-white/5 border border-white/10 rounded-full px-6 py-3 text-sm transition-all" value={profile.location || ""} onChange={(e) => setProfile({ ...profile, location: e.target.value })} placeholder="Location" />
@@ -533,7 +532,7 @@ const AdminDashboard = () => {
                           </div>
                         )}
                         <div className="flex justify-between items-center mb-6"><div className="flex items-center gap-4"><div className="w-12 h-12 bg-white text-black rounded-full flex items-center justify-center font-['Mogra'] text-xl">{m.name.charAt(0)}</div><div><span className="text-lg font-['Mogra'] text-white block truncate max-w-[150px]">{m.name}</span><span className="text-[9px] uppercase tracking-widest text-neutral-500 font-bold">{m.email}</span></div></div><span className="text-[9px] font-medium text-neutral-700">{new Date(m.createdAt).toLocaleDateString()}</span></div>
-                        <p className="font-['Caveat'] text-3xl text-neutral-300 leading-snug pl-6 border-l-2 border-white/10 group-hover:border-white/30 transition-colors">"{m.message}"</p>
+                        <p className="font-['Mogra'] text-lg text-neutral-300 leading-snug pl-6 border-l-2 border-white/10 group-hover:border-white/30 transition-colors">"{m.message}"</p>
                       </motion.div>
                     ))}
                   </div>
@@ -543,11 +542,11 @@ const AdminDashboard = () => {
           </main>
           
           {/* STUDIO FOOTER */}
-          <footer className="relative z-50 py-12 text-center opacity-20 hover:opacity-50 transition-all border-t border-white/5 mt-20">
-            <h2 className="text-lg font-['Mogra'] text-white tracking-[0.2em]">ArtByAnjali</h2>
-            <p className="text-[8px] uppercase tracking-[0.4em] mt-2">Noir Atelier Console</p>
-            <div className="mt-4">
-              <a href="https://instagram.com/RWT._.ANURAG" target="_blank" rel="noreferrer" className="text-[7px] uppercase tracking-[0.4em] text-white/50 hover:text-white transition-opacity font-bold">made by the code Magician ANU₹AG</a>
+          <footer className="relative z-50 py-12 text-center border-t border-white/5 mt-20">
+            <h2 className="text-lg font-['Mogra'] text-[#D4AF37] tracking-[0.2em] uppercase">ArtByAnjali</h2>
+            <p className="text-[8px] uppercase tracking-[0.4em] mt-2 text-white/20">Noir Atelier Console</p>
+            <div className="mt-8 pt-8 border-t border-white/5 inline-block px-10">
+              <a href="https://instagram.com/RWT._.ANURAG" target="_blank" rel="noreferrer" className="text-[7px] uppercase tracking-[0.4em] text-[#D4AF37]/60 hover:text-[#D4AF37] transition-all font-normal">made by the code Magician ANU₹AG</a>
             </div>
           </footer>
         </motion.div>

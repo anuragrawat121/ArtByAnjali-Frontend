@@ -27,18 +27,17 @@ html {
 }
 
 :root {
-  font-family: 'Syne', sans-serif;
-  color-scheme: light;
-  background-color: #FCFAF2;
+  font-family: 'Mogra', cursive;
+  color-scheme: dark;
+  background-color: #231C18;
 }
 
 body {
   margin: 0;
-  color: #1A1A1A;
+  color: #E8D5C4;
   min-height: 100vh;
   overflow-x: hidden;
-  background-color: #FCFAF2;
-  cursor: none;
+  background-color: #231C18;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
@@ -60,6 +59,6 @@ body {
 /* Glassmorphism utility */
 .glass {
   background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(4px);
   border: 1px solid rgba(255, 255, 255, 0.05);
 }

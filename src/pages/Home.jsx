@@ -8,8 +8,8 @@ import {
     MessageCircle, PlusCircle, ArrowLeft
 } from 'lucide-react';
 import PublicNavbar from '../components/PublicNavbar';
-import CustomCursor from '../components/CustomCursor';
 import Loader from '../components/Loader';
+import CustomCursor from '../components/CustomCursor';
 
 /**
  * ARIA NOIR EXHIBITION HALL (Home)
@@ -132,18 +132,44 @@ const Home = () => {
         show: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.3 } }
     };
     const itemVariants = {
-        hidden: { opacity: 0, y: 40 },
-        show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 60, damping: 20 } }
+        hidden: { opacity: 0, y: 50, scale: 0.9, rotateX: 15 },
+        show: { 
+            opacity: 1, 
+            y: 0, 
+            scale: 1, 
+            rotateX: 0,
+            transition: { 
+                type: "spring", 
+                stiffness: 40, 
+                damping: 18,
+                mass: 1.2
+            } 
+        }
     };
     const sectionVariants = {
         hidden: { opacity: 0, filter: "blur(10px)" },
         show: { opacity: 1, filter: "blur(0px)", transition: { duration: 1 } }
     };
+    // SCROLL LOCK 
+    useEffect(() => {
+        if (selectedArtwork) {
+            document.body.style.overflow = 'hidden';
+            document.documentElement.style.overflow = 'hidden'; // Ensure both are locked
+        } else {
+            document.body.style.overflow = 'unset';
+            document.documentElement.style.overflow = 'unset';
+        }
+        return () => {
+            document.body.style.overflow = 'unset';
+            document.documentElement.style.overflow = 'unset';
+        };
+    }, [selectedArtwork]);
+
 
     if (loading) return <Loader />;
 
     return (
-        <div className="min-h-screen bg-[#FCFAF2] text-[#1A1A1A] selection:bg-black selection:text-white overflow-x-hidden relative">
+        <div className="min-h-screen bg-[#231C18] text-[#E8D5C4] selection:bg-[#D4AF37] selection:text-[#231C18] overflow-x-hidden relative">
             {/* GLOBAL ARCHIVAL GRAIN */}
             <div className="fixed inset-0 z-[1] pointer-events-none opacity-[0.03] mix-blend-overlay hidden md:block">
                 <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
@@ -157,7 +183,7 @@ const Home = () => {
 
             {/* CURSOR AMBIENT LIGHT */}
             <motion.div 
-                className="fixed w-[600px] h-[600px] rounded-full pointer-events-none z-0 opacity-10 bg-[radial-gradient(circle,rgba(0,0,0,0.05)_0%,transparent_70%)]"
+                className="fixed w-[750px] h-[750px] rounded-full pointer-events-none z-0 opacity-20 bg-[radial-gradient(circle,rgba(212,175,55,0.2)_0%,transparent_70%)]"
                 style={{ willChange: "transform" }}
                 animate={{
                     x: mousePos.x - 300,
@@ -169,8 +195,8 @@ const Home = () => {
             <AnimatePresence>
                 {status.show && <StatusNotification msg={status.msg} type={status.type} clear={() => setStatus({ ...status, show: false })} />}
             </AnimatePresence>
-            <PublicNavbar />
             <CustomCursor />
+            <PublicNavbar />
 
             {/* --- HERO: THE SPOTLIGHT --- */}
             <section className="relative h-screen flex items-center justify-center">
@@ -192,7 +218,7 @@ const Home = () => {
                                 />
                         </motion.div>
                     </AnimatePresence>
-                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#FCFAF2]/80 to-[#FCFAF2]" />
+                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#231C18]/50 to-[#231C18]" />
                 </div>
 
                 <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.5 }} className="relative z-10 text-center px-6">
@@ -206,18 +232,18 @@ const Home = () => {
                                             initial={{ y: 20, opacity: 0, scale: 0.8 }}
                                             animate={{ y: 0, opacity: 1, scale: 1 }}
                                             whileHover={{ 
-                                                color: pIdx === 0 ? "#ff6b6b" : "#4ecdc4", // Warm red for first part, cool teal for second
+                                                color: ["#D4AF37", "#FF6B6B", "#4ECDC4", "#9B59B6", "#feca57", "#D4AF37"], // Vibrant chromatic transition
                                                 scale: 1.2,
                                                 y: -10,
                                                 rotate: [0, 5, -5, 0],
-                                                transition: { duration: 0.2 }
+                                                transition: { duration: 0.4, repeat: Infinity }
                                             }}
                                             transition={{ 
                                                 duration: 0.8, 
                                                 delay: 0.2 + (pIdx * 0.15) + (cIdx * 0.03),
                                                 ease: [0.33, 1, 0.68, 1]
                                             }}
-                                            className="text-[#1A1A1A] block cursor-default transition-colors duration-300"
+                                            className="text-white block cursor-default transition-colors duration-300"
                                             style={{ willChange: "transform, opacity" }}
                                         >
                                             {char}
@@ -236,17 +262,17 @@ const Home = () => {
                         transition={{ delay: 2, duration: 1 }}
                         className="mt-6 mb-12"
                     >
-                        <p className="text-[10px] uppercase tracking-[0.6em] font-black">Where Colors Tell Stories</p>
+                        <p className="text-[12px] uppercase tracking-[0.4em] font-normal text-[#D4AF37]">Where Colors Tell Stories</p>
                     </motion.div>
 
                     <div className="max-w-xl mx-auto h-[1px] bg-black/10 mb-12 relative overflow-hidden">
                         <motion.div initial={{ width: 0 }} animate={{ width: "100%" }} transition={{ duration: 2, delay: 1.5 }} className="absolute inset-0 bg-gradient-to-r from-transparent via-black/20 to-transparent" />
                     </div>
                     <div className="flex flex-col sm:flex-row justify-center gap-6 items-center">
-                        <a href="#gallery" className="group px-10 py-5 bg-[#1A1A1A] text-white font-black uppercase text-[10px] tracking-[0.3em] rounded-full hover:bg-neutral-800 transition-all flex items-center gap-3 shadow-2xl">
+                        <a href="#gallery" className="group px-10 py-5 bg-[#D4AF37] text-[#1A1512] font-normal uppercase text-[12px] tracking-[0.1em] rounded-full hover:bg-white transition-all flex items-center gap-3 shadow-2xl font-['Mogra']">
                             Enter Gallery <ChevronDown size={14} className="group-hover:translate-y-1 transition-transform" />
                         </a>
-                        <a href="#contact" className="px-10 py-5 border border-black/10 hover:bg-black/5 transition-all uppercase text-[10px] tracking-[0.3em] font-black rounded-full backdrop-blur-sm">Begin Inquiry</a>
+                        <a href="#contact" className="px-10 py-5 border border-white/10 hover:bg-white/5 transition-all uppercase text-[12px] tracking-[0.1em] font-normal rounded-full backdrop-blur-sm font-['Mogra'] text-white">Begin Inquiry</a>
                     </div>
                 </motion.div>
                 <motion.div animate={{ y: [0, 10, 0] }} transition={{ repeat: Infinity, duration: 2 }} className="absolute bottom-10 left-1/2 -translate-x-1/2 opacity-20">
@@ -255,7 +281,7 @@ const Home = () => {
             </section>
 
             {/* --- GALLERY: THE EXHIBITS --- */}
-            <section id="gallery" className="max-w-7xl mx-auto px-6 py-24 min-h-screen">
+            <section id="gallery" className="max-w-7xl mx-auto px-6 py-16 min-h-screen">
                 <motion.div variants={sectionVariants} initial="hidden" whileInView="show" viewport={{ once: true }} className="flex flex-col items-center text-center">
                     <p className="text-[9px] uppercase tracking-[0.5em] text-white/30 font-black mb-2">
                         Curated Collection
@@ -265,7 +291,7 @@ const Home = () => {
                     </h2>
                     
                     {/* ATELIER PILL TOGGLE */}
-                    <div className="flex bg-black/5 p-1.5 rounded-full border border-black/5 backdrop-blur-3xl mb-4 overflow-x-auto no-scrollbar max-w-full">
+                    <div className="flex bg-white/5 p-1.5 rounded-full border border-white/10 backdrop-blur-lg mb-4 overflow-x-auto no-scrollbar max-w-full">
                         <button 
                             onClick={() => setSelectedCategory(null)}
                             className={`relative px-8 py-3 rounded-full text-[9px] uppercase tracking-widest transition-all ${!selectedCategory ? "text-white font-black" : "text-neutral-500 hover:text-black"}`}
@@ -297,7 +323,7 @@ const Home = () => {
                                         <div className="absolute inset-0 flex items-center justify-center">
                                             <div className="text-center">
                                                 <h3 className="text-3xl font-['Mogra'] tracking-wider uppercase mb-2 text-white">{folder.name}</h3>
-                                                <p className="text-[10px] uppercase tracking-[0.4em] text-white/60 font-black">{folder.count} Artworks</p>
+                                                <p className="text-[10px] uppercase tracking-[0.4em] text-white/80 font-normal">{folder.count} Artworks</p>
                                             </div>
                                         </div>
                                         <div className="absolute bottom-10 left-1/2 -translate-x-1/2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all translate-y-0 md:translate-y-4 md:group-hover:translate-y-0">
@@ -308,17 +334,17 @@ const Home = () => {
                             ))}
                         </motion.div>
                     ) : (
-                        <motion.div key="collection" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-20">
+                        <motion.div key="collection" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-12">
                             {/* THE CURATOR'S HEADER */}
-                            <div className="flex flex-col md:flex-row justify-between items-end gap-10 pb-16 border-b border-white/5">
+                            <div className="flex flex-col md:flex-row justify-between items-end gap-10 pb-10 border-b border-white/5">
                                 <motion.div initial={{ x: -30, opacity: 0 }} animate={{ x: 0, opacity: 1 }} className="text-left w-full">
                                     <button 
                                         onClick={() => setSelectedCategory(null)} 
-                                        className="group flex items-center gap-3 text-[9px] uppercase tracking-widest text-white/30 hover:text-white transition-all mb-8 font-black"
+                                        className="group flex items-center gap-3 text-[10px] uppercase tracking-widest text-[#D4AF37] hover:text-white transition-all mb-8 font-normal"
                                     >
                                         <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" /> Return to Collections
                                     </button>
-                                    <h2 className="text-6xl md:text-[8rem] font-['Mogra'] tracking-tighter uppercase leading-[0.8]">{selectedCategory}</h2>
+                                    <h2 className="text-6xl md:text-[8rem] font-['Mogra'] tracking-tighter uppercase leading-[0.8] text-[#D4AF37]">{selectedCategory}</h2>
                                 </motion.div>
                                 
                                 <motion.div 
@@ -328,7 +354,7 @@ const Home = () => {
                                     transition={{ duration: 0.8, delay: 0.2 }}
                                     className="max-w-md text-right hidden lg:block"
                                 >
-                                    <p className="font-['Caveat'] text-3xl md:text-4xl text-neutral-400 italic leading-tight">
+                                    <p className="font-['Mogra'] text-lg md:text-xl text-neutral-400 capitalize leading-relaxed">
                                         {selectedCategory === "Canvas painting" && "The weight of texture and the depth of the soul's stroke."}
                                         {selectedCategory === "Colour portrait" && "A vibrant echo of identity, captured in the dance of hues."}
                                         {selectedCategory === "Sketch" && "Raw thoughts transcribed to paper, where the pencil meets the void."}
@@ -356,15 +382,15 @@ const Home = () => {
                                             <div className="flex-1">
                                                 <h3 className="text-2xl font-['Mogra'] tracking-tight group-hover:text-neutral-400 transition-colors uppercase leading-tight">{art.title}</h3>
                                                 {art.description && (
-                                                    <p className="font-['Caveat'] text-xl text-neutral-400 mt-2 line-clamp-2 italic leading-tight">
+                                                    <p className="font-['Mogra'] text-sm text-neutral-400 mt-2 line-clamp-2 leading-relaxed">
                                                         "{art.description}"
                                                     </p>
                                                 )}
-                                                <div className="text-[9px] text-white/20 uppercase font-black tracking-[0.3em] mt-3 flex items-center gap-2">
-                                                    <div className="w-1.5 h-1.5 bg-white/20 rounded-full" /> {art.category}
+                                                <div className="text-[9px] text-[#D4AF37] uppercase font-normal tracking-[0.3em] mt-3 flex items-center gap-2">
+                                                    <div className="w-1.5 h-1.5 bg-[#D4AF37]/40 rounded-full" /> {art.category}
                                                 </div>
                                             </div>
-                                            <span className="font-['Caveat'] text-2xl text-white/5 group-hover:text-white/40 transition-colors mt-1 italic">#{art._id.slice(-4)}</span>
+                                            <span className="font-['Mogra'] text-sm text-[#D4AF37]/30 group-hover:text-white/40 transition-colors mt-1 uppercase tracking-widest">#{art._id.slice(-4)}</span>
                                         </div>
                                     </div>
                                 </motion.div>
@@ -381,7 +407,7 @@ const Home = () => {
             </section>
 
             {/* --- ABOUT: THE ATELIER (The Museum Installation) --- */}
-            <section id="about" className="pt-40 md:pt-60 pb-20 relative overflow-hidden text-white/90">
+            <section id="about" className="pt-24 md:pt-32 pb-12 relative overflow-hidden text-white/90">
                 {/* ATMOSPHERIC SPECTERS (PARALLAX DEPTH) */}
                 <motion.div 
                     initial={{ opacity: 0, x: -50 }}
@@ -460,7 +486,7 @@ const Home = () => {
                                 </h2>
                             </div>
 
-                            <p className="font-['Caveat'] text-2xl md:text-4xl leading-[1.2] text-neutral-400 max-w-4xl mx-auto lg:mx-0">
+                            <p className="font-['Mogra'] text-lg md:text-xl leading-relaxed text-neutral-400 max-w-4xl mx-auto lg:mx-0">
                                 {profile?.bio || "Every stroke is a secret whispered in the language of color, found in the heart of the Atelier."}
                             </p>
 
@@ -534,7 +560,7 @@ const Home = () => {
             </section>
 
             {/* --- CONTACT: WHISPERS --- */}
-            <section id="contact" className="py-40 relative max-w-2xl mx-auto px-6 text-center">
+            <section id="contact" className="py-20 relative max-w-2xl mx-auto px-6 text-center">
                 {/* THE BREATHING VOID */}
                 <motion.div 
                     animate={{ scale: [1, 1.2, 1], opacity: [0.03, 0.08, 0.03] }}
@@ -558,15 +584,15 @@ const Home = () => {
                     <div className="space-y-6">
                         <div className="space-y-2">
                              <label className="text-[9px] uppercase tracking-widest text-[#D4AF37] ml-6 font-black">Full Name</label>
-                             <input type="text" placeholder="John Doe" required className="w-full bg-[#FCFAF2] border border-black/10 rounded-full px-8 py-4 focus:outline-none focus:border-[#D4AF37] transition-all text-sm" value={contactForm.name} onChange={(e) => setContactForm({...contactForm, name: e.target.value})} />
+                             <input type="text" placeholder="John Doe" required className="w-full bg-[#FCFAF2] border border-black/10 rounded-full px-8 py-4 focus:outline-none focus:border-[#D4AF37] transition-all text-sm text-[#1A1A1A] placeholder:text-[#1A1A1A]/50" value={contactForm.name} onChange={(e) => setContactForm({...contactForm, name: e.target.value})} />
                         </div>
                         <div className="space-y-2">
                              <label className="text-[9px] uppercase tracking-widest text-[#D4AF37] ml-6 font-black">Email Address</label>
-                             <input type="email" placeholder="john@example.com" required className="w-full bg-[#FCFAF2] border border-black/10 rounded-full px-8 py-4 focus:outline-none focus:border-[#D4AF37] transition-all text-sm" value={contactForm.email} onChange={(e) => setContactForm({...contactForm, email: e.target.value})} />
+                             <input type="email" placeholder="john@example.com" required className="w-full bg-[#FCFAF2] border border-black/10 rounded-full px-8 py-4 focus:outline-none focus:border-[#D4AF37] transition-all text-sm text-[#1A1A1A] placeholder:text-[#1A1A1A]/50" value={contactForm.email} onChange={(e) => setContactForm({...contactForm, email: e.target.value})} />
                         </div>
                         <div className="space-y-2">
                              <label className="text-[9px] uppercase tracking-widest text-[#D4AF37] ml-6 font-black">Message</label>
-                             <textarea placeholder="Describe your vision..." required className="w-full bg-[#FCFAF2] border border-black/10 rounded-[30px] px-8 py-6 h-32 focus:outline-none focus:border-[#D4AF37] transition-all resize-none text-lg font-['Caveat'] text-[#1A1A1A]" value={contactForm.message} onChange={(e) => setContactForm({...contactForm, message: e.target.value})} />
+                              <textarea placeholder="Describe your vision..." required className="w-full bg-[#FCFAF2] border border-black/10 rounded-[30px] px-8 py-6 h-32 focus:outline-none focus:border-[#D4AF37] transition-all resize-none text-sm font-['Mogra'] text-[#1A1A1A] placeholder:text-[#1A1A1A]/50" value={contactForm.message} onChange={(e) => setContactForm({...contactForm, message: e.target.value})} />
                         </div>
                     </div>
                     <motion.button whileHover={isMobile ? {} : { scale: 1.02 }} whileTap={{ scale: 0.98 }} type="submit" disabled={sending} className="w-full bg-white text-black py-5 rounded-full font-black uppercase tracking-[0.4em] text-[10px] flex items-center justify-center gap-4 hover:bg-neutral-200 transition-all shadow-xl shadow-white/5">
@@ -575,46 +601,6 @@ const Home = () => {
                 </motion.form>
             </section>
 
-            {/* --- FINAL FOOTER --- */}
-            <footer className="py-24 border-t border-white/5 text-center relative">
-                <motion.div animate={{ opacity: [0.1, 0.4, 0.1] }} transition={{ repeat: Infinity, duration: 4 }} className="mb-6"><Brush size={24} className="mx-auto" /></motion.div>
-                <div className="text-xl font-['Mogra'] tracking-widest text-[#1A1A1A] mb-2">ArtByAnjali</div>
-                <p className="text-[8px] uppercase tracking-[0.5em] text-neutral-400">&copy; 2026 Noir Exhibitionhall. All Rights Reserved.</p>
-                <div className="mt-8 flex justify-center">
-                    <a href="https://instagram.com/RWT._.ANURAG" target="_blank" rel="noreferrer" className="group flex items-center gap-2">
-                        <span className="text-[7px] uppercase tracking-[0.4em] text-white/20">/</span>
-                        <motion.div 
-                            initial="hidden" 
-                            whileInView="show" 
-                            viewport={{ once: true }}
-                            className="flex overflow-hidden"
-                        >
-                            {"made by the code Magician ANU₹AG".split("").map((char, idx) => (
-                                <motion.span
-                                    key={idx}
-                                    variants={{
-                                        hidden: { opacity: 0, x: -5 },
-                                        show: { opacity: 1, x: 0 }
-                                    }}
-                                    transition={{ 
-                                        delay: idx * 0.05,
-                                        duration: 0.1,
-                                        ease: "linear"
-                                    }}
-                                    className="text-[7px] uppercase tracking-[0.4em] text-white/30 group-hover:text-white transition-colors block whitespace-pre"
-                                >
-                                    {char}
-                                </motion.span>
-                            ))}
-                        </motion.div>
-                        <motion.span 
-                            animate={{ opacity: [1, 0] }} 
-                            transition={{ repeat: Infinity, duration: 0.6 }} 
-                            className="w-1 h-3 bg-white/40" 
-                        />
-                    </a>
-                </div>
-            </footer>
             {/* --- LIGHTBOX MODAL --- */}
             <AnimatePresence>
                 {selectedArtwork && (
@@ -625,7 +611,19 @@ const Home = () => {
                         className="fixed inset-0 z-[1000] flex items-center justify-center p-4 md:p-12"
                     >
                         {/* Backdrop of Silence */}
-                        <div className="absolute inset-0 bg-black/95 backdrop-blur-3xl" onClick={() => setSelectedArtwork(null)} />
+                        <div className="absolute inset-0 bg-black/95 backdrop-blur-lg cursor-pointer" onClick={() => setSelectedArtwork(null)} />
+                        
+                        {/* CLOSE BUTTON */}
+                        <motion.button
+                            initial={{ opacity: 0, scale: 0 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            whileHover={{ rotate: 90, scale: 1.1 }}
+                            whileTap={{ scale: 0.9 }}
+                            onClick={() => setSelectedArtwork(null)}
+                            className="absolute top-8 right-8 z-[1100] w-14 h-14 bg-[#D4AF37] text-[#231C18] rounded-full flex items-center justify-center shadow-2xl transition-all"
+                        >
+                            <X size={24} />
+                        </motion.button>
                         
                         <motion.div 
                             initial={{ scale: 0.9, opacity: 0, y: 20 }}
@@ -644,9 +642,9 @@ const Home = () => {
                             </div>
                             
                             {/* Manuscript Context */}
-                            <div className="mt-10 text-center max-w-3xl px-6">
+                            <div className="mt-4 text-center max-w-3xl px-6">
                                 <h2 className="text-4xl md:text-6xl font-['Mogra'] mb-4 uppercase tracking-tighter leading-tight">{selectedArtwork.title}</h2>
-                                <p className="font-['Caveat'] text-2xl md:text-3xl text-neutral-400 italic">"{selectedArtwork.description || "The soul's silent echo."}"</p>
+                                <p className="font-['Mogra'] text-lg md:text-xl text-neutral-400">"{selectedArtwork.description || "The soul's silent echo."}"</p>
                                 <div className="mt-8 flex items-center justify-center gap-4">
                                     <div className="h-[1px] w-12 bg-white/10" />
                                     <div className="text-[10px] uppercase tracking-[0.6em] text-white/20 font-black">
@@ -654,19 +652,50 @@ const Home = () => {
                                     </div>
                                     <div className="h-[1px] w-12 bg-white/10" />
                                 </div>
+
                             </div>
 
-                            {/* Exit Portal */}
-                            <button 
-                                onClick={() => setSelectedArtwork(null)}
-                                className="absolute -top-10 right-0 md:top-0 md:-right-10 p-4 text-white/20 hover:text-white transition-all pointer-events-auto group"
-                            >
-                                <X size={40} className="group-hover:rotate-90 transition-transform duration-500" />
-                            </button>
+
                         </motion.div>
                     </motion.div>
                 )}
             </AnimatePresence>
+
+            {/* ARCHIVAL FOOTER */}
+            <footer className="relative z-10 py-20 border-t border-white/5 text-center mt-20">
+                <motion.h2 
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    className="text-2xl font-['Mogra'] text-[#D4AF37] tracking-[0.3em] uppercase mb-4"
+                >
+                    ArtByAnjali
+                </motion.h2>
+                <div className="flex justify-center gap-8 mb-8">
+                    {[
+                        { icon: Instagram, href: "https://instagram.com/RWT._.ANURAG" },
+                        { icon: Palette, href: "#" },
+                        { icon: MessageCircle, href: "#" }
+                    ].map((social, idx) => (
+                        <motion.a 
+                            key={idx}
+                            href={social.href}
+                            target="_blank"
+                            whileHover={{ y: -5, color: "#D4AF37" }}
+                            className="text-white/40 transition-colors"
+                        >
+                            <social.icon size={20} />
+                        </motion.a>
+                    ))}
+                </div>
+                <p className="text-[9px] uppercase tracking-[0.5em] text-white/20 mb-4 px-6 leading-relaxed">
+                    Sculpting Light & Shadow • All Rights Reserved 2026
+                </p>
+                <div className="mt-8 pt-8 border-t border-white/5 inline-block">
+                    <a href="https://instagram.com/RWT._.ANURAG" target="_blank" rel="noreferrer" className="text-[8px] uppercase tracking-[0.4em] text-[#D4AF37]/60 hover:text-[#D4AF37] transition-all font-normal">
+                        made by the code Magician ANU₹AG
+                    </a>
+                </div>
+            </footer>
         </div>
     );
 };

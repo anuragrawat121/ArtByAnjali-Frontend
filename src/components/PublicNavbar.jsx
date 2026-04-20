@@ -32,15 +32,15 @@ const PublicNavbar = () => {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="fixed top-0 left-0 w-full z-50 px-6 py-6 md:px-12 md:py-8"
         >
-            <div className="max-w-7xl mx-auto flex justify-between items-center bg-black/5 backdrop-blur-xl border border-black/5 px-8 py-4 rounded-full shadow-lg">
+            <div className="max-w-7xl mx-auto flex justify-between items-center bg-white/5 backdrop-blur-md border border-white/10 px-8 py-4 rounded-full shadow-lg">
                 {/* LOGO */}
                 <div 
                     onClick={() => window.location.href = '/'} 
-                    className="flex items-center gap-3 text-xl md:text-2xl font-['Mogra'] text-[#1A1A1A] group transition-all relative z-[100] cursor-pointer"
+                    className="flex items-center gap-3 text-xl md:text-2xl font-['Mogra'] text-white group transition-all relative z-[100] cursor-pointer"
                 >
                     <motion.div 
                         whileHover={{ rotate: 180 }}
-                        className="w-8 h-8 rounded-lg bg-[#1A1A1A] flex items-center justify-center text-white shadow-lg"
+                        className="w-8 h-8 rounded-lg bg-[#D4AF37] flex items-center justify-center text-[#1A1512] shadow-lg"
                     >
                         <Brush size={18} />
                     </motion.div>
@@ -55,19 +55,19 @@ const PublicNavbar = () => {
                             href={`#${link.href}`} 
                             onClick={(e) => scrollToSection(e, link.href)}
                             whileHover={{ scale: 1.05 }}
-                            className="text-[10px] font-black hover:text-black text-neutral-500 transition-all uppercase tracking-[0.3em]"
+                            className="text-[12px] font-normal hover:text-[#D4AF37] text-white/40 transition-all uppercase tracking-[0.1em] font-['Mogra']"
                         >
                             {link.label}
                         </motion.a>
                     ))}
-                    <div className="w-[1px] h-3 bg-black/10" />
-                    <Link to="/admin" className="text-[10px] font-black text-black/30 hover:text-black transition-all uppercase tracking-[0.3em]">Studio</Link>
+                    <div className="w-[1px] h-3 bg-white/10" />
+                    <Link to="/admin" className="text-[12px] font-normal text-white/20 hover:text-[#D4AF37] transition-all uppercase tracking-[0.1em] font-['Mogra']">Studio</Link>
                 </div>
 
                 {/* MOBILE TOGGLE */}
                 <button 
                     onClick={() => setIsOpen(!isOpen)}
-                    className="md:hidden relative z-[100] w-10 h-10 flex items-center justify-center bg-black/5 rounded-full border border-black/5 hover:bg-black/10 transition-all text-[#1A1A1A]"
+                    className="md:hidden relative z-[100] w-10 h-10 flex items-center justify-center bg-white/5 rounded-full border border-white/10 hover:bg-white/10 transition-all text-white"
                 >
                     {isOpen ? <X size={20} /> : <Menu size={20} />}
                 </button>
@@ -81,8 +81,18 @@ const PublicNavbar = () => {
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: '100%' }}
                         transition={{ type: "spring", stiffness: 100, damping: 20 }}
-                        className="fixed inset-0 bg-[#FCFAF2] z-[90] flex flex-col items-center justify-center gap-12"
+                        className="fixed inset-0 bg-[#1A1512] z-[90] flex flex-col items-center justify-center gap-12"
                     >
+                        {/* MOBILE BACK ACTION */}
+                        <motion.button 
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            onClick={() => setIsOpen(false)}
+                            className="absolute top-10 left-10 flex items-center gap-2 text-[10px] uppercase tracking-widest text-[#D4AF37] font-normal"
+                        >
+                            <Brush size={14} className="rotate-[-45deg]" /> Back
+                        </motion.button>
+
                         <div className="flex flex-col items-center gap-8">
                             {navLinks.map((link, idx) => (
                                 <motion.a 
@@ -106,7 +116,7 @@ const PublicNavbar = () => {
                             <Link 
                                 to="/admin" 
                                 onClick={() => setIsOpen(false)}
-                                className="text-[12px] font-black tracking-[0.5em] uppercase text-black/30 hover:text-black transition-all"
+                                className="text-[14px] font-normal tracking-[0.1em] uppercase text-white/20 hover:text-[#D4AF37] transition-all font-['Mogra']"
                             >
                                 Studio Portal
                             </Link>

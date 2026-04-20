@@ -51,16 +51,24 @@ const CustomCursor = () => {
 
   return (
     <>
-      {/* STATIC MINIMAL CURSOR */}
+      {/* STATIC MINIMAL CURSOR (HIGH VISIBILITY) */}
       <motion.div
-        className="fixed top-0 left-0 w-3 h-3 border border-black/20 rounded-full pointer-events-none z-[9999] flex items-center justify-center"
+        className="fixed top-0 left-0 w-4 h-4 border border-[#D4AF37]/50 rounded-full pointer-events-none z-[100000] flex items-center justify-center mix-blend-screen"
+        animate={{
+          scale: isHovering ? 2.5 : 1,
+          borderColor: isHovering ? "rgba(212, 175, 55, 1)" : "rgba(212, 175, 55, 0.5)",
+          backgroundColor: isHovering ? "rgba(212, 175, 55, 0.1)" : "rgba(212, 175, 55, 0)"
+        }}
         style={{ 
             willChange: "transform",
-            left: mousePos.x - 6,
-            top: mousePos.y - 6
+            left: mousePos.x - 8,
+            top: mousePos.y - 8
         }}
       >
-        <div className="w-1 h-1 bg-black rounded-full" />
+        <motion.div 
+            animate={{ scale: isHovering ? 0.5 : 1 }}
+            className="w-1.5 h-1.5 bg-[#D4AF37] rounded-full shadow-[0_0_10px_rgba(212,175,55,0.5)]" 
+        />
       </motion.div>
     </>
   );
