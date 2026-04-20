@@ -198,7 +198,7 @@ const Home = () => {
                 <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.5 }} className="relative z-10 text-center px-6">
                     <div className="relative inline-block">
                         <h1 className="relative z-10 flex flex-wrap justify-center items-center text-6xl md:text-[9rem] font-['Mogra'] tracking-tighter leading-none">
-                            {(profile?.fullName || "ArtBy Anjali").split(" ").map((part, pIdx) => (
+                            {(profile?.fullName || "ArtByAnjali").split(" ").map((part, pIdx) => (
                                 <span key={pIdx} className="flex">
                                     {part.split("").map((char, cIdx) => (
                                         <motion.span

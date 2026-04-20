@@ -11,11 +11,12 @@ const Loader = () => {
             {/* AMBIENT BACKGROUND GLOW */}
             <motion.div 
                 animate={{ 
-                    scale: [1, 1.2, 1],
-                    opacity: [0.1, 0.2, 0.1]
+                    scale: [1, 1.1, 1], // Reduced scale range
+                    opacity: [0.08, 0.15, 0.08] // Lower opacity for better blending
                 }}
-                transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute w-[500px] h-[500px] bg-white rounded-full blur-[150px] pointer-events-none"
+                transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+                style={{ willChange: "transform, opacity" }}
+                className="absolute w-[300px] h-[300px] md:w-[500px] md:h-[500px] bg-white rounded-full blur-[60px] md:blur-[120px] pointer-events-none"
             />
 
             <div className="relative z-10 flex flex-col items-center">
@@ -23,6 +24,7 @@ const Loader = () => {
                 <motion.div
                     animate={{ rotate: 360 }}
                     transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                    style={{ willChange: "transform" }}
                     className="text-white/10 mb-12"
                 >
                     <Palette size={64} strokeWidth={1} />
@@ -35,8 +37,9 @@ const Loader = () => {
                             key={`artby-${idx}`}
                             initial={{ y: 200, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
-                            transition={{ duration: 1, delay: idx * 0.05, ease: [0.33, 1, 0.68, 1] }}
-                            className="text-5xl md:text-8xl font-['Mogra'] text-white/30 tracking-widest block"
+                            transition={{ duration: 0.8, delay: idx * 0.05, ease: [0.33, 1, 0.68, 1] }}
+                            style={{ willChange: "transform, opacity" }}
+                            className="text-5xl md:text-8xl font-['Mogra'] text-white/30 tracking-[0.1em] block"
                         >
                             {letter}
                         </motion.span>
@@ -46,8 +49,9 @@ const Loader = () => {
                             key={`anjali-${idx}`}
                             initial={{ y: 200, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
-                            transition={{ duration: 1, delay: (idx + 5) * 0.05, ease: [0.33, 1, 0.68, 1] }}
-                            className="text-5xl md:text-8xl font-['Mogra'] text-white tracking-widest block"
+                            transition={{ duration: 0.8, delay: (idx + 5) * 0.05, ease: [0.33, 1, 0.68, 1] }}
+                            style={{ willChange: "transform, opacity" }}
+                            className="text-5xl md:text-8xl font-['Mogra'] text-white tracking-[0.1em] block"
                         >
                             {letter}
                         </motion.span>
