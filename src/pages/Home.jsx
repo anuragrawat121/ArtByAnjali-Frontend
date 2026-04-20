@@ -630,13 +630,12 @@ const Home = () => {
                 )}
             </AnimatePresence>
             {/* FIXED DEVELOPER SIGNATURE */}
-            <div className="fixed bottom-6 right-6 z-[50] hidden md:block">
+            <div className="fixed bottom-6 right-6 md:right-10 z-[50] opacity-40 hover:opacity-100 transition-opacity">
                 <a 
                     href="https://github.com/anuragrawat121" 
                     target="_blank" 
                     rel="noreferrer" 
-                    className="text-[8px] uppercase tracking-[0.5em] text-white/10 hover:text-white transition-all font-black vertical-text"
-                    style={{ writingMode: 'vertical-rl' }}
+                    className="text-[9px] uppercase tracking-[0.4em] text-white hover:text-white transition-all font-black"
                 >
                     Made By Code Magecian Anurag
                 </a>
