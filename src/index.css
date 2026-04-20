@@ -29,21 +29,16 @@ html {
 :root {
   font-family: 'Syne', sans-serif;
   color-scheme: dark;
-  --bg-color: #0c0c0e; /* Deep Indigo Charcoal */
-  --surface-color: #141417;
-  --accent-color: #d4af37; /* Muted Gold */
-  --text-main: #f0f0f0;
-  --text-dim: rgba(240, 240, 240, 0.4);
-  background-color: var(--bg-color);
+  background-color: #0f0f0f;
 }
 
 body {
   margin: 0;
-  color: var(--text-main);
+  color: white;
   min-height: 100vh;
   overflow-x: hidden;
-  background-color: var(--bg-color);
-  cursor: none; 
+  background-color: #0f0f0f;
+  cursor: none; /* Immersive Noir Experience */
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */

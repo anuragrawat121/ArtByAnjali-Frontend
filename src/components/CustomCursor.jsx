@@ -53,14 +53,14 @@ const CustomCursor = () => {
     <>
       {/* STATIC MINIMAL CURSOR */}
       <motion.div
-        className="fixed top-0 left-0 w-3 h-3 border border-[#d4af37]/60 rounded-full pointer-events-none z-[9999] flex items-center justify-center"
+        className="fixed top-0 left-0 w-3 h-3 border border-white/60 rounded-full pointer-events-none z-[9999] flex items-center justify-center"
         style={{ 
             willChange: "transform",
             left: mousePos.x - 6,
             top: mousePos.y - 6
         }}
       >
-        <div className="w-1 h-1 bg-[#d4af37] rounded-full shadow-[0_0_10px_rgba(212,175,55,0.4)]" />
+        <div className="w-1 h-1 bg-white rounded-full" />
       </motion.div>
     </>
   );

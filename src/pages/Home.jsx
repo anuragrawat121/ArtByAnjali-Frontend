@@ -192,7 +192,7 @@ const Home = () => {
                                 />
                         </motion.div>
                     </AnimatePresence>
-                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0c0c0e]/80 to-[#0c0c0e]" />
+                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0f0f0f]/80 to-[#0f0f0f]" />
                 </div>
 
                 <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.5 }} className="relative z-10 text-center px-6">
@@ -293,7 +293,7 @@ const Home = () => {
                                 <motion.div key={folder.name} variants={itemVariants} whileHover={isMobile ? {} : { y: -10 }} onClick={() => setSelectedCategory(folder.name)} className="group cursor-none">
                                     <div className="relative aspect-[3/4] overflow-hidden bg-white/[0.01] rounded-[30px] mb-8 border border-white/5 shadow-2xl">
                                         <img src={folder.cover} className="w-full h-full object-cover md:grayscale group-hover:grayscale-0 transition-all duration-1000 ease-out" />
-                                        <div className="absolute inset-0 bg-[#0c0c0e]/40 md:group-hover:bg-[#0f0f0f]/60 transition-all" />
+                                        <div className="absolute inset-0 bg-[#0f0f0f]/40 md:group-hover:bg-[#0f0f0f]/60 transition-all" />
                                         <div className="absolute inset-0 flex items-center justify-center">
                                             <div className="text-center">
                                                 <h3 className="text-3xl font-['Mogra'] tracking-wider uppercase mb-2">{folder.name}</h3>
@@ -558,18 +558,18 @@ const Home = () => {
                     <div className="space-y-6">
                         <div className="space-y-2">
                              <label className="text-[9px] uppercase tracking-widest text-neutral-600 ml-6 font-black">Full Name</label>
-                             <input type="text" placeholder="John Doe" required className="w-full bg-[#0c0c0e]/40 border border-white/10 rounded-full px-8 py-4 focus:outline-none focus:border-white/30 transition-all text-sm" value={contactForm.name} onChange={(e) => setContactForm({...contactForm, name: e.target.value})} />
+                             <input type="text" placeholder="John Doe" required className="w-full bg-[#0f0f0f]/40 border border-white/10 rounded-full px-8 py-4 focus:outline-none focus:border-white/30 transition-all text-sm" value={contactForm.name} onChange={(e) => setContactForm({...contactForm, name: e.target.value})} />
                         </div>
                         <div className="space-y-2">
                              <label className="text-[9px] uppercase tracking-widest text-neutral-600 ml-6 font-black">Email Address</label>
-                             <input type="email" placeholder="john@example.com" required className="w-full bg-[#0c0c0e]/40 border border-white/10 rounded-full px-8 py-4 focus:outline-none focus:border-white/30 transition-all text-sm" value={contactForm.email} onChange={(e) => setContactForm({...contactForm, email: e.target.value})} />
+                             <input type="email" placeholder="john@example.com" required className="w-full bg-[#0f0f0f]/40 border border-white/10 rounded-full px-8 py-4 focus:outline-none focus:border-white/30 transition-all text-sm" value={contactForm.email} onChange={(e) => setContactForm({...contactForm, email: e.target.value})} />
                         </div>
                         <div className="space-y-2">
                              <label className="text-[9px] uppercase tracking-widest text-neutral-600 ml-6 font-black">Message</label>
-                             <textarea placeholder="Describe your vision..." required className="w-full bg-[#0c0c0e]/40 border border-white/10 rounded-[30px] px-8 py-6 h-32 focus:outline-none focus:border-white/30 transition-all resize-none text-lg font-['Caveat'] text-neutral-300" value={contactForm.message} onChange={(e) => setContactForm({...contactForm, message: e.target.value})} />
+                             <textarea placeholder="Describe your vision..." required className="w-full bg-[#0f0f0f]/40 border border-white/10 rounded-[30px] px-8 py-6 h-32 focus:outline-none focus:border-white/30 transition-all resize-none text-lg font-['Caveat'] text-neutral-300" value={contactForm.message} onChange={(e) => setContactForm({...contactForm, message: e.target.value})} />
                         </div>
                     </div>
-                    <motion.button whileHover={isMobile ? {} : { scale: 1.02 }} whileTap={{ scale: 0.98 }} type="submit" disabled={sending} className="w-full bg-[#d4af37] text-[#0c0c0e] py-5 rounded-full font-black uppercase tracking-[0.4em] text-[10px] flex items-center justify-center gap-4 hover:bg-[#c49f27] transition-all shadow-xl shadow-[#d4af37]/5">
+                    <motion.button whileHover={isMobile ? {} : { scale: 1.02 }} whileTap={{ scale: 0.98 }} type="submit" disabled={sending} className="w-full bg-white text-black py-5 rounded-full font-black uppercase tracking-[0.4em] text-[10px] flex items-center justify-center gap-4 hover:bg-neutral-200 transition-all shadow-xl shadow-white/5">
                         {sending ? "Sending..." : <><Send size={14} /> Send Whisper</>}
                     </motion.button>
                 </motion.form>
@@ -589,7 +589,7 @@ const Home = () => {
                             viewport={{ once: true }}
                             className="flex overflow-hidden"
                         >
-                            {"made by the code magicien ANU₹AG".split("").map((char, idx) => (
+                            {"made by the code Magician ANU₹AG".split("").map((char, idx) => (
                                 <motion.span
                                     key={idx}
                                     variants={{
