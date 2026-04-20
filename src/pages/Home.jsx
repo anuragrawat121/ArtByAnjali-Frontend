@@ -143,7 +143,7 @@ const Home = () => {
     if (loading) return <Loader />;
 
     return (
-        <div className="min-h-screen bg-[#0f0f0f] text-white selection:bg-white selection:text-black overflow-x-hidden relative">
+        <div className="min-h-screen bg-[#12100e] text-[#f5f5f1] font-['Syne'] selection:bg-[#eadcc9]/10 selection:text-black overflow-x-hidden relative">
             {/* GLOBAL ARCHIVAL GRAIN */}
             <div className="fixed inset-0 z-[1] pointer-events-none opacity-[0.03] mix-blend-overlay hidden md:block">
                 <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
@@ -192,7 +192,7 @@ const Home = () => {
                                 />
                         </motion.div>
                     </AnimatePresence>
-                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0f0f0f]/80 to-[#0f0f0f]" />
+                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#12100e]/80 to-[#12100e]" />
                 </div>
 
                 <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.5 }} className="relative z-10 text-center px-6">
@@ -625,7 +625,7 @@ const Home = () => {
                         className="fixed inset-0 z-[1000] flex items-center justify-center p-4 md:p-12"
                     >
                         {/* Backdrop of Silence */}
-                        <div className="absolute inset-0 bg-black/95 backdrop-blur-3xl" onClick={() => setSelectedArtwork(null)} />
+                        <div className="absolute inset-0 bg-[#12100e]/60 backdrop-blur-[1px]" onClick={() => setSelectedArtwork(null)} />
                         
                         <motion.div 
                             initial={{ scale: 0.9, opacity: 0, y: 20 }}

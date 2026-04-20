@@ -7,7 +7,7 @@ import { Palette } from 'lucide-react';
  */
 const Loader = () => {
     return (
-        <div className="fixed inset-0 z-[99999] bg-[#0f0f0f] flex flex-col items-center justify-center overflow-hidden">
+        <div className="fixed inset-0 z-[99999] bg-[#12100e] flex flex-col items-center justify-center overflow-hidden">
             {/* AMBIENT BACKGROUND GLOW */}
             <motion.div 
                 animate={{ 

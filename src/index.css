@@ -29,15 +29,15 @@ html {
 :root {
   font-family: 'Syne', sans-serif;
   color-scheme: dark;
-  background-color: #0f0f0f;
+  background-color: #12100e; /* Raw Umber Black */
 }
 
 body {
   margin: 0;
-  color: white;
+  color: #f5f5f1; /* Canvas White */
   min-height: 100vh;
   overflow-x: hidden;
-  background-color: #0f0f0f;
+  background-color: #12100e;
   cursor: none; /* Immersive Noir Experience */
 }
 

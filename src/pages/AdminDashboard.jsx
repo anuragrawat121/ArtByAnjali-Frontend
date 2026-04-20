@@ -339,13 +339,14 @@ const AdminDashboard = () => {
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} className="flex flex-col min-h-screen">
           
           {/* NAVIGATION BAR */}
-          <header className="relative z-50 border-b border-white/5 bg-[#0f0f0f]/40 backdrop-blur-xl px-4 md:px-10 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+          <header className="relative z-50 border-b border-white/5 bg-[#12100e]/40 backdrop-blur-xl px-4 md:px-10 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+          <header className="relative z-50 border-b border-[#eadcc9]/5 bg-[#12100e]/40 backdrop-blur-xl px-4 md:px-10 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
             <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-white text-black rounded-lg flex items-center justify-center"><Brush size={18} /></div>
-              <h1 className="text-lg font-['Mogra'] text-white">ArtByAnjali</h1>
+              <div className="w-8 h-8 bg-[#eadcc9] text-[#12100e] rounded-lg flex items-center justify-center"><Brush size={18} /></div>
+              <h1 className="text-lg font-['Mogra'] text-[#eadcc9]">ArtByAnjali</h1>
             </motion.div>
             
-            <nav className="flex bg-white/5 p-1 rounded-full border border-white/10">
+            <nav className="flex bg-[#eadcc9]/5 p-1 rounded-full border border-[#eadcc9]/10">
               {[ 
                 { id: "artworks", icon: ImageIcon, label: "Exhibits" }, 
                 { id: "profile", icon: User, label: "Atelier" }, 
