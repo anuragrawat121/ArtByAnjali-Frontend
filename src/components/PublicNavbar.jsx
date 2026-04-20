@@ -36,7 +36,7 @@ const PublicNavbar = () => {
                 {/* LOGO */}
                 <div 
                     onClick={() => window.location.href = '/'} 
-                    className="flex items-center gap-3 text-xl md:text-2xl font-['Mogra'] text-white uppercase group transition-all relative z-[100] cursor-pointer"
+                    className="flex items-center gap-3 text-xl md:text-2xl font-['Mogra'] text-white group transition-all relative z-[100] cursor-pointer"
                 >
                     <motion.div 
                         whileHover={{ rotate: 180 }}

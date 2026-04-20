@@ -571,7 +571,7 @@ const Home = () => {
             {/* --- FINAL FOOTER --- */}
             <footer className="py-24 border-t border-white/5 text-center relative">
                 <motion.div animate={{ opacity: [0.1, 0.4, 0.1] }} transition={{ repeat: Infinity, duration: 4 }} className="mb-6"><Brush size={24} className="mx-auto" /></motion.div>
-                <div className="text-xl font-['Mogra'] uppercase tracking-widest text-white mb-2">ArtByAnjali</div>
+                <div className="text-xl font-['Mogra'] tracking-widest text-white mb-2">ArtByAnjali</div>
                 <p className="text-[8px] uppercase tracking-[0.5em] text-neutral-600">&copy; 2026 Noir Exhibitionhall. All Rights Reserved.</p>
                 <div className="mt-8 flex justify-center">
                     <a href="https://github.com/anuragrawat121" target="_blank" rel="noreferrer" className="group flex items-center gap-2">
