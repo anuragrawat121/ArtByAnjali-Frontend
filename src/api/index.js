@@ -29,6 +29,7 @@ export const updateProfile = (formData, key) => apiClient.post(`/profile?key=${k
 
 // Admin Messages & Auth Verification
 export const getMessages = (key) => apiClient.get(`/contact?key=${key}`);
+export const deleteMessage = (id, key) => apiClient.delete(`/contact/${id}?key=${key}`);
 
 // Delete Artwork
 export const deleteArtwork = (id, key) => apiClient.delete(`/artworks/${id}?key=${key}`);

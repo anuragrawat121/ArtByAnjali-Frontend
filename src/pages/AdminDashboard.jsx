@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 import CustomCursor from "../components/CustomCursor";
 import {
-  getArtworks, getProfile, getMessages, addArtwork, updateProfile, deleteArtwork, updateArtwork
+  getArtworks, getProfile, getMessages, addArtwork, updateProfile, deleteArtwork, updateArtwork, deleteMessage
 } from "../api";
 import Loader from "../components/Loader";
 
@@ -81,7 +81,7 @@ const StatusNotification = ({ msg, type, clear }) => (
 );
 
 /** --- CURATION CONFIRMATION MODAL --- **/
-const ConfirmModal = ({ onConfirm, onCancel }) => (
+const ConfirmModal = ({ title, message, onConfirm, onCancel }) => (
   <motion.div
     initial={{ opacity: 0 }}
     animate={{ opacity: 1 }}
@@ -96,8 +96,8 @@ const ConfirmModal = ({ onConfirm, onCancel }) => (
       className="relative bg-neutral-900 border border-white/10 p-10 rounded-[40px] max-w-sm w-full text-center shadow-2xl"
     >
       <div className="w-16 h-16 bg-red-500/10 border border-red-500/20 rounded-full flex items-center justify-center mx-auto mb-6 text-red-500"><Trash2 size={24} /></div>
-      <h2 className="text-2xl font-['Mogra'] text-white mb-2">Remove Artwork?</h2>
-      <p className="text-neutral-500 text-[10px] uppercase tracking-widest leading-relaxed mb-8">This masterpiece will be permanently deleted from your cloud studio.</p>
+      <h2 className="text-2xl font-['Mogra'] text-white mb-2">{title}</h2>
+      <p className="text-neutral-500 text-[10px] uppercase tracking-widest leading-relaxed mb-8">{message}</p>
       <div className="flex flex-col gap-3">
         <button onClick={onConfirm} className="w-full bg-red-500 text-white font-black py-4 rounded-full text-[10px] uppercase tracking-widest hover:bg-red-600 transition-all">Confirm Delete</button>
         <button onClick={onCancel} className="w-full bg-white/5 text-neutral-400 font-bold py-4 rounded-full text-[10px] uppercase tracking-widest hover:bg-white/10 transition-all">Keep it</button>
@@ -115,7 +115,7 @@ const AdminDashboard = () => {
   
   // Feedback Systems
   const [status, setStatus] = useState({ show: false, msg: "", type: "success" });
-  const [deleteConfirm, setDeleteConfirm] = useState({ show: false, id: null });
+  const [deleteConfirm, setDeleteConfirm] = useState({ show: false, id: null, type: 'artwork' });
   const [editArtworkData, setEditArtworkData] = useState(null);
   const [bgIndex, setBgIndex] = useState(0);
   const [showKey, setShowKey] = useState(false);
@@ -281,10 +281,20 @@ const AdminDashboard = () => {
     const id = deleteConfirm.id;
     if (!id) return;
     try {
-      await deleteArtwork(id, secretKey);
-      setArtworks(artworks.filter((a) => a._id !== id));
-      showNotify("Artwork Removed");
-    } catch (e) { showNotify("Deletion Failed", "error"); } finally { setDeleteConfirm({ show: false, id: null }); }
+      if (deleteConfirm.type === 'artwork') {
+        await deleteArtwork(id, secretKey);
+        setArtworks(artworks.filter((a) => a._id !== id));
+        showNotify("Artwork Removed");
+      } else {
+        await deleteMessage(id, secretKey);
+        setMessages(messages.filter((m) => m._id !== id));
+        showNotify("Whisper Erased");
+      }
+    } catch (e) { 
+      showNotify("Deletion Failed", "error"); 
+    } finally { 
+      setDeleteConfirm({ show: false, id: null, type: 'artwork' }); 
+    }
   };
 
   // Update Masterpiece Details
@@ -370,7 +380,14 @@ const AdminDashboard = () => {
       {/* OVERLAY ELEMENTS */}
       <AnimatePresence>
         {status.show && <StatusNotification msg={status.msg} type={status.type} clear={() => setStatus((p) => ({ ...p, show: false }))} />}
-        {deleteConfirm.show && <ConfirmModal onConfirm={handleDeleteArtwork} onCancel={() => setDeleteConfirm({ show: false, id: null })} />}
+        {deleteConfirm.show && (
+          <ConfirmModal 
+            title={deleteConfirm.type === 'artwork' ? "Remove Artwork?" : "Erase Whisper?"}
+            message={deleteConfirm.type === 'artwork' ? "This masterpiece will be permanently deleted from your cloud studio." : "This message will be permanently removed from your archival echoes."}
+            onConfirm={handleDeleteArtwork} 
+            onCancel={() => setDeleteConfirm({ show: false, id: null, type: 'artwork' })} 
+          />
+        )}
         {editArtworkData && <EditArtworkModal artwork={editArtworkData} onSave={handleEditArtwork} onCancel={() => setEditArtworkData(null)} loading={loginLoading} />}
       </AnimatePresence>
 
@@ -564,7 +581,7 @@ const AdminDashboard = () => {
                         </div>
                         <div className="absolute top-4 right-4 flex gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all z-20">
                             <button onClick={(e) => { e.stopPropagation(); setEditArtworkData(art); }} className="w-9 h-9 bg-black/60 backdrop-blur-md border border-white/10 rounded-full flex items-center justify-center text-white/40 hover:text-[#D4AF37] hover:bg-white/5 transition-all"><PlusCircle size={14} /></button>
-                            <button onClick={(e) => { e.stopPropagation(); setDeleteConfirm({ show: true, id: art._id }); }} className="w-9 h-9 bg-black/60 backdrop-blur-md border border-white/10 rounded-full flex items-center justify-center text-white/40 hover:text-red-400 hover:bg-red-500/20 transition-all"><Trash2 size={14} /></button>
+                            <button onClick={(e) => { e.stopPropagation(); setDeleteConfirm({ show: true, id: art._id, type: 'artwork' }); }} className="w-9 h-9 bg-black/60 backdrop-blur-md border border-white/10 rounded-full flex items-center justify-center text-white/40 hover:text-red-400 hover:bg-red-500/20 transition-all"><Trash2 size={14} /></button>
                         </div>
                       </motion.div>
                     ))}
@@ -667,8 +684,33 @@ const AdminDashboard = () => {
                              <span className="text-[7px] font-black uppercase text-white/20 tracking-tighter -rotate-45 mt-16">New Echo</span>
                           </div>
                         )}
-                        <div className="flex justify-between items-center mb-6"><div className="flex items-center gap-4"><div className="w-12 h-12 bg-white text-black rounded-full flex items-center justify-center font-['Mogra'] text-xl">{m.name.charAt(0)}</div><div><span className="text-lg font-['Mogra'] text-white block truncate max-w-[150px]">{m.name}</span><span className="text-[9px] uppercase tracking-widest text-neutral-500 font-bold">{m.email}</span></div></div><span className="text-[9px] font-medium text-neutral-700">{new Date(m.createdAt).toLocaleDateString()}</span></div>
-                        <p className="font-['Mogra'] text-lg text-neutral-300 leading-snug pl-6 border-l-2 border-white/10 group-hover:border-white/30 transition-colors">"{m.message}"</p>
+                        <div className="flex justify-between items-center mb-6">
+                           <div className="flex items-center gap-4">
+                             <div className="w-12 h-12 bg-white text-black rounded-full flex items-center justify-center font-['Mogra'] text-xl">
+                               {m.name.charAt(0)}
+                             </div>
+                             <div>
+                               <span className="text-lg font-['Mogra'] text-white block truncate max-w-[150px]">
+                                 {m.name}
+                               </span>
+                               <span className="text-[9px] uppercase tracking-widest text-neutral-500 font-bold">
+                                 {m.email}
+                               </span>
+                             </div>
+                           </div>
+                           <div className="flex items-center gap-4">
+                             <button 
+                               onClick={() => setDeleteConfirm({ show: true, id: m._id, type: 'message' })}
+                               className="w-9 h-9 bg-white/5 border border-white/10 rounded-full flex items-center justify-center text-white/20 hover:text-red-500 hover:bg-red-500/10 transition-all"
+                             >
+                               <Trash2 size={14} />
+                             </button>
+                             <span className="text-[9px] font-medium text-neutral-700">
+                               {new Date(m.createdAt).toLocaleDateString()}
+                             </span>
+                           </div>
+                         </div>
+                         <p className="font-['Mogra'] text-lg text-neutral-300 leading-snug pl-6 border-l-2 border-white/10 group-hover:border-white/30 transition-colors">"{m.message}"</p>
                       </motion.div>
                     ))}
                   </div>
