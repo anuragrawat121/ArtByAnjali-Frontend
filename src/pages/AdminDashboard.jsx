@@ -748,6 +748,10 @@ const AdminDashboard = () => {
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
                     {/* UPLOAD FORM */}
                     <motion.form
+                      initial={{ opacity: 0, y: 30 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 1 }}
                       variants={sectionVariants}
                       onSubmit={handleArtworkUpload}
                       className="lg:col-span-8 bg-[#1A1512] p-8 md:p-10 rounded-[30px] border border-white/5"
@@ -911,6 +915,10 @@ const AdminDashboard = () => {
                     {/* STUDIO STATS */}
                     <div className="lg:col-span-4 flex lg:flex-col gap-6">
                       <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 1 }}
                         variants={sectionVariants}
                         className="flex-1 bg-[#1A1512] p-8 rounded-[40px] border border-white/5 text-center flex flex-col items-center justify-center"
                       >
@@ -927,6 +935,10 @@ const AdminDashboard = () => {
                         </p>
                       </motion.div>
                       <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 1, delay: 0.2 }}
                         variants={sectionVariants}
                         className="hidden sm:flex flex-1 bg-white/5 border border-white/10 p-6 rounded-[40px] flex-col items-center justify-center text-center"
                       >
@@ -949,19 +961,21 @@ const AdminDashboard = () => {
                   {/* LIVE GALLERY GRID */}
                   <motion.div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-5 mt-16 pb-20">
                     {artworks.map((art, idx) => (
-                      <motion.div
-                        key={art._id}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.5, delay: (idx % 6) * 0.05 }}
-                        className="relative aspect-[3/4] rounded-[30px] overflow-hidden border border-white/5 group cursor-pointer hover:border-white/20 transition-all shimmer-container"
-                      >
-                        <img
-                          src={art.imageUrl}
-                          loading="lazy"
-                          onLoad={(e) => e.target.classList.remove("opacity-0")}
-                          className="w-full h-full object-cover transition-all duration-1000 opacity-0 grayscale-0 md:grayscale md:group-hover:grayscale-0 group-hover:scale-110"
-                        />
+                        <motion.div
+                          variants={itemVariants}
+                          key={art._id}
+                          initial={{ opacity: 0, y: 20 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 0.8 }}
+                          className="relative aspect-[3/4] rounded-[30px] overflow-hidden border border-white/5 group cursor-pointer hover:border-white/20 transition-all shimmer-container"
+                        >
+                          <img
+                            src={art.imageUrl}
+                            loading="lazy"
+                            onLoad={(e) => e.target.classList.remove("opacity-0")}
+                            className="w-full h-full object-cover transition-all duration-1000 opacity-0 grayscale-0 md:grayscale md:group-hover:grayscale-0 group-hover:scale-110"
+                          />
                         <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black via-black/80 to-transparent pointer-events-none">
                           <p className="font-['Mogra'] text-[9px] text-[#D4AF37] truncate uppercase tracking-widest">
                             {art.category}
