@@ -944,8 +944,9 @@ const Home = () => {
         {/* Header with floating text effect */}
         <div className="relative z-10 overflow-hidden mb-10">
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             transition={{ duration: 1 }}
           >
             <p className="text-[9px] uppercase tracking-[0.8em] text-[#D4AF37] font-black mb-3 italic opacity-40">
@@ -963,9 +964,10 @@ const Home = () => {
 
         {/* Form Container with Glassmorphism */}
         <motion.form
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1 }}
           onSubmit={handleContactSubmit}
           className="group space-y-6 text-left bg-white/[0.02] backdrop-blur-md lg:backdrop-blur-xl border border-white/5 p-8 md:p-10 rounded-[40px] shadow-2xl hover:border-white/10 transition-all duration-700"
         >
@@ -988,9 +990,10 @@ const Home = () => {
             ].map((field, idx) => (
               <motion.div
                 key={field.id}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.1 * idx }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
                 className="space-y-2"
               >
                 <label className="text-[9px] uppercase tracking-[0.3em] text-[#D4AF37]/50 ml-6 font-bold">
@@ -1016,9 +1019,10 @@ const Home = () => {
             ))}
 
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.2 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
               className="space-y-2"
             >
               <label className="text-[9px] uppercase tracking-[0.3em] text-[#D4AF37]/50 ml-6 font-bold">
