@@ -770,8 +770,9 @@ const Home = () => {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
             {/* THE MASTER'S FRAME (Circular Portrait) */}
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 1 }}
               className="lg:col-span-5 flex justify-center lg:justify-start relative"
             >
@@ -813,9 +814,10 @@ const Home = () => {
 
             {/* THE SOUL'S MANUSCRIPT */}
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 1, delay: 0.2 }}
               className="lg:col-span-7 flex flex-col justify-center text-center lg:text-left space-y-6"
             >
               <div className="space-y-1">
