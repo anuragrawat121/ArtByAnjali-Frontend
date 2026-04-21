@@ -335,7 +335,14 @@ const AdminDashboard = () => {
   return (
     <div className="min-h-screen bg-[#231C18] text-[#E8D5C4] font-['Mogra'] relative flex flex-col selection:bg-[#D4AF37] selection:text-[#231C12]">
       {/* GLOBAL STYLES */}
-      <style>{`.no-scrollbar::-webkit-scrollbar { display: none; } .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }`}</style>
+      <style>{`
+        .no-scrollbar::-webkit-scrollbar { display: none; } 
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        @keyframes shimmer {
+          0% { transform: translateX(-100%) skewX(-20deg); }
+          100% { transform: translateX(200%) skewX(-20deg); }
+        }
+      `}</style>
       
       
       {/* OVERLAY ELEMENTS */}
@@ -507,10 +514,18 @@ const AdminDashboard = () => {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, margin: "-50px" }}
                         transition={{ duration: 0.8, ease: "easeOut", delay: (idx % 6) * 0.05 }}
-                        className="relative aspect-[3/4] rounded-[30px] overflow-hidden border border-white/5 bg-white/[0.01] group cursor-pointer hover:border-white/20 transition-all"
+                        className="relative aspect-[3/4] rounded-[30px] overflow-hidden border border-white/5 bg-white/[0.03] group cursor-pointer hover:border-white/20 transition-all"
                       >
-                        <img src={art.imageUrl} className="w-full h-full object-cover transition-all duration-700 grayscale-0 md:grayscale md:group-hover:grayscale-0 group-hover:scale-110" />
-                        <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black via-black/80 to-transparent">
+                        {/* Shimmer Placeholder */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent skew-x-[-20deg] animate-[shimmer_2s_infinite] pointer-events-none" />
+                        
+                        <img 
+                          src={art.imageUrl} 
+                          loading="lazy"
+                          onLoad={(e) => e.target.classList.remove('opacity-0')}
+                          className="w-full h-full object-cover transition-all duration-1000 opacity-0 grayscale-0 md:grayscale md:group-hover:grayscale-0 group-hover:scale-110" 
+                        />
+                        <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black via-black/80 to-transparent pointer-events-none">
                           <p className="font-['Mogra'] text-[9px] text-[#D4AF37] truncate uppercase tracking-widest">{art.category}</p>
                           <h4 className="font-['Mogra'] text-[11px] text-[#E8D5C4] truncate uppercase tracking-tighter">{art.title}</h4>
                         </div>
@@ -568,7 +583,19 @@ const AdminDashboard = () => {
                     </div>
                     <div className="flex flex-col items-center justify-center space-y-8">
                       <motion.div whileHover={{ rotate: 2 }} className="w-48 h-48 sm:w-60 sm:h-60 rounded-full border-4 border-dashed border-white/5 flex items-center justify-center relative overflow-hidden bg-white/5 group shadow-xl">
-                        {profileFile || profile.profileImageUrl ? <motion.img initial={{ scale: 1.2 }} animate={{ scale: 1 }} src={profileFile ? URL.createObjectURL(profileFile) : profile.profileImageUrl} className="absolute inset-0 w-full h-full object-cover" style={{ objectPosition: profile.imagePosition || "center" }} /> : <Brush size={64} className="opacity-10" />}
+                        {profileFile || profile.profileImageUrl ? (
+                          <motion.img 
+                            initial={{ scale: 1.2 }} 
+                            animate={{ scale: 1 }} 
+                            loading="lazy"
+                            onLoad={(e) => e.target.classList.remove('opacity-0')}
+                            src={profileFile ? URL.createObjectURL(profileFile) : profile.profileImageUrl} 
+                            className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-1000" 
+                            style={{ objectPosition: profile.imagePosition || "center" }} 
+                          />
+                        ) : (
+                          <Brush size={64} className="opacity-10" />
+                        )}
                         <input type="file" className="absolute inset-0 opacity-0 cursor-pointer" onChange={(e) => setProfileFile(e.target.files[0])} />
                       </motion.div>
                       <div className="w-full text-center space-y-6">

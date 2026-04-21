@@ -634,35 +634,90 @@ const Home = () => {
                     className="absolute inset-0 z-0 bg-[radial-gradient(circle,white_0%,transparent_70%)] rounded-full blur-3xl pointer-events-none"
                 />
 
-                <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="relative z-10">
-                    <p className="text-[9px] uppercase tracking-[1em] text-white/20 font-black mb-6 italic">Inquire</p>
-                    <h2 className="text-6xl font-['Mogra'] mb-4 tracking-tighter uppercase">Whispers</h2>
-                    <p className="text-neutral-500 mb-12 text-sm uppercase tracking-[0.3em] font-light">Collaborate or commission a unique vision.</p>
-                </motion.div>
+                {/* Header with floating text effect */}
+                <div className="relative z-10 overflow-hidden mb-16">
+                    <motion.div 
+                        initial={{ opacity: 0, scale: 0.8 }} 
+                        whileInView={{ opacity: 1, scale: 1 }} 
+                        viewport={{ once: true }}
+                        transition={{ duration: 1, ease: "easeOut" }}
+                    >
+                        <p className="text-[10px] uppercase tracking-[1em] text-[#D4AF37] font-black mb-4 italic opacity-40">Inquire</p>
+                        <h2 className="text-7xl md:text-8xl font-['Mogra'] mb-4 tracking-tighter uppercase leading-none">Whispers</h2>
+                        <div className="w-12 h-[1px] bg-[#D4AF37]/30 mx-auto mb-6" />
+                        <p className="text-neutral-500 text-sm uppercase tracking-[0.3em] font-light max-w-sm mx-auto leading-relaxed">Collaborate or commission a unique vision.</p>
+                    </motion.div>
+                </div>
+
+                {/* Form Container with Glassmorphism */}
                 <motion.form 
-                    initial={{ opacity: 0, scale: 0.95 }} 
-                    whileInView={{ opacity: 1, scale: 1 }} 
+                    initial={{ opacity: 0, y: 50 }} 
+                    whileInView={{ opacity: 1, y: 0 }} 
                     viewport={{ once: true }} 
-                    transition={{ duration: 0.8 }} 
+                    transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }} 
                     onSubmit={handleContactSubmit} 
-                    className="space-y-8 text-left bg-[#1A1512] border border-white/5 p-8 md:p-12 rounded-[40px] shadow-2xl"
+                    className="group space-y-10 text-left bg-white/[0.02] backdrop-blur-xl border border-white/5 p-10 md:p-16 rounded-[50px] shadow-2xl hover:border-white/10 transition-all duration-700"
                 >
-                    <div className="space-y-6">
-                        <div className="space-y-2">
-                             <label className="text-[9px] uppercase tracking-widest text-[#D4AF37] ml-6 font-black">Full Name</label>
-                             <input type="text" placeholder="John Doe" required className="w-full bg-[#FCFAF2] border border-black/10 rounded-full px-8 py-4 focus:outline-none focus:border-[#D4AF37] transition-all text-sm text-[#1A1A1A] placeholder:text-[#1A1A1A]/50" value={contactForm.name} onChange={(e) => setContactForm({...contactForm, name: e.target.value})} />
-                        </div>
-                        <div className="space-y-2">
-                             <label className="text-[9px] uppercase tracking-widest text-[#D4AF37] ml-6 font-black">Email Address</label>
-                             <input type="email" placeholder="john@example.com" required className="w-full bg-[#FCFAF2] border border-black/10 rounded-full px-8 py-4 focus:outline-none focus:border-[#D4AF37] transition-all text-sm text-[#1A1A1A] placeholder:text-[#1A1A1A]/50" value={contactForm.email} onChange={(e) => setContactForm({...contactForm, email: e.target.value})} />
-                        </div>
-                        <div className="space-y-2">
-                             <label className="text-[9px] uppercase tracking-widest text-[#D4AF37] ml-6 font-black">Message</label>
-                              <textarea placeholder="Describe your vision..." required className="w-full bg-[#FCFAF2] border border-black/10 rounded-[30px] px-8 py-6 h-32 focus:outline-none focus:border-[#D4AF37] transition-all resize-none text-sm font-['Mogra'] text-[#1A1A1A] placeholder:text-[#1A1A1A]/50" value={contactForm.message} onChange={(e) => setContactForm({...contactForm, message: e.target.value})} />
-                        </div>
+                    <div className="space-y-8">
+                        {[
+                            { id: 'name', label: 'Identity', type: 'text', placeholder: 'The seeker\'s name...', value: contactForm.name },
+                            { id: 'email', label: 'Echo Path', type: 'email', placeholder: 'your@email.com', value: contactForm.email }
+                        ].map((field, idx) => (
+                            <motion.div 
+                                key={field.id}
+                                initial={{ opacity: 0, x: -20 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: 0.1 * idx }}
+                                className="space-y-3"
+                            >
+                                <label className="text-[10px] uppercase tracking-[0.4em] text-[#D4AF37]/60 ml-6 font-bold">{field.label}</label>
+                                <div className="relative group/input">
+                                    <input 
+                                        type={field.type} 
+                                        placeholder={field.placeholder} 
+                                        required 
+                                        className="w-full bg-white/[0.03] border border-white/5 rounded-full px-10 py-5 focus:outline-none focus:border-[#D4AF37]/30 focus:bg-white/[0.05] transition-all text-sm text-white placeholder:text-white/10 font-['Mogra']" 
+                                        value={field.value} 
+                                        onChange={(e) => setContactForm({...contactForm, [field.id]: e.target.value})} 
+                                    />
+                                    <div className="absolute inset-x-10 bottom-0 h-[1px] bg-gradient-to-r from-transparent via-[#D4AF37]/0 to-transparent group-focus-within/input:via-[#D4AF37]/20 transition-all duration-700" />
+                                </div>
+                            </motion.div>
+                        ))}
+                        
+                        <motion.div 
+                            initial={{ opacity: 0, x: -20 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.2 }}
+                            className="space-y-3"
+                        >
+                             <label className="text-[10px] uppercase tracking-[0.4em] text-[#D4AF37]/60 ml-6 font-bold">The Whisper</label>
+                              <div className="relative group/input">
+                                <textarea 
+                                    placeholder="Speak your vision into the void..." 
+                                    required 
+                                    className="w-full bg-white/[0.03] border border-white/5 rounded-[40px] px-10 py-8 h-40 focus:outline-none focus:border-[#D4AF37]/30 focus:bg-white/[0.05] transition-all resize-none text-sm font-['Mogra'] text-white placeholder:text-white/10" 
+                                    value={contactForm.message} 
+                                    onChange={(e) => setContactForm({...contactForm, message: e.target.value})} 
+                                />
+                                <div className="absolute inset-x-10 bottom-4 h-[1px] bg-gradient-to-r from-transparent via-[#D4AF37]/0 to-transparent group-focus-within/input:via-[#D4AF37]/20 transition-all duration-700" />
+                              </div>
+                        </motion.div>
                     </div>
-                    <motion.button whileHover={isMobile ? {} : { scale: 1.02 }} whileTap={{ scale: 0.98 }} type="submit" disabled={sending} className="w-full bg-white text-black py-5 rounded-full font-black uppercase tracking-[0.4em] text-[10px] flex items-center justify-center gap-4 hover:bg-neutral-200 transition-all shadow-xl shadow-white/5">
-                        {sending ? "Sending..." : <><Send size={14} /> Send Whisper</>}
+
+                    <motion.button 
+                        whileHover={{ scale: 1.01, backgroundColor: '#D4AF37', color: '#1A1512' }} 
+                        whileTap={{ scale: 0.98 }} 
+                        type="submit" 
+                        disabled={sending} 
+                        className="w-full bg-white/5 border border-white/10 py-6 rounded-full font-black uppercase tracking-[0.6em] text-[11px] flex items-center justify-center gap-4 transition-all duration-500 shadow-2xl relative overflow-hidden group/btn"
+                    >
+                        <div className="absolute inset-0 bg-[#D4AF37] translate-y-full group-hover/btn:translate-y-0 transition-transform duration-500 ease-[0.16, 1, 0.3, 1] z-0" />
+                        <span className="relative z-10 flex items-center gap-4">
+                            {sending ? "Transcribing..." : <><Send size={15} className="group-hover/btn:rotate-12 transition-transform" /> Send Whisper</>}
+                        </span>
                     </motion.button>
                 </motion.form>
             </section>
