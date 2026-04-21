@@ -14,7 +14,7 @@ import {
   Wind,
   Sparkles,
 } from "lucide-react";
-import { getArtworks, getProfile, addMessage } from "../api";
+import { getArtworks, getProfile, submitContact } from "../api";
 import PublicNavbar from "../components/PublicNavbar";
 import Loader from "../components/Loader";
 
@@ -111,7 +111,7 @@ const Home = () => {
     e.preventDefault();
     setSending(true);
     try {
-      await addMessage(contactForm);
+      await submitContact(contactForm);
       setSubmitStatus("Vision Received");
       setContactForm({ name: "", email: "", message: "" });
       setTimeout(() => setSubmitStatus(null), 5000);
