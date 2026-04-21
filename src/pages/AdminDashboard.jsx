@@ -977,7 +977,7 @@ const AdminDashboard = () => {
                               e.target.classList.remove("opacity-0", "scale-95", "blur-md");
                               e.target.classList.add("opacity-100", "scale-100", "blur-0");
                             }}
-                            className="w-full h-full object-cover transition-all duration-1000 ease-out opacity-0 scale-95 blur-md grayscale-0 md:grayscale md:group-hover:grayscale-0 group-hover:scale-110"
+                            className="w-full h-full object-cover transition-all duration-[0.7s] ease-out opacity-0 scale-95 blur-md grayscale-0 md:grayscale md:group-hover:grayscale-0 group-hover:scale-110"
                           />
                         <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black via-black/80 to-transparent pointer-events-none">
                           <p className="font-['Mogra'] text-[9px] text-[#D4AF37] truncate uppercase tracking-widest">
