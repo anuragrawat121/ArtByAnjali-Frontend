@@ -149,6 +149,26 @@ const Home = () => {
         return () => window.removeEventListener("popstate", handlePopState);
     }, [selectedArtwork, selectedCategory]);
 
+    // --- ROOM ENTRY NAVIGATION ---
+    useEffect(() => {
+        if (selectedCategory) {
+            const element = document.getElementById('gallery');
+            if (element) {
+                // Precise alignment for the room title
+                const offset = 80; // Account for fixed navbar
+                const bodyRect = document.body.getBoundingClientRect().top;
+                const elementRect = element.getBoundingClientRect().top;
+                const elementPosition = elementRect - bodyRect;
+                const offsetPosition = elementPosition - offset;
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        }
+    }, [selectedCategory]);
+
     // The Living Canvas: Background Cycling (10s rhythm)
     useEffect(() => {
         if (artworks.length <= 1) return;
