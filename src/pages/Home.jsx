@@ -1158,7 +1158,13 @@ const Home = () => {
       </AnimatePresence>
 
       {/* ARCHIVAL FOOTER */}
-      <footer className="relative z-10 py-20 border-t border-white/5 text-center mt-20">
+      <motion.footer
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1.2 }}
+        className="relative z-10 py-20 border-t border-white/5 text-center mt-20"
+      >
         <h2 className="text-2xl font-['Mogra'] text-[#D4AF37] tracking-[0.3em] mb-4">
           ArtByAnjali
         </h2>
@@ -1195,7 +1201,7 @@ const Home = () => {
             made by the code Magician ANU₹AG
           </a>
         </div>
-      </footer>
+      </motion.footer>
     </div>
   );
 };
