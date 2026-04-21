@@ -861,8 +861,9 @@ const AdminDashboard = () => {
                           <div className="flex-1 min-h-[200px] border-2 border-dashed border-white/5 rounded-[30px] flex items-center justify-center relative hover:border-white/10 transition-all overflow-hidden bg-white/5 group">
                             {artworkFile ? (
                               <motion.img
-                                initial={{ scale: 1.1, opacity: 0 }}
-                                animate={{ scale: 1, opacity: 1 }}
+                                initial={{ scale: 1.1, opacity: 0, filter: "blur(10px)" }}
+                                animate={{ scale: 1, opacity: 1, filter: "blur(0px)" }}
+                                transition={{ duration: 1 }}
                                 src={URL.createObjectURL(artworkFile)}
                                 className="absolute inset-0 w-full h-full object-cover"
                               />
@@ -973,8 +974,11 @@ const AdminDashboard = () => {
                           <img
                             src={art.imageUrl}
                             loading="lazy"
-                            onLoad={(e) => e.target.classList.remove("opacity-0")}
-                            className="w-full h-full object-cover transition-all duration-1000 opacity-0 grayscale-0 md:grayscale md:group-hover:grayscale-0 group-hover:scale-110"
+                            onLoad={(e) => {
+                              e.target.classList.remove("opacity-0", "scale-95", "blur-md");
+                              e.target.classList.add("opacity-100", "scale-100", "blur-0");
+                            }}
+                            className="w-full h-full object-cover transition-all duration-[1.5s] ease-out opacity-0 scale-95 blur-md grayscale-0 md:grayscale md:group-hover:grayscale-0 group-hover:scale-110"
                           />
                         <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black via-black/80 to-transparent pointer-events-none">
                           <p className="font-['Mogra'] text-[9px] text-[#D4AF37] truncate uppercase tracking-widest">
@@ -1226,18 +1230,16 @@ const AdminDashboard = () => {
                       >
                         {profileFile || profile.profileImageUrl ? (
                           <motion.img
-                            initial={{ scale: 1.2 }}
-                            animate={{ scale: 1 }}
+                            initial={{ scale: 1.2, opacity: 0, filter: "blur(10px)" }}
+                            animate={{ scale: 1, opacity: 1, filter: "blur(0px)" }}
+                            transition={{ duration: 1.5 }}
                             loading="lazy"
-                            onLoad={(e) =>
-                              e.target.classList.remove("opacity-0")
-                            }
                             src={
                               profileFile
                                 ? URL.createObjectURL(profileFile)
                                 : profile.profileImageUrl
                             }
-                            className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-1000"
+                            className="absolute inset-0 w-full h-full object-cover opacity-100 transition-all duration-1000"
                             style={{
                               objectPosition: profile.imagePosition || "center",
                             }}
