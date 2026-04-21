@@ -148,16 +148,17 @@ const Home = () => {
   // Grouping Logic for "Exhibition Rooms" (Memoized for Production)
   const folders = useMemo(() => {
     const groups = artworks.reduce((acc, art) => {
-      if (!acc[art.category]) {
-        acc[art.category] = {
-          name: art.category,
+      const catName = art.category?.trim() || "Uncategorized";
+      if (!acc[catName]) {
+        acc[catName] = {
+          name: catName,
           cover: art.imageUrl,
           count: 0,
           artworks: [],
         };
       }
-      acc[art.category].artworks.push(art);
-      acc[art.category].count += 1;
+      acc[catName].artworks.push(art);
+      acc[catName].count += 1;
       return acc;
     }, {});
     return Object.values(groups);
@@ -166,9 +167,14 @@ const Home = () => {
   const displayedArt = useMemo(
     () =>
       selectedCategory
-        ? artworks.filter((a) => a.category === selectedCategory)
+        ? artworks.filter((a) => a.category?.trim() === selectedCategory)
         : [],
     [artworks, selectedCategory],
+  );
+
+  const activeFolder = useMemo(() => 
+    folders.find(f => f.name === selectedCategory),
+    [folders, selectedCategory]
   );
 
   // PRE-SELECT HERO BACKGROUNDS: Only use first 5 high-res masterpieces to save bandwidth
@@ -604,9 +610,10 @@ const Home = () => {
                 >
                   <div className="relative aspect-[4/5] overflow-hidden bg-black/[0.1] shadow-2xl shimmer-container">
                     <img
-                      src={folder.cover}
+                      src={folder.cover || "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=2071&auto=format&fit=crop"}
                       loading="lazy"
                       onLoad={(e) => e.target.classList.remove("opacity-0")}
+                      onError={(e) => e.target.classList.remove("opacity-0")}
                       className="w-full h-full object-cover group-hover:scale-105 transition-all duration-1000 ease-out opacity-0"
                     />
                     <div className="absolute inset-0 bg-black/10 transition-all" />
@@ -654,16 +661,7 @@ const Home = () => {
                     />{" "}
                     Return to Collections
                   </button>
-                  <img
-                    src={folder.image}
-                    alt={folder.name}
-                    loading="lazy"
-                    onLoad={(e) => e.target.classList.remove("opacity-0", "blur-xl", "scale-110")}
-                    className={`w-full h-full object-cover transition-all duration-[2s] opacity-0 blur-xl scale-110 ${
-                      selectedCategory === folder.name ? "scale-110" : "md:group-hover:scale-110"
-                    }`}
-                  />
-                  <h2 className="text-6xl md:text-[8rem] font-['Mogra'] tracking-tighter uppercase leading-[0.8] text-[#D4AF37]">
+                  <h2 className="text-6xl md:text-[9rem] font-['Mogra'] tracking-tighter uppercase leading-[0.8] text-[#D4AF37] relative z-10 pt-4">
                     {selectedCategory}
                   </h2>
                 </motion.div>
@@ -718,6 +716,7 @@ const Home = () => {
                         alt={art.title}
                         loading="lazy"
                         onLoad={(e) => e.target.classList.remove("opacity-0", "blur-xl", "scale-110")}
+                        onError={(e) => e.target.classList.remove("opacity-0", "blur-xl", "scale-110")}
                         className="w-full h-full object-cover md:group-hover:scale-110 transition-all duration-[1.5s] ease-out opacity-0 blur-xl scale-110"
                       />
                     </div>

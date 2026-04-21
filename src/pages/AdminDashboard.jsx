@@ -406,6 +406,7 @@ const AdminDashboard = () => {
                src={artworks[bgIndex]?.imageUrl || "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=2071&auto=format&fit=crop"} 
                className="w-full h-full object-cover grayscale transition-opacity duration-1000"
                loading="lazy"
+               onError={(e) => e.target.src = "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=2071&auto=format&fit=crop"}
             />
           </motion.div>
         </AnimatePresence>
@@ -581,6 +582,7 @@ const AdminDashboard = () => {
                           src={art.imageUrl} 
                           loading="lazy"
                           onLoad={(e) => e.target.classList.remove('opacity-0', 'blur-xl', 'scale-110')}
+                          onError={(e) => e.target.classList.remove('opacity-0', 'blur-xl', 'scale-110')}
                           className="w-full h-full object-cover transition-all duration-1000 opacity-0 blur-xl scale-110 grayscale-0 md:grayscale md:group-hover:grayscale-0 group-hover:scale-110" 
                         />
                         <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black via-black/80 to-transparent pointer-events-none">
@@ -647,6 +649,7 @@ const AdminDashboard = () => {
                             animate={{ scale: 1 }} 
                             loading="lazy"
                             onLoad={(e) => e.target.classList.remove('opacity-0', 'blur-xl')}
+                            onError={(e) => e.target.classList.remove('opacity-0', 'blur-xl')}
                             src={profileFile ? URL.createObjectURL(profileFile) : profile.profileImageUrl} 
                             className="absolute inset-0 w-full h-full object-cover opacity-0 blur-xl transition-all duration-1000" 
                             style={{ objectPosition: profile.imagePosition || "center" }} 
