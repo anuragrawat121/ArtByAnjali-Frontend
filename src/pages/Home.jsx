@@ -130,6 +130,9 @@ const Home = () => {
         selectedCategory ? artworks.filter(a => a.category === selectedCategory) : []
     , [artworks, selectedCategory]);
 
+    // PRE-SELECT HERO BACKGROUNDS: Only use first 5 high-res masterpieces to save bandwidth
+    const heroArtworks = useMemo(() => artworks.slice(0, 5), [artworks]);
+
     // --- BROWSER BACK BUTTON INTEGRATION ---
     useEffect(() => {
         // When a modal or room is open, push a state
@@ -169,14 +172,14 @@ const Home = () => {
         }
     }, [selectedCategory]);
 
-    // The Living Canvas: Background Cycling (10s rhythm)
+    // The Living Canvas: Background Cycling (10s rhythm) - Limited to top 5 assets
     useEffect(() => {
-        if (artworks.length <= 1) return;
+        if (heroArtworks.length <= 1) return;
         const interval = setInterval(() => {
-            setBgIndex((prev) => (prev + 1) % artworks.length);
+            setBgIndex((prev) => (prev + 1) % heroArtworks.length);
         }, 10000);
         return () => clearInterval(interval);
-    }, [artworks]);
+    }, [heroArtworks]);
 
     const showNotify = (msg, type = "success") => {
         setStatus({ show: true, msg, type });
@@ -281,7 +284,7 @@ const Home = () => {
                         >
 
                                 <img 
-                                    src={artworks[bgIndex]?.imageUrl || ""} 
+                                    src={heroArtworks[bgIndex]?.imageUrl || ""} 
                                     alt="Background Art" 
                                     loading="lazy"
                                     onLoad={(e) => e.target.classList.remove('opacity-0')}
@@ -786,7 +789,9 @@ const Home = () => {
                             <div className="relative group pointer-events-auto flex items-center justify-center w-full">
                                 <img 
                                     src={selectedArtwork.imageUrl} 
-                                    className="max-w-full max-h-[60vh] md:max-h-[70vh] object-contain shadow-2xl scale-100 hover:scale-[1.01] transition-transform duration-700 cursor-zoom-out" 
+                                    loading="lazy"
+                                    onLoad={(e) => e.target.classList.remove('opacity-0')}
+                                    className="max-w-full max-h-[60vh] md:max-h-[70vh] object-contain shadow-2xl scale-100 hover:scale-[1.01] transition-transform duration-700 cursor-zoom-out opacity-0" 
                                     onClick={() => setSelectedArtwork(null)}
                                 />
                                 <div className="absolute inset-0 border border-white/10 pointer-events-none" />
