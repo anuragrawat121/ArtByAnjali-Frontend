@@ -654,6 +654,15 @@ const Home = () => {
                     />{" "}
                     Return to Collections
                   </button>
+                  <img
+                    src={folder.image}
+                    alt={folder.name}
+                    loading="lazy"
+                    onLoad={(e) => e.target.classList.remove("opacity-0", "blur-xl", "scale-110")}
+                    className={`w-full h-full object-cover transition-all duration-[2s] opacity-0 blur-xl scale-110 ${
+                      selectedCategory === folder.name ? "scale-110" : "md:group-hover:scale-110"
+                    }`}
+                  />
                   <h2 className="text-6xl md:text-[8rem] font-['Mogra'] tracking-tighter uppercase leading-[0.8] text-[#D4AF37]">
                     {selectedCategory}
                   </h2>
@@ -708,8 +717,8 @@ const Home = () => {
                         src={art.imageUrl}
                         alt={art.title}
                         loading="lazy"
-                        onLoad={(e) => e.target.classList.remove("opacity-0")}
-                        className="w-full h-full object-cover md:group-hover:scale-110 transition-all duration-1000 ease-out opacity-0"
+                        onLoad={(e) => e.target.classList.remove("opacity-0", "blur-xl", "scale-110")}
+                        className="w-full h-full object-cover md:group-hover:scale-110 transition-all duration-[1.5s] ease-out opacity-0 blur-xl scale-110"
                       />
                     </div>
                     <div className="px-4">
@@ -781,8 +790,8 @@ const Home = () => {
                   whileHover={isMobile ? {} : { scale: 1.05 }}
                   src={profile?.profileImageUrl || ""}
                   loading="lazy"
-                  onLoad={(e) => e.target.classList.remove("opacity-0")}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-all duration-[2s] ease-out opacity-0"
+                  onLoad={(e) => e.target.classList.remove("opacity-0", "blur-xl")}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-all duration-[2s] ease-out opacity-0 blur-xl"
                   style={{ objectPosition: profile?.imagePosition || "center" }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0f0f0f]/40 via-transparent to-transparent" />
@@ -1110,8 +1119,8 @@ const Home = () => {
                 <img
                   src={selectedArtwork.imageUrl}
                   loading="lazy"
-                  onLoad={(e) => e.target.classList.remove("opacity-0")}
-                  className="max-w-full max-h-[60vh] md:max-h-[70vh] object-contain shadow-2xl scale-100 hover:scale-[1.01] transition-transform duration-700 cursor-zoom-out opacity-0"
+                  onLoad={(e) => e.target.classList.remove("opacity-0", "blur-xl", "scale-110")}
+                  className="max-w-full max-h-[60vh] md:max-h-[70vh] object-contain shadow-2xl scale-110 opacity-0 blur-xl hover:scale-[1.01] transition-all duration-[1.5s] cursor-zoom-out"
                   onClick={() => setSelectedArtwork(null)}
                 />
                 <div className="absolute inset-0 border border-white/10 pointer-events-none" />
