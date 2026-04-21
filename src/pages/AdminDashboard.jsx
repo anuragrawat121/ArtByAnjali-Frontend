@@ -505,7 +505,20 @@ const AdminDashboard = () => {
                         </div>
                         <div className="flex flex-col gap-6">
                            <div className="flex-1 min-h-[200px] border-2 border-dashed border-white/5 rounded-[30px] flex items-center justify-center relative hover:border-white/10 transition-all overflow-hidden bg-white/5 group">
-                            {artworkFile ? <motion.img initial={{ scale: 1.1, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} src={URL.createObjectURL(artworkFile)} className="absolute inset-0 w-full h-full object-cover" /> : <div className="text-center opacity-20 group-hover:opacity-40 transition-opacity"><Upload size={24} className="mx-auto mb-2" /><p className="text-[10px] font-['Mogra'] tracking-widest uppercase">Canvas</p></div>}
+                            {artworkFile ? (
+                              <motion.img 
+                                initial={{ scale: 1.1, opacity: 0, filter: "blur(10px)" }} 
+                                animate={{ scale: 1, opacity: 1, filter: "blur(0px)" }} 
+                                transition={{ duration: 0.8 }}
+                                src={URL.createObjectURL(artworkFile)} 
+                                className="absolute inset-0 w-full h-full object-cover" 
+                              />
+                            ) : (
+                              <div className="text-center opacity-20 group-hover:opacity-40 transition-opacity">
+                                <Upload size={24} className="mx-auto mb-2" />
+                                <p className="text-[10px] font-['Mogra'] tracking-widest uppercase">Canvas</p>
+                              </div>
+                            )}
                             <input type="file" className="absolute inset-0 opacity-0 cursor-pointer" onChange={(e) => setArtworkFile(e.target.files[0])} />
                           </div>
                           <div className="relative"><span className="absolute left-8 top-1/2 -translate-y-1/2 text-[#D4AF37] font-bold">₹</span><input type="text" className="w-full bg-white/5 border border-white/10 rounded-full px-12 py-3.5 text-center font-bold text-white focus:outline-none transition-all" value={newArtwork.price} onChange={(e) => setNewArtwork({ ...newArtwork, price: e.target.value })} /></div>
@@ -532,17 +545,18 @@ const AdminDashboard = () => {
                     {artworks.map((art, idx) => (
                       <motion.div 
                         key={art._id}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.5, delay: (idx % 6) * 0.05 }}
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6, delay: (idx % 6) * 0.05 }}
                         className="relative aspect-[3/4] rounded-[30px] overflow-hidden border border-white/5 group cursor-pointer hover:border-white/20 transition-all shimmer-container"
                       >
                         
                         <img 
                           src={art.imageUrl} 
                           loading="lazy"
-                          onLoad={(e) => e.target.classList.remove('opacity-0')}
-                          className="w-full h-full object-cover transition-all duration-1000 opacity-0 grayscale-0 md:grayscale md:group-hover:grayscale-0 group-hover:scale-110" 
+                          onLoad={(e) => e.target.classList.remove('opacity-0', 'blur-xl', 'scale-110')}
+                          className="w-full h-full object-cover transition-all duration-1000 opacity-0 blur-xl scale-110 grayscale-0 md:grayscale md:group-hover:grayscale-0 group-hover:scale-110" 
                         />
                         <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black via-black/80 to-transparent pointer-events-none">
                           <p className="font-['Mogra'] text-[9px] text-[#D4AF37] truncate uppercase tracking-widest">{art.category}</p>
@@ -607,9 +621,9 @@ const AdminDashboard = () => {
                             initial={{ scale: 1.2 }} 
                             animate={{ scale: 1 }} 
                             loading="lazy"
-                            onLoad={(e) => e.target.classList.remove('opacity-0')}
+                            onLoad={(e) => e.target.classList.remove('opacity-0', 'blur-xl')}
                             src={profileFile ? URL.createObjectURL(profileFile) : profile.profileImageUrl} 
-                            className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-1000" 
+                            className="absolute inset-0 w-full h-full object-cover opacity-0 blur-xl transition-all duration-1000" 
                             style={{ objectPosition: profile.imagePosition || "center" }} 
                           />
                         ) : (
