@@ -3,7 +3,7 @@ import { Palette } from 'lucide-react';
 
 /**
  * ARIA NOIR LOADER
- * A high-end, cinematic prelude featuring the ArtByAnjali branding.
+ * A high-end, cinematic prelude featuring the ArtByAanjali branding.
  */
 const Loader = () => {
     return (
@@ -30,7 +30,7 @@ const Loader = () => {
                     <Palette size={64} strokeWidth={1} />
                 </motion.div>
 
-                {/* THE BRANDING: ARTBYANJALI */}
+                {/* THE BRANDING: ARTBYAANJALI */}
                 <div className="flex overflow-hidden pb-4">
                     {"ArtBy".split("").map((letter, idx) => (
                         <motion.span
@@ -44,7 +44,7 @@ const Loader = () => {
                             {letter}
                         </motion.span>
                     ))}
-                    {"Anjali".split("").map((letter, idx) => (
+                    {"Aanjali".split("").map((letter, idx) => (
                         <motion.span
                             key={`anjali-${idx}`}
                             initial={{ y: 200, opacity: 0 }}

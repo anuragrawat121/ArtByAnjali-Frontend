@@ -8,13 +8,59 @@ import {
 } from "lucide-react";
 import CustomCursor from "../components/CustomCursor";
 import {
-  getArtworks, getProfile, getMessages, addArtwork, updateProfile, deleteArtwork,
+  getArtworks, getProfile, getMessages, addArtwork, updateProfile, deleteArtwork, updateArtwork
 } from "../api";
 import Loader from "../components/Loader";
 
+/** --- EDIT ARTWORK MODAL --- **/
+const EditArtworkModal = ({ artwork, onSave, onCancel, loading }) => {
+  const [formData, setFormData] = useState({ ...artwork });
+  
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[11000] flex items-center justify-center p-6"
+    >
+      <div className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={onCancel} />
+      <motion.div
+        initial={{ scale: 0.9, opacity: 0, y: 20 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0.9, opacity: 0, y: 20 }}
+        className="relative bg-[#231C18] border border-white/10 p-8 md:p-10 rounded-[40px] max-w-lg w-full shadow-2xl overflow-y-auto no-scrollbar max-h-[90vh]"
+      >
+        <h2 className="text-2xl font-['Mogra'] text-[#D4AF37] mb-6">Refine Masterpiece</h2>
+        <div className="space-y-6">
+          <div className="space-y-1">
+            <label className="text-[9px] uppercase font-bold tracking-widest text-[#D4AF37]/60 ml-4">Title</label>
+            <input type="text" className="w-full bg-white/5 border border-white/10 rounded-full px-6 py-3.5 focus:border-[#D4AF37]/30 focus:outline-none text-sm transition-all" value={formData.title} onChange={(e) => setFormData({ ...formData, title: e.target.value })} />
+          </div>
+          <div className="space-y-1">
+             <label className="text-[9px] uppercase font-bold tracking-widest text-[#D4AF37]/60 ml-4">Category</label>
+             <input type="text" className="w-full bg-white/5 border border-white/10 rounded-full px-6 py-3.5 focus:border-[#D4AF37]/30 focus:outline-none text-sm transition-all" value={formData.category} onChange={(e) => setFormData({ ...formData, category: e.target.value })} />
+          </div>
+          <div className="space-y-1">
+            <label className="text-[9px] uppercase font-bold tracking-widest text-[#D4AF37]/60 ml-4">Description</label>
+            <textarea className="w-full bg-white/5 border border-white/10 rounded-[24px] px-6 py-4 h-32 focus:border-[#D4AF37]/30 focus:outline-none resize-none font-['Mogra'] text-sm text-neutral-300 transition-all" value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} />
+          </div>
+          <div className="space-y-1">
+            <label className="text-[9px] uppercase font-bold tracking-widest text-[#D4AF37]/60 ml-4">Price (₹)</label>
+            <input type="text" className="w-full bg-white/5 border border-white/10 rounded-full px-6 py-3.5 focus:border-[#D4AF37]/30 focus:outline-none text-sm transition-all" value={formData.price} onChange={(e) => setFormData({ ...formData, price: e.target.value })} />
+          </div>
+        </div>
+        <div className="flex gap-4 mt-10">
+           <button onClick={() => onSave(formData)} disabled={loading} className="flex-1 bg-[#D4AF37] text-[#1A1512] font-black py-4 rounded-full text-[10px] uppercase tracking-widest hover:bg-white transition-all">{loading ? "Saving..." : "Save Changes"}</button>
+           <button onClick={onCancel} className="flex-1 bg-white/5 text-neutral-400 font-bold py-4 rounded-full text-[10px] uppercase tracking-widest hover:bg-white/10 transition-all">Cancel</button>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+};
+
 /* 
  * NOIR ATELIER COMPONENT 
- * A high-end gallery-themed admin dashboard for ArtByAnjali.
+ * A high-end gallery-themed admin dashboard for ArtByAanjali.
  * Features: Cinematic entry, custom cursor, touch-ready curation, and glassmorphic UI.
  */
 
@@ -70,6 +116,7 @@ const AdminDashboard = () => {
   // Feedback Systems
   const [status, setStatus] = useState({ show: false, msg: "", type: "success" });
   const [deleteConfirm, setDeleteConfirm] = useState({ show: false, id: null });
+  const [editArtworkData, setEditArtworkData] = useState(null);
   const [bgIndex, setBgIndex] = useState(0);
   const [showKey, setShowKey] = useState(false);
   
@@ -147,7 +194,6 @@ const AdminDashboard = () => {
   // Persistent Session Recovery
   useEffect(() => {
     const checkAuth = async () => {
-      const minWait = new Promise(resolve => setTimeout(resolve, 3000));
       const savedKey = localStorage.getItem("admin_key");
       if (savedKey) {
         try {
@@ -158,7 +204,6 @@ const AdminDashboard = () => {
           await fetchAllData(cleanKey);
         } catch (e) { localStorage.removeItem("admin_key"); }
       }
-      await minWait;
       setPageLoading(false);
     };
     checkAuth();
@@ -214,6 +259,25 @@ const AdminDashboard = () => {
       setArtworks(artworks.filter((a) => a._id !== id));
       showNotify("Artwork Removed");
     } catch (e) { showNotify("Deletion Failed", "error"); } finally { setDeleteConfirm({ show: false, id: null }); }
+  };
+
+  // Update Masterpiece Details
+  const handleEditArtwork = async (updatedData) => {
+    setLoginLoading(true);
+    try {
+        const formData = new FormData();
+        formData.append("title", updatedData.title);
+        formData.append("category", updatedData.category);
+        formData.append("description", updatedData.description);
+        formData.append("price", updatedData.price);
+        
+        await updateArtwork(updatedData._id, formData, secretKey);
+        setArtworks(artworks.map(a => a._id === updatedData._id ? { ...a, ...updatedData } : a));
+        showNotify("Masterpiece Refined");
+        setEditArtworkData(null);
+    } catch (err) {
+        showNotify("Update Failed", "error");
+    } finally { setLoginLoading(false); }
   };
 
   // Synchronize Creator Identity
@@ -278,33 +342,35 @@ const AdminDashboard = () => {
       <AnimatePresence>
         {status.show && <StatusNotification msg={status.msg} type={status.type} clear={() => setStatus((p) => ({ ...p, show: false }))} />}
         {deleteConfirm.show && <ConfirmModal onConfirm={handleDeleteArtwork} onCancel={() => setDeleteConfirm({ show: false, id: null })} />}
+        {editArtworkData && <EditArtworkModal artwork={editArtworkData} onSave={handleEditArtwork} onCancel={() => setEditArtworkData(null)} loading={loginLoading} />}
       </AnimatePresence>
 
-      {/* CINEMATIC BACKGROUND */}
+      {/* CINEMATIC BACKGROUND - Simplified for smooth transition */}
       <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-        <AnimatePresence>
+        <AnimatePresence mode="wait">
           <motion.div
             key={bgIndex}
-            initial={{ scale: 1.2, opacity: 0 }}
-            animate={{ scale: 1, opacity: 0.5 }}
-            exit={{ opacity: 0, scale: 1.1 }}
-            transition={{ duration: 4, ease: "easeInOut" }}
-            className="absolute inset-0 z-0 w-full h-full"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.35 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 3, ease: "linear" }}
+            className="absolute inset-0 w-full h-full bg-black"
           >
             <img 
                src={artworks[bgIndex]?.imageUrl || "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=2071&auto=format&fit=crop"} 
-               className="w-full h-full object-cover grayscale"
+               className="w-full h-full object-cover grayscale transition-opacity duration-1000"
+               loading="lazy"
             />
           </motion.div>
         </AnimatePresence>
-        <div className="absolute inset-0 bg-[#231C18]/60 backdrop-blur-[1px]" />
+        <div className="absolute inset-0 bg-[#231C18]/80" />
       </div>
 
       {/* GATEKEEPER VIEW */}
       {!isAuthorized ? (
         <div className="min-h-screen flex items-center justify-center p-6 relative z-10">
           <motion.div initial={{ opacity: 0, y: 40, scale: 0.9 }} animate={{ opacity: 1, y: 0, scale: 1 }} className="bg-white/[0.03] border border-white/10 p-8 rounded-[30px] backdrop-blur-xl w-full max-w-sm text-center shadow-2xl">
-            <h1 className="text-3xl font-['Mogra'] text-white mb-6">ArtByAnjali</h1>
+            <h1 className="text-3xl font-['Mogra'] text-white mb-6">ArtByAanjali</h1>
             <form onSubmit={handleLoginSubmit} className="space-y-4">
               <div className="relative">
                 <input 
@@ -341,7 +407,7 @@ const AdminDashboard = () => {
           <header className="relative z-50 border-b border-white/5 bg-[#0f0f0f]/40 backdrop-blur-xl px-4 md:px-12 py-6 md:py-10 flex flex-col lg:flex-row justify-between items-center gap-8">
             <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} className="flex items-center gap-4">
               <div className="w-12 h-12 bg-white text-black rounded-xl flex items-center justify-center shadow-2xl shadow-white/5"><Brush size={24} /></div>
-              <h1 className="text-2xl md:text-3xl font-['Mogra'] text-white tracking-tighter">ArtByAnjali</h1>
+              <h1 className="text-2xl md:text-3xl font-['Mogra'] text-white tracking-tighter">ArtByAanjali</h1>
             </motion.div>
             
             <nav className="flex bg-white/5 p-2 rounded-full border border-white/10 backdrop-blur-3xl">
@@ -380,7 +446,7 @@ const AdminDashboard = () => {
             </div>
           </header>
 
-          <main className="relative z-10 flex-1 p-6 md:p-10 max-w-[1300px] mx-auto w-full">
+          <main className="relative z-10 flex-1 p-6 md:p-10 max-w-[1300px] mx-auto w-full" style={{ willChange: "transform" }}>
             <AnimatePresence mode="wait">
               
               {/** --- EXHIBITS TAB --- **/}
@@ -393,7 +459,7 @@ const AdminDashboard = () => {
                   
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
                     {/* UPLOAD FORM */}
-                    <motion.form variants={sectionVariants} onSubmit={handleArtworkUpload} className="lg:col-span-8 bg-white/[0.01] p-8 md:p-10 rounded-[30px] border border-white/5 backdrop-blur-2xl">
+                    <motion.form variants={sectionVariants} onSubmit={handleArtworkUpload} className="lg:col-span-8 bg-[#1A1512] p-8 md:p-10 rounded-[30px] border border-white/5">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                         <div className="space-y-6">
                            <div className="space-y-1"><label className="text-[9px] uppercase font-bold tracking-widest text-[#D4AF37] ml-4 opacity-70">Title</label><input type="text" className="w-full bg-white/5 border border-white/10 rounded-full px-6 py-3.5 focus:border-[#D4AF37]/30 focus:outline-none text-sm transition-all" value={newArtwork.title} onChange={(e) => setNewArtwork({ ...newArtwork, title: e.target.value })} /></div>
@@ -421,7 +487,7 @@ const AdminDashboard = () => {
                     
                     {/* STUDIO STATS */}
                     <div className="lg:col-span-4 flex lg:flex-col gap-6">
-                      <motion.div variants={sectionVariants} className="flex-1 bg-white/[0.01] p-8 rounded-[40px] border border-white/5 text-center flex flex-col items-center justify-center backdrop-blur-xl">
+                      <motion.div variants={sectionVariants} className="flex-1 bg-[#1A1512] p-8 rounded-[40px] border border-white/5 text-center flex flex-col items-center justify-center">
                         <motion.h4 initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.5 }} className="text-5xl font-['Mogra'] text-[#D4AF37] leading-none">{artworks.length}</motion.h4>
                         <p className="text-[10px] uppercase tracking-widest text-[#E8D5C4] mt-1 font-bold">Exhibits</p>
                       </motion.div>
@@ -433,15 +499,25 @@ const AdminDashboard = () => {
                   </div>
                   
                   {/* LIVE GALLERY GRID */}
-                  <motion.div variants={containerVariants} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-5 mt-16 pb-20">
-                    {artworks.map((art) => (
-                      <motion.div variants={itemVariants} key={art._id} className="relative aspect-[3/4] rounded-[30px] overflow-hidden border border-white/5 bg-white/[0.01] group cursor-pointer hover:border-white/20 transition-all">
+                  <motion.div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-5 mt-16 pb-20">
+                    {artworks.map((art, idx) => (
+                      <motion.div 
+                        key={art._id}
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, margin: "-50px" }}
+                        transition={{ duration: 0.8, ease: "easeOut", delay: (idx % 6) * 0.05 }}
+                        className="relative aspect-[3/4] rounded-[30px] overflow-hidden border border-white/5 bg-white/[0.01] group cursor-pointer hover:border-white/20 transition-all"
+                      >
                         <img src={art.imageUrl} className="w-full h-full object-cover transition-all duration-700 grayscale-0 md:grayscale md:group-hover:grayscale-0 group-hover:scale-110" />
                         <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black via-black/80 to-transparent">
                           <p className="font-['Mogra'] text-[9px] text-[#D4AF37] truncate uppercase tracking-widest">{art.category}</p>
                           <h4 className="font-['Mogra'] text-[11px] text-[#E8D5C4] truncate uppercase tracking-tighter">{art.title}</h4>
                         </div>
-                        <button onClick={(e) => { e.stopPropagation(); setDeleteConfirm({ show: true, id: art._id }); }} className="absolute top-4 right-4 w-10 h-10 bg-black/60 backdrop-blur-md border border-white/10 rounded-full flex items-center justify-center text-white/40 hover:text-white hover:bg-red-500/20 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all cursor-pointer z-20"><Trash2 size={16} /></button>
+                        <div className="absolute top-4 right-4 flex gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all z-20">
+                            <button onClick={(e) => { e.stopPropagation(); setEditArtworkData(art); }} className="w-9 h-9 bg-black/60 backdrop-blur-md border border-white/10 rounded-full flex items-center justify-center text-white/40 hover:text-[#D4AF37] hover:bg-white/5 transition-all"><PlusCircle size={14} /></button>
+                            <button onClick={(e) => { e.stopPropagation(); setDeleteConfirm({ show: true, id: art._id }); }} className="w-9 h-9 bg-black/60 backdrop-blur-md border border-white/10 rounded-full flex items-center justify-center text-white/40 hover:text-red-400 hover:bg-red-500/20 transition-all"><Trash2 size={14} /></button>
+                        </div>
                       </motion.div>
                     ))}
                   </motion.div>
@@ -452,7 +528,7 @@ const AdminDashboard = () => {
               {activeTab === "profile" && (
                 <motion.div key="profile" variants={containerVariants} initial="hidden" animate="show" exit="exit" className="max-w-4xl mx-auto">
                   <motion.div variants={itemVariants} className="mb-10 text-center"><h1 className="text-3xl font-['Mogra'] mb-1">Atelier Identity</h1><p className="text-neutral-600 text-[9px] uppercase tracking-[0.5em]">The soul behind user</p></motion.div>
-                  <motion.form variants={sectionVariants} onSubmit={handleProfileUpdate} className="flex flex-col-reverse md:grid md:grid-cols-2 gap-10 bg-white/[0.01] p-8 md:p-10 rounded-[40px] border border-white/5 backdrop-blur-2xl">
+                  <motion.form variants={sectionVariants} onSubmit={handleProfileUpdate} className="flex flex-col-reverse md:grid md:grid-cols-2 gap-10 bg-[#1A1512] p-8 md:p-10 rounded-[40px] border border-white/5">
                     <div className="space-y-6">
                       <div className="space-y-2">
                         <label className="text-[9px] uppercase tracking-widest text-[#D4AF37] ml-4 font-bold opacity-70">Expertise Palette</label>
@@ -525,7 +601,7 @@ const AdminDashboard = () => {
                   </motion.div>
                   <div className="space-y-6">
                     {messages.length === 0 ? <motion.div variants={itemVariants} className="p-20 text-center text-neutral-800 border-2 border-dashed border-white/5 rounded-[40px]"><p className="text-[10px] uppercase tracking-widest">Studio is silent.</p></motion.div> : messages.map((m) => (
-                      <motion.div variants={itemVariants} key={m._id} className="p-8 bg-white/[0.01] border border-white/5 rounded-[40px] group relative overflow-hidden backdrop-blur-sm">
+                      <motion.div variants={itemVariants} key={m._id} className="p-8 bg-[#1A1512] border border-white/5 rounded-[40px] group relative overflow-hidden">
                         {!readMessages.has(m._id) && (
                           <div className="absolute top-0 right-0 w-32 h-32 bg-white/[0.02] flex items-center justify-center rotate-45 translate-x-16 -translate-y-16 pointer-events-none">
                              <span className="text-[7px] font-black uppercase text-white/20 tracking-tighter -rotate-45 mt-16">New Echo</span>
@@ -543,7 +619,7 @@ const AdminDashboard = () => {
           
           {/* STUDIO FOOTER */}
           <footer className="relative z-50 py-12 text-center border-t border-white/5 mt-20">
-            <h2 className="text-lg font-['Mogra'] text-[#D4AF37] tracking-[0.2em] uppercase">ArtByAnjali</h2>
+            <h2 className="text-lg font-['Mogra'] text-[#D4AF37] tracking-[0.2em] uppercase">ArtByAanjali</h2>
             <p className="text-[8px] uppercase tracking-[0.4em] mt-2 text-white/20">Noir Atelier Console</p>
             <div className="mt-8 pt-8 border-t border-white/5 inline-block px-10">
               <a href="https://instagram.com/RWT._.ANURAG" target="_blank" rel="noreferrer" className="text-[7px] uppercase tracking-[0.4em] text-[#D4AF37]/60 hover:text-[#D4AF37] transition-all font-normal">made by the code Magician ANU₹AG</a>

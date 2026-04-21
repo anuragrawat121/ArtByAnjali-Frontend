@@ -33,4 +33,9 @@ export const getMessages = (key) => apiClient.get(`/contact?key=${key}`);
 // Delete Artwork
 export const deleteArtwork = (id, key) => apiClient.delete(`/artworks/${id}?key=${key}`);
 
+// Update Artwork
+export const updateArtwork = (id, formData, key) => apiClient.put(`/artworks/${id}?key=${key}`, formData, {
+    headers: { 'Content-Type': 'multipart/form-data' }
+});
+
 export default apiClient;

@@ -61,16 +61,32 @@ const Home = () => {
         return () => window.removeEventListener('resize', checkMobile);
     }, []);
 
-    // Initial Studio Sync
+    // Initial Studio Sync with Cold-Start Recovery
     useEffect(() => {
         const startTime = Date.now();
-        const fetchData = async () => {
+        const fetchData = async (retries = 1) => {
             try {
-                const [artRes, profRes] = await Promise.all([getArtworks(), getProfile()]);
-                setArtworks(artRes.data?.data?.artworks || []);
-                setProfile(profRes.data?.data || {});
+                const [artRes, profRes] = await Promise.all([
+                    getArtworks(),
+                    getProfile()
+                ]);
+                
+                const arts = artRes.data?.data?.artworks || [];
+                const prof = profRes.data?.data || {};
+                
+                // If we got nothing, maybe server is still waking up
+                if (arts.length === 0 && retries > 0) {
+                    await new Promise(r => setTimeout(r, 1500));
+                    return fetchData(retries - 1);
+                }
+
+                setArtworks(arts);
+                setProfile(prof);
             } catch (err) {
-                // Production-silent sync failure
+                if (retries > 0) {
+                    await new Promise(r => setTimeout(r, 1500));
+                    return fetchData(retries - 1);
+                }
             } finally {
                 const endTime = Date.now();
                 const elapsed = endTime - startTime;
@@ -181,15 +197,13 @@ const Home = () => {
                 </svg>
             </div>
 
-            {/* CURSOR AMBIENT LIGHT */}
-            <motion.div 
-                className="fixed w-[750px] h-[750px] rounded-full pointer-events-none z-0 opacity-20 bg-[radial-gradient(circle,rgba(212,175,55,0.2)_0%,transparent_70%)]"
-                style={{ willChange: "transform" }}
-                animate={{
-                    x: mousePos.x - 300,
-                    y: mousePos.y - 300
+            {/* CURSOR AMBIENT LIGHT - Optimized for performance */}
+            <div 
+                className="fixed w-[600px] h-[600px] rounded-full pointer-events-none z-0 opacity-10 bg-[radial-gradient(circle,rgba(212,175,55,0.15)_0%,transparent_70%)] transition-transform duration-300 ease-out"
+                style={{ 
+                    willChange: "transform",
+                    transform: `translate(${mousePos.x - 300}px, ${mousePos.y - 300}px)`
                 }}
-                transition={{ type: "tween", ease: "backOut", duration: 1.5 }} // Slightly faster for responsiveness
             />
 
             <AnimatePresence>
@@ -212,7 +226,7 @@ const Home = () => {
                         >
 
                                 <img 
-                                    src={artworks[bgIndex]?.imageUrl || "https://images.unsplash.com/photo-1547826039-bfc35e0f1ea8?q=80&w=1972&auto=format&fit=crop"} 
+                                    src={artworks[bgIndex]?.imageUrl || ""} 
                                     alt="Background Art" 
                                     className="w-full h-full object-cover md:scale-105"
                                 />
@@ -224,7 +238,7 @@ const Home = () => {
                 <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.5 }} className="relative z-10 text-center px-6">
                     <div className="relative inline-block">
                         <h1 className="relative z-10 flex flex-wrap justify-center items-center text-6xl md:text-[9rem] font-['Mogra'] tracking-tighter leading-none">
-                            {(profile?.fullName || "ArtByAnjali").split(" ").map((part, pIdx) => (
+                            {(profile?.fullName || "ArtByAanjali").split(" ").map((part, pIdx) => (
                                 <span key={pIdx} className="flex">
                                     {part.split("").map((char, cIdx) => (
                                         <motion.span
@@ -255,15 +269,20 @@ const Home = () => {
                         </h1>
                     </div>
 
-                    {/* TAGLINE BELOW NAME */}
-                    <motion.div 
-                        initial={{ opacity: 0 }} 
-                        animate={{ opacity: 0.4 }} 
-                        transition={{ delay: 2, duration: 1 }}
-                        className="mt-6 mb-12"
-                    >
-                        <p className="text-[12px] uppercase tracking-[0.4em] font-normal text-[#D4AF37]">Where Colors Tell Stories</p>
-                    </motion.div>
+                    <div className="mt-8 flex flex-wrap justify-center items-center gap-4">
+                        {profile?.expertise?.map((skill, i) => (
+                            <motion.span 
+                                key={skill}
+                                initial={{ opacity: 0, scale: 0.9 }}
+                                whileInView={{ opacity: 1, scale: 1 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: 0.1 * i }}
+                                className="px-6 py-2 bg-white/5 border border-white/10 rounded-full text-[10px] md:text-[11px] uppercase tracking-widest text-[#E8D5C4]/60 whitespace-nowrap"
+                            >
+                                {skill}
+                            </motion.span>
+                        ))}
+                    </div>
 
                     <div className="max-w-xl mx-auto h-[1px] bg-black/10 mb-12 relative overflow-hidden">
                         <motion.div initial={{ width: 0 }} animate={{ width: "100%" }} transition={{ duration: 2, delay: 1.5 }} className="absolute inset-0 bg-gradient-to-r from-transparent via-black/20 to-transparent" />
@@ -290,11 +309,10 @@ const Home = () => {
                         The Masterpieces
                     </h2>
                     
-                    {/* ATELIER PILL TOGGLE */}
-                    <div className="flex bg-white/5 p-1.5 rounded-full border border-white/10 backdrop-blur-lg mb-4 overflow-x-auto no-scrollbar max-w-full">
+                    <div className="flex bg-[#1A1A1A] p-1.5 rounded-full border border-white/10 mb-4 overflow-x-auto no-scrollbar max-w-full">
                         <button 
                             onClick={() => setSelectedCategory(null)}
-                            className={`relative px-8 py-3 rounded-full text-[9px] uppercase tracking-widest transition-all ${!selectedCategory ? "text-white font-black" : "text-neutral-500 hover:text-black"}`}
+                            className={`relative px-8 py-3 rounded-full text-[11px] uppercase tracking-widest transition-all ${!selectedCategory ? "text-white font-black" : "text-neutral-500 hover:text-black"}`}
                         >
                             {!selectedCategory && <motion.div layoutId="room-bg" className="absolute inset-0 bg-[#1A1A1A] rounded-full z-0" />}
                             <span className="relative z-10 flex items-center gap-2"><Palette size={12} /> All Collections</span>
@@ -303,7 +321,7 @@ const Home = () => {
                             <button 
                                 key={folder.name}
                                 onClick={() => setSelectedCategory(folder.name)}
-                                className={`relative px-8 py-3 rounded-full text-[9px] uppercase tracking-widest transition-all whitespace-nowrap ${selectedCategory === folder.name ? "text-black font-black" : "text-neutral-500 hover:text-white"}`}
+                                className={`relative px-8 py-3 rounded-full text-[11px] uppercase tracking-widest transition-all whitespace-nowrap ${selectedCategory === folder.name ? "text-black font-black" : "text-neutral-500 hover:text-white"}`}
                             >
                                 {selectedCategory === folder.name && <motion.div layoutId="room-bg" className="absolute inset-0 bg-white rounded-full z-0" />}
                                 <span className="relative z-10">{folder.name}</span>
@@ -314,9 +332,18 @@ const Home = () => {
                 
                 <AnimatePresence mode="wait">
                     {!selectedCategory ? (
-                        <motion.div key="folders" variants={containerVariants} initial="hidden" animate="show" exit={{ opacity: 0, scale: 0.95 }} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-14">
-                            {folders.map((folder) => (
-                                <motion.div key={folder.name} variants={itemVariants} whileHover={isMobile ? {} : { y: -10 }} onClick={() => setSelectedCategory(folder.name)} className="group cursor-none">
+                        <motion.div key="folders" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-14">
+                            {folders.map((folder, idx) => (
+                                <motion.div 
+                                    key={folder.name} 
+                                    initial={{ opacity: 0, x: idx % 2 === 0 ? -50 : 50 }}
+                                    whileInView={{ opacity: 1, x: 0 }}
+                                    viewport={{ once: true, margin: "-50px" }}
+                                    transition={{ duration: 1, ease: [0.33, 1, 0.68, 1], delay: idx * 0.1 }}
+                                    whileHover={isMobile ? {} : { y: -10 }} 
+                                    onClick={() => setSelectedCategory(folder.name)} 
+                                    className="group cursor-none"
+                                >
                                     <div className="relative aspect-[3/4] overflow-hidden bg-black/[0.02] rounded-[30px] mb-8 border border-black/5 shadow-2xl">
                                         <img src={folder.cover} className="w-full h-full object-cover group-hover:scale-105 transition-all duration-1000 ease-out" />
                                         <div className="absolute inset-0 bg-black/10 transition-all" />
@@ -366,11 +393,14 @@ const Home = () => {
                                 </motion.div>
                             </div>
 
-                            <motion.div variants={containerVariants} initial="hidden" animate="show" exit={{ opacity: 0, x: -20 }} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-14">
-                            {displayedArt.map((art) => (
+                            <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-14">
+                            {displayedArt.map((art, idx) => (
                                 <motion.div 
                                     key={art._id} 
-                                    variants={itemVariants} 
+                                    initial={{ opacity: 0, y: 40 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true, margin: "-50px" }}
+                                    transition={{ duration: 0.8, ease: [0.33, 1, 0.68, 1], delay: idx * 0.05 }}
                                     onClick={() => setSelectedArtwork(art)}
                                     className="group cursor-none active:scale-95 transition-transform"
                                 >
@@ -408,35 +438,39 @@ const Home = () => {
 
             {/* --- ABOUT: THE ATELIER (The Museum Installation) --- */}
             <section id="about" className="pt-24 md:pt-32 pb-12 relative overflow-hidden text-white/90">
-                {/* ATMOSPHERIC SPECTERS (PARALLAX DEPTH) */}
-                <motion.div 
-                    initial={{ opacity: 0, x: -50 }}
-                    whileInView={{ 
-                        opacity: [0.02, 0.05, 0.02],
-                        x: [-20, 30, -20]
-                    }}
-                    transition={{
-                        opacity: { repeat: Infinity, duration: 10, ease: "easeInOut" },
-                        x: { repeat: Infinity, duration: 15, ease: "easeInOut" }
-                    }}
-                    className="absolute top-10 left-10 text-[10rem] md:text-[20rem] font-['Mogra'] uppercase tracking-tighter leading-none select-none pointer-events-none italic whitespace-nowrap"
-                >
-                    A for Art
-                </motion.div>
-                <motion.div 
-                    initial={{ opacity: 0, x: 50 }}
-                    whileInView={{ 
-                        opacity: [0.02, 0.04, 0.02],
-                        x: [20, -40, 20]
-                    }}
-                    transition={{
-                        opacity: { repeat: Infinity, duration: 12, ease: "easeInOut" },
-                        x: { repeat: Infinity, duration: 18, ease: "easeInOut" }
-                    }}
-                    className="absolute bottom-20 right-10 text-[10rem] md:text-[20rem] font-['Mogra'] uppercase tracking-tighter leading-none select-none pointer-events-none whitespace-nowrap"
-                >
-                    B for Brush
-                </motion.div>
+                {/* ATMOSPHERIC SPECTERS (PARALLAX DEPTH) - Hidden on mobile for performance */}
+                {!isMobile && (
+                    <>
+                        <motion.div 
+                            initial={{ opacity: 0, x: -50 }}
+                            whileInView={{ 
+                                opacity: [0.02, 0.05, 0.02],
+                                x: [-20, 30, -20]
+                            }}
+                            transition={{
+                                opacity: { repeat: Infinity, duration: 10, ease: "easeInOut" },
+                                x: { repeat: Infinity, duration: 15, ease: "easeInOut" }
+                            }}
+                            className="absolute top-10 left-10 text-[10rem] md:text-[20rem] font-['Mogra'] uppercase tracking-tighter leading-none select-none pointer-events-none italic whitespace-nowrap"
+                        >
+                            A for Art
+                        </motion.div>
+                        <motion.div 
+                            initial={{ opacity: 0, x: 50 }}
+                            whileInView={{ 
+                                opacity: [0.02, 0.04, 0.02],
+                                x: [20, -40, 20]
+                            }}
+                            transition={{
+                                opacity: { repeat: Infinity, duration: 12, ease: "easeInOut" },
+                                x: { repeat: Infinity, duration: 18, ease: "easeInOut" }
+                            }}
+                            className="absolute bottom-20 right-10 text-[10rem] md:text-[20rem] font-['Mogra'] uppercase tracking-tighter leading-none select-none pointer-events-none whitespace-nowrap"
+                        >
+                            B for Brush
+                        </motion.div>
+                    </>
+                )}
                 <div className="max-w-6xl mx-auto px-10 relative z-10">
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
                         
@@ -451,7 +485,7 @@ const Home = () => {
                             <div className="relative w-56 h-56 md:w-[360px] md:h-[360px] rounded-full overflow-hidden border border-black/10 shadow-2xl bg-black/5 group">
                                 <motion.img 
                                     whileHover={isMobile ? {} : { scale: 1.05 }}
-                                    src={profile?.profileImageUrl || "https://images.unsplash.com/photo-1544005313-94ddf0286df2"} 
+                                    src={profile?.profileImageUrl || ""} 
                                     className="w-full h-full object-cover group-hover:scale-105 transition-all duration-[2s] ease-out"
                                     style={{ objectPosition: profile?.imagePosition || "center" }}
                                 />
@@ -495,7 +529,7 @@ const Home = () => {
                                     <p className="text-[9px] uppercase tracking-widest text-white/20">Location</p>
                                     <div className="flex items-center justify-center lg:justify-start gap-3 text-white/60">
                                         <MapPin size={16} className="text-white/20" />
-                                        <span className="text-xs font-bold tracking-[0.2em] uppercase">{profile?.location || "India"}</span>
+                                        <span className="text-xs font-bold tracking-[0.2em] uppercase">{profile?.location || "Kotdwar Pauri Garhwal Uttarakhand"}</span>
                                     </div>
                                 </div>
                                 <div className="space-y-1">
@@ -539,9 +573,10 @@ const Home = () => {
                             animate={{ x: [0, -1000] }}
                             transition={{ 
                                 repeat: Infinity, 
-                                duration: 35, 
+                                duration: isMobile ? 50 : 35, 
                                 ease: "linear" 
                             }}
+                            style={{ willChange: "transform" }}
                             className="flex gap-12 px-6 items-center"
                         >
                             {[...(profile?.expertise || []), ...(profile?.expertise || []), ...(profile?.expertise || [])].map((skill, idx) => (
@@ -579,7 +614,7 @@ const Home = () => {
                     viewport={{ once: true }} 
                     transition={{ duration: 0.8 }} 
                     onSubmit={handleContactSubmit} 
-                    className="space-y-8 text-left bg-white/[0.03] border border-white/5 p-8 md:p-12 rounded-[40px] backdrop-blur-3xl shadow-2xl"
+                    className="space-y-8 text-left bg-[#1A1512] border border-white/5 p-8 md:p-12 rounded-[40px] shadow-2xl"
                 >
                     <div className="space-y-6">
                         <div className="space-y-2">
@@ -629,33 +664,47 @@ const Home = () => {
                             initial={{ scale: 0.9, opacity: 0, y: 20 }}
                             animate={{ scale: 1, opacity: 1, y: 0 }}
                             exit={{ scale: 0.9, opacity: 0, y: 20 }}
-                            className="relative max-w-6xl w-full max-h-screen flex flex-col items-center justify-center pointer-events-none"
+                            className="relative max-w-6xl w-full max-h-screen flex flex-col items-center justify-center pointer-events-none px-4"
                         >
                             {/* The Masterpiece Focus */}
-                            <div className="relative group pointer-events-auto">
+                            <div className="relative group pointer-events-auto flex items-center justify-center w-full">
                                 <img 
                                     src={selectedArtwork.imageUrl} 
-                                    className="max-w-full max-h-[70vh] object-contain shadow-2xl scale-100 hover:scale-[1.02] transition-transform duration-700 cursor-zoom-out" 
+                                    className="max-w-full max-h-[60vh] md:max-h-[70vh] object-contain shadow-2xl scale-100 hover:scale-[1.01] transition-transform duration-700 cursor-zoom-out" 
                                     onClick={() => setSelectedArtwork(null)}
                                 />
                                 <div className="absolute inset-0 border border-white/10 pointer-events-none" />
                             </div>
                             
                             {/* Manuscript Context */}
-                            <div className="mt-4 text-center max-w-3xl px-6">
-                                <h2 className="text-4xl md:text-6xl font-['Mogra'] mb-4 uppercase tracking-tighter leading-tight">{selectedArtwork.title}</h2>
-                                <p className="font-['Mogra'] text-lg md:text-xl text-neutral-400">"{selectedArtwork.description || "The soul's silent echo."}"</p>
-                                <div className="mt-8 flex items-center justify-center gap-4">
+                            <div className="mt-6 text-center max-w-3xl px-6 pointer-events-auto overflow-y-auto no-scrollbar pb-12">
+                                <h2 className="text-3xl md:text-5xl font-['Mogra'] mb-2 uppercase tracking-tighter leading-tight">{selectedArtwork.title}</h2>
+                                
+                                {selectedArtwork.price && (
+                                    <p className="text-[#D4AF37] font-['Mogra'] text-xl md:text-2xl mb-4 tracking-widest italic">
+                                        ₹{selectedArtwork.price.toLocaleString()}
+                                    </p>
+                                )}
+
+                                <p className="font-['Mogra'] text-base md:text-lg text-neutral-400 mb-6 italic leading-relaxed">
+                                    "{selectedArtwork.description || "The soul's silent echo."}"
+                                </p>
+
+                                {selectedArtwork.details && (
+                                    <div className="mb-8 p-4 bg-white/5 border border-white/10 rounded-2xl">
+                                        <p className="text-[10px] uppercase tracking-[0.2em] text-white/40 mb-2 font-black">Medium & Dimensions</p>
+                                        <p className="font-['Mogra'] text-sm md:text-base text-neutral-300">{selectedArtwork.details}</p>
+                                    </div>
+                                )}
+
+                                <div className="flex items-center justify-center gap-4">
                                     <div className="h-[1px] w-12 bg-white/10" />
                                     <div className="text-[10px] uppercase tracking-[0.6em] text-white/20 font-black">
                                          {selectedArtwork.category}
                                     </div>
                                     <div className="h-[1px] w-12 bg-white/10" />
                                 </div>
-
                             </div>
-
-
                         </motion.div>
                     </motion.div>
                 )}
@@ -668,7 +717,7 @@ const Home = () => {
                     whileInView={{ opacity: 1 }}
                     className="text-2xl font-['Mogra'] text-[#D4AF37] tracking-[0.3em] uppercase mb-4"
                 >
-                    ArtByAnjali
+                    ArtByAanjali
                 </motion.h2>
                 <div className="flex justify-center gap-8 mb-8">
                     {[

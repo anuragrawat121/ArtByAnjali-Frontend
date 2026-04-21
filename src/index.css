@@ -6,9 +6,8 @@ html, body {
   overflow-x: hidden !important;
 }
 
-/* Enable Native Smooth Scroll */
 html {
-  scroll-behavior: smooth !important;
+  /* Scroll behavior removed per user request */
 }
 
 /* Hide custom cursor on mobile/touch devices */

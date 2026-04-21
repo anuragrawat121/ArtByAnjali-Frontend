@@ -1,14 +1,32 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Palette, Brush, Menu, X } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
 
 /**
  * NOIR PUBLIC NAVBAR (Responsive)
  * A cinematic, adaptive navigation component for the portfolio visitor.
+ * Now features smart scroll behavior: Hides on scroll down, reveals on scroll up.
  */
 const PublicNavbar = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const [isVisible, setIsVisible] = useState(true);
+    const { scrollY } = useScroll();
+    const [lastScrollY, setLastScrollY] = useState(0);
+
+    // Smart Scroll Logic: Hide on scroll down, Show on scroll up
+    useMotionValueEvent(scrollY, "change", (latest) => {
+        const direction = latest > lastScrollY ? "down" : "up";
+        
+        // Only hide if we've scrolled a bit (ignore small bounces)
+        if (latest > 150 && direction === "down" && isVisible) {
+            setIsVisible(false);
+        } else if (direction === "up" && !isVisible) {
+            setIsVisible(true);
+        }
+        
+        setLastScrollY(latest);
+    });
 
     const navLinks = [
         { label: 'Exhibits', href: 'gallery' },
@@ -27,9 +45,16 @@ const PublicNavbar = () => {
 
     return (
         <motion.nav 
-            initial={{ y: -100, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            initial={{ y: 0, opacity: 1 }}
+            animate={{ 
+                y: isVisible ? 0 : -150,
+                opacity: isVisible ? 1 : 0 
+            }}
+            transition={{ 
+                duration: 2, 
+                ease: "easeInOut",
+                delay: 0
+            }}
             className="fixed top-0 left-0 w-full z-50 px-6 py-6 md:px-12 md:py-8"
         >
             <div className="max-w-7xl mx-auto flex justify-between items-center bg-white/5 backdrop-blur-md border border-white/10 px-8 py-4 rounded-full shadow-lg">
@@ -44,7 +69,7 @@ const PublicNavbar = () => {
                     >
                         <Brush size={18} />
                     </motion.div>
-                    <span className="tracking-tighter group-hover:tracking-normal transition-all duration-500">ArtByAnjali</span>
+                    <span className="tracking-tighter group-hover:tracking-normal transition-all duration-500">ArtByAanjali</span>
                 </div>
                 
                 {/* DESKTOP NAV */}
@@ -125,7 +150,7 @@ const PublicNavbar = () => {
                         {/* Mobile Footer Deco */}
                         <div className="absolute bottom-12 text-center opacity-10">
                              <Palette size={48} className="mx-auto mb-4" />
-                             <p className="text-[9px] uppercase tracking-[0.6em] font-black">ArtByAnjali Studio</p>
+                             <p className="text-[9px] uppercase tracking-[0.6em] font-black">ArtByAanjali Studio</p>
                         </div>
                     </motion.div>
                 )}
