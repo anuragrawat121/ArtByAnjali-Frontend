@@ -53,6 +53,16 @@ const Home = () => {
     const [loading, setLoading] = useState(true);
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
+    // Mobile Detection
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth < 1024);
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
+
     useEffect(() => {
         if (isMobile) return;
         const handleMove = (e) => setMousePos({ x: e.clientX, y: e.clientY });
@@ -65,14 +75,7 @@ const Home = () => {
     const [contactForm, setContactForm] = useState({ name: '', email: '', message: '' });
     const [sending, setSending] = useState(false);
     const [bgIndex, setBgIndex] = useState(0);
-    const [isMobile, setIsMobile] = useState(false);
 
-    useEffect(() => {
-        const checkMobile = () => setIsMobile(window.innerWidth < 1024);
-        checkMobile();
-        window.addEventListener('resize', checkMobile);
-        return () => window.removeEventListener('resize', checkMobile);
-    }, []);
 
     // Initial Studio Sync with Cold-Start Recovery
     useEffect(() => {
