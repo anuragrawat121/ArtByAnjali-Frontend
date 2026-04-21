@@ -16,15 +16,19 @@ const PublicNavbar = () => {
 
     // Smart Scroll Logic: Hide on scroll down, Show on scroll up
     useMotionValueEvent(scrollY, "change", (latest) => {
+        const isMobile = window.innerWidth < 1024;
         const direction = latest > lastScrollY ? "down" : "up";
+        const diff = Math.abs(latest - lastScrollY);
         
-        // AUTO-CLOSE MOBILE MENU ON SCROLL
-        if (isOpen && Math.abs(latest - lastScrollY) > 5) {
+        // DISABLE AUTO-CLOSE ON SMALL MOBILE SCROLLS (Higher tolerance)
+        if (isOpen && diff > 50) {
             setIsOpen(false);
         }
 
         // Only hide if we've scrolled a bit (ignore small bounces)
-        if (latest > 150 && direction === "down" && isVisible) {
+        // Higher threshold for mobile to prevent accidental hiding
+        const threshold = isMobile ? 300 : 150;
+        if (latest > threshold && direction === "down" && isVisible) {
             setIsVisible(false);
         } else if (direction === "up" && !isVisible) {
             setIsVisible(true);

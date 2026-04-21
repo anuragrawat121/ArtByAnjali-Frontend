@@ -54,10 +54,11 @@ const Home = () => {
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
     useEffect(() => {
+        if (isMobile) return;
         const handleMove = (e) => setMousePos({ x: e.clientX, y: e.clientY });
         window.addEventListener('mousemove', handleMove);
         return () => window.removeEventListener('mousemove', handleMove);
-    }, []);
+    }, [isMobile]);
     
     // UI State
     const [status, setStatus] = useState({ show: false, msg: "", type: "success" });
@@ -620,9 +621,9 @@ const Home = () => {
             <section id="contact" className="py-12 relative max-w-xl mx-auto px-6 text-center">
                 {/* THE BREATHING VOID */}
                 <motion.div 
-                    animate={{ scale: [1, 1.2, 1], opacity: [0.03, 0.08, 0.03] }}
-                    transition={{ repeat: Infinity, duration: 8, ease: "easeInOut" }}
-                    className="absolute inset-0 z-0 bg-[radial-gradient(circle,white_0%,transparent_70%)] rounded-full blur-3xl pointer-events-none"
+                    animate={{ scale: [1, 1.1, 1], opacity: [0.03, 0.05, 0.03] }}
+                    transition={{ repeat: Infinity, duration: 10, ease: "easeInOut" }}
+                    className="absolute inset-0 z-0 bg-[radial-gradient(circle,white_0%,transparent_70%)] rounded-full pointer-events-none opacity-5 md:blur-3xl"
                 />
 
                 {/* Header with floating text effect */}
@@ -645,7 +646,7 @@ const Home = () => {
                     animate={{ opacity: 1 }} 
                     transition={{ duration: 0.8 }} 
                     onSubmit={handleContactSubmit} 
-                    className="group space-y-6 text-left bg-white/[0.02] backdrop-blur-xl border border-white/5 p-8 md:p-10 rounded-[40px] shadow-2xl hover:border-white/10 transition-all duration-700"
+                    className="group space-y-6 text-left bg-white/[0.02] backdrop-blur-md lg:backdrop-blur-xl border border-white/5 p-8 md:p-10 rounded-[40px] shadow-2xl hover:border-white/10 transition-all duration-700"
                 >
                     <div className="space-y-5">
                         {[
