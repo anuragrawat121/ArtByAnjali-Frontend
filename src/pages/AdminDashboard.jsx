@@ -963,12 +963,11 @@ const AdminDashboard = () => {
                   <motion.div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-5 mt-16 pb-20">
                     {artworks.map((art, idx) => (
                         <motion.div
-                          variants={itemVariants}
                           key={art._id}
-                          initial={{ opacity: 0, y: 20 }}
+                          initial={{ opacity: 0, y: 40 }}
                           whileInView={{ opacity: 1, y: 0 }}
-                          viewport={{ once: true }}
-                          transition={{ duration: 0.8 }}
+                          viewport={{ once: true, amount: 0.1 }}
+                          transition={{ duration: 0.7, delay: (idx % 6) * 0.05 }}
                           className="relative aspect-[3/4] rounded-[30px] overflow-hidden border border-white/5 group cursor-pointer hover:border-white/20 transition-all shimmer-container"
                         >
                           <img
@@ -978,7 +977,7 @@ const AdminDashboard = () => {
                               e.target.classList.remove("opacity-0", "scale-95", "blur-md");
                               e.target.classList.add("opacity-100", "scale-100", "blur-0");
                             }}
-                            className="w-full h-full object-cover transition-all duration-[1.5s] ease-out opacity-0 scale-95 blur-md grayscale-0 md:grayscale md:group-hover:grayscale-0 group-hover:scale-110"
+                            className="w-full h-full object-cover transition-all duration-1000 ease-out opacity-0 scale-95 blur-md grayscale-0 md:grayscale md:group-hover:grayscale-0 group-hover:scale-110"
                           />
                         <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black via-black/80 to-transparent pointer-events-none">
                           <p className="font-['Mogra'] text-[9px] text-[#D4AF37] truncate uppercase tracking-widest">
