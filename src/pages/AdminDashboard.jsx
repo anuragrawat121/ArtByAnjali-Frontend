@@ -503,21 +503,21 @@ const AdminDashboard = () => {
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { opacity: 0, y: 40 },
     show: {
       opacity: 1,
       y: 0,
-      transition: { type: "spring", stiffness: 100, damping: 15 },
+      transition: { duration: 1, ease: [0.16, 1, 0.3, 1] },
     },
   };
 
   const sectionVariants = {
-    hidden: { opacity: 0, scale: 0.98, filter: "blur(4px)" },
+    hidden: { opacity: 0, scale: 0.98, y: 40 },
     show: {
       opacity: 1,
       scale: 1,
-      filter: "blur(0px)",
-      transition: { duration: 0.6, ease: "easeOut" },
+      y: 0,
+      transition: { duration: 1, ease: [0.16, 1, 0.3, 1] },
     },
   };
 
@@ -960,14 +960,19 @@ const AdminDashboard = () => {
                   </div>
 
                   {/* LIVE GALLERY GRID */}
-                  <motion.div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-5 mt-16 pb-20">
+                  <motion.div 
+                    variants={containerVariants}
+                    initial="hidden"
+                    animate="show"
+                    className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-5 mt-16 pb-20"
+                  >
                     {artworks.map((art, idx) => (
                         <motion.div
                           key={art._id}
-                          initial={{ opacity: 0, y: 40 }}
-                          whileInView={{ opacity: 1, y: 0 }}
-                          viewport={{ once: true, amount: 0.1 }}
-                          transition={{ duration: 0.7, delay: (idx % 6) * 0.05 }}
+                          variants={itemVariants}
+                          initial="hidden"
+                          whileInView="show"
+                          viewport={{ once: true, amount: 0.05 }}
                           className="relative aspect-[3/4] rounded-[30px] overflow-hidden border border-white/5 group cursor-pointer hover:border-white/20 transition-all shimmer-container"
                         >
                           <img
