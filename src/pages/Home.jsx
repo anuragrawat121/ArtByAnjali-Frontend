@@ -303,8 +303,11 @@ const Home = () => {
                         src={art.imageUrl}
                         alt={art.title}
                         loading="lazy"
-                        onLoad={(e) => e.target.classList.remove("opacity-0")}
-                        className="w-full h-full object-cover md:group-hover:scale-110 transition-all duration-1000 ease-out opacity-0"
+                        onLoad={(e) => {
+                          e.target.classList.remove("opacity-0", "blur-md", "scale-95");
+                          e.target.classList.add("opacity-100", "blur-0", "scale-100");
+                        }}
+                        className="w-full h-full object-cover md:group-hover:scale-110 transition-all duration-[2s] ease-out opacity-0 blur-md scale-95"
                       />
                     </div>
                     <div className="px-4">
