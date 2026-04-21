@@ -485,10 +485,18 @@ const AdminDashboard = () => {
               ))}
             </nav>
             <div className="flex items-center gap-8 lg:gap-12">
-               <a href="/" target="_blank" className="text-[10px] md:text-[11px] uppercase tracking-[0.2em] text-white/40 hover:text-white transition-all flex items-center gap-3 group font-bold">
-                 <ExternalLink size={14} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" /> View Exhibition
+               <a href="/" target="_blank" className="text-[11px] md:text-[12px] uppercase tracking-[0.2em] text-white/60 hover:text-white transition-all flex items-center gap-3 group font-bold">
+                 <ExternalLink size={15} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" /> View Exhibition
                </a>
-               <motion.button initial={{ opacity: 0 }} animate={{ opacity: 0.4 }} whileHover={{ opacity: 1 }} onClick={() => { localStorage.removeItem("admin_key"); window.location.reload(); }} className="text-[10px] md:text-[11px] uppercase tracking-[0.2em] transition-all font-bold">Sign Out</motion.button>
+               <motion.button 
+                 initial={{ opacity: 0 }} 
+                 animate={{ opacity: 1 }} 
+                 whileHover={{ scale: 1.05 }} 
+                 onClick={() => { localStorage.removeItem("admin_key"); window.location.reload(); }} 
+                 className="text-[11px] md:text-[12px] uppercase tracking-[0.2em] text-red-500/50 hover:text-red-500 transition-all font-black"
+               >
+                 Sign Out
+               </motion.button>
             </div>
           </header>
 
