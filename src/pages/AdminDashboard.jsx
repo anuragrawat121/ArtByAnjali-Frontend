@@ -679,7 +679,7 @@ const AdminDashboard = () => {
           
           {/* STUDIO FOOTER */}
           <footer className="relative z-50 py-12 text-center border-t border-white/5 mt-20">
-            <h2 className="text-lg font-['Mogra'] text-[#D4AF37] tracking-[0.2em] uppercase">ArtByAnjali</h2>
+            <h2 className="text-lg font-['Mogra'] text-[#D4AF37] tracking-[0.2em] ">ArtByAnjali</h2>
             <p className="text-[8px] uppercase tracking-[0.4em] mt-2 text-white/20">Noir Atelier Console</p>
             <div className="mt-8 pt-8 border-t border-white/5 inline-block px-10">
               <a href="https://instagram.com/RWT._.ANURAG" target="_blank" rel="noreferrer" className="text-[7px] uppercase tracking-[0.4em] text-[#D4AF37]/60 hover:text-[#D4AF37] transition-all font-normal">made by the code Magician ANU₹AG</a>
