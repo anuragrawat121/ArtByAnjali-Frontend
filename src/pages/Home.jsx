@@ -238,7 +238,7 @@ const Home = () => {
                 <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.5 }} className="relative z-10 text-center px-6">
                     <div className="relative inline-block">
                         <h1 className="relative z-10 flex flex-wrap justify-center items-center text-6xl md:text-[9rem] font-['Mogra'] tracking-tighter leading-none">
-                            {(profile?.fullName || "ArtByAanjali").split(" ").map((part, pIdx) => (
+                            {(profile?.fullName || "ArtByAnjali").split(" ").map((part, pIdx) => (
                                 <span key={pIdx} className="flex">
                                     {part.split("").map((char, cIdx) => (
                                         <motion.span
@@ -269,19 +269,29 @@ const Home = () => {
                         </h1>
                     </div>
 
-                    <div className="mt-8 flex flex-wrap justify-center items-center gap-4">
-                        {profile?.expertise?.map((skill, i) => (
-                            <motion.span 
-                                key={skill}
-                                initial={{ opacity: 0, scale: 0.9 }}
-                                whileInView={{ opacity: 1, scale: 1 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: 0.1 * i }}
-                                className="px-6 py-2 bg-white/5 border border-white/10 rounded-full text-[10px] md:text-[11px] uppercase tracking-widest text-[#E8D5C4]/60 whitespace-nowrap"
-                            >
-                                {skill}
-                            </motion.span>
-                        ))}
+                    {/* TAGLINE BELOW NAME */}
+                    <motion.div 
+                        initial={{ opacity: 0 }} 
+                        animate={{ opacity: 0.4 }} 
+                        whileInView={{ opacity: 0.4 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.5, duration: 1 }}
+                        className="mt-6 mb-12"
+                    >
+                        <p className="text-[12px] uppercase tracking-[0.4em] font-normal text-[#D4AF37]">PAHARI SOUL ARTISTIC HEART</p>
+                    </motion.div>
+
+                    <div className="mt-8 overflow-hidden relative">
+                        <div className="flex animate-scroll hover:pause whitespace-nowrap gap-4 py-4">
+                            {[...(profile?.expertise || []), ...(profile?.expertise || [])].map((skill, i) => (
+                                <span 
+                                    key={`${skill}-${i}`}
+                                    className="px-8 py-3 bg-white/5 border border-white/10 rounded-full text-[10px] md:text-[11px] uppercase tracking-widest text-[#E8D5C4]/60"
+                                >
+                                    {skill}
+                                </span>
+                            ))}
+                        </div>
                     </div>
 
                     <div className="max-w-xl mx-auto h-[1px] bg-black/10 mb-12 relative overflow-hidden">
@@ -430,7 +440,7 @@ const Home = () => {
                     )}
                 </AnimatePresence>
                 {artworks.length === 0 && (
-                    <div className="py-40 text-center border-2 border-dashed border-white/5 rounded-[40px]">
+                    <div className="py-40 text-center border-2 border-dashed border-white/5 rounded-[40px] ">
                         <p className="text-[10px] uppercase tracking-[1em] text-white/10 font-black italic">Exhibits arriving soon.</p>
                     </div>
                 )}
@@ -529,7 +539,7 @@ const Home = () => {
                                     <p className="text-[9px] uppercase tracking-widest text-white/20">Location</p>
                                     <div className="flex items-center justify-center lg:justify-start gap-3 text-white/60">
                                         <MapPin size={16} className="text-white/20" />
-                                        <span className="text-xs font-bold tracking-[0.2em] uppercase">{profile?.location || "Kotdwar Pauri Garhwal Uttarakhand"}</span>
+                                        <span className="text-xs font-bold tracking-[0.2em] uppercase">{profile?.location || "Kotdwar, Uttarakhand"}</span>
                                     </div>
                                 </div>
                                 <div className="space-y-1">
@@ -570,10 +580,10 @@ const Home = () => {
                     <div className="flex whitespace-nowrap py-8">
                         {/* THE MARQUEE TRACK */}
                         <motion.div 
-                            animate={{ x: [0, -1000] }}
+                            animate={{ x: [0, -500] }}
                             transition={{ 
                                 repeat: Infinity, 
-                                duration: isMobile ? 50 : 35, 
+                                duration: 20, 
                                 ease: "linear" 
                             }}
                             style={{ willChange: "transform" }}
@@ -589,8 +599,8 @@ const Home = () => {
                             ))}
                         </motion.div>
                     </div>
-                    <div className="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-[#FCFAF2] to-transparent z-10 pointer-events-none" />
-                    <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-[#FCFAF2] to-transparent z-10 pointer-events-none" />
+                    <div className="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-[#231C18] to-transparent z-10 pointer-events-none" />
+                    <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-[#231C18] to-transparent z-10 pointer-events-none" />
                 </div>
             </section>
 
@@ -711,14 +721,8 @@ const Home = () => {
             </AnimatePresence>
 
             {/* ARCHIVAL FOOTER */}
-            <footer className="relative z-10 py-20 border-t border-white/5 text-center mt-20">
-                <motion.h2 
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    className="text-2xl font-['Mogra'] text-[#D4AF37] tracking-[0.3em] uppercase mb-4"
-                >
-                    ArtByAanjali
-                </motion.h2>
+            <footer className="relative z-50 py-12 text-center border-t border-white/5 mt-20">
+                <h2 className="text-lg font-['Mogra'] text-[#D4AF37] tracking-[0.2em] uppercase">ArtByAnjali</h2>
                 <div className="flex justify-center gap-8 mb-8">
                     {[
                         { icon: Instagram, href: "https://instagram.com/RWT._.ANURAG" },
