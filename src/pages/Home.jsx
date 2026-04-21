@@ -35,6 +35,7 @@ const StatusNotification = ({ msg, type, clear }) => (
 const Home = () => {
     const { scrollY } = useScroll();
     const skillsX = useTransform(scrollY, [0, 1000], [0, -500]);
+    const skillsXReverse = useTransform(scrollY, [0, 1000], [-500, 0]);
     
     // Core Data State
     const [artworks, setArtworks] = useState([]);
@@ -246,7 +247,7 @@ const Home = () => {
                     <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#231C18]/50 to-[#231C18]" />
                 </div>
 
-                <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.5 }} className="relative z-10 text-center px-6">
+                <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.5 }} className="relative z-10 text-center px-6 pt-24">
                     <div className="relative inline-block">
                         <h1 className="relative z-10 flex flex-wrap justify-center items-center text-6xl md:text-[9rem] font-['Mogra'] tracking-tighter leading-none">
                             {(profile?.fullName || "ArtByAnjali").split(" ").map((part, pIdx) => (
@@ -290,20 +291,49 @@ const Home = () => {
                         <p className="text-[12px] uppercase tracking-[0.4em] font-normal text-[#D4AF37]">PAHARI SOUL ARTISTIC HEART</p>
                     </motion.div>
 
-                    {/* SKILLS SLIDING STRIPE - Scroll Driven */}
-                    <div className="relative w-screen left-1/2 -translate-x-1/2 overflow-hidden border-y border-white/5 py-4 my-2 bg-white/[0.01]">
-                        <motion.div 
-                            style={{ x: skillsX }}
-                            className="flex whitespace-nowrap gap-12"
-                        >
-                            {[...Array(4)].map((_, i) => (
-                                <div key={i} className="flex gap-12 py-2">
-                                    {(profile?.expertise || ['Canvas painting', 'Portrait', 'Sketch', 'Stone art', 'Wall painting']).map((skill) => (
-                                        <span key={`${i}-${skill}`} className="text-[10px] md:text-[14px] uppercase tracking-[0.5em] font-bold text-white/20 hover:text-[#D4AF37] transition-colors">{skill}</span>
-                                    ))}
-                                </div>
-                            ))}
-                        </motion.div>
+                    {/* SKILLS SLIDING STRIPES - Dual Direction Kinetic Experience */}
+                    <div className="relative w-screen left-1/2 -translate-x-1/2 flex flex-col gap-0 my-12 pointer-events-none select-none">
+                        {/* Upper Strip: Move Left */}
+                        <div className="relative overflow-hidden py-4 bg-gradient-to-r from-transparent via-white/[0.02] to-transparent border-y border-white/5" style={{ maskImage: 'linear-gradient(to right, transparent, black 15%, black 85%, transparent)' }}>
+                            <motion.div 
+                                style={{ x: skillsX }}
+                                className="flex whitespace-nowrap gap-12"
+                            >
+                                {[...Array(4)].map((_, i) => (
+                                    <div key={i} className="flex items-center gap-12">
+                                        {(profile?.expertise || ['Canvas painting', 'Portrait', 'Sketch', 'Stone art', 'Wall painting']).map((skill) => (
+                                            <div key={`${i}-${skill}`} className="flex items-center gap-12 group pointer-events-auto">
+                                                <span className="text-[10px] md:text-[16px] uppercase tracking-[0.4em] font-['Mogra'] text-white/30 group-hover:text-[#D4AF37] transition-all duration-500 group-hover:scale-110 cursor-default">
+                                                    {skill}
+                                                </span>
+                                                <div className="w-1 h-1 rounded-full bg-white/10 group-hover:bg-[#D4AF37]/40 transition-colors" />
+                                            </div>
+                                        ))}
+                                    </div>
+                                ))}
+                            </motion.div>
+                        </div>
+
+                        {/* Lower Strip: Move Right */}
+                        <div className="relative overflow-hidden py-6 bg-gradient-to-r from-transparent via-white/[0.01] to-transparent border-b border-white/5 -mt-[1px]" style={{ maskImage: 'linear-gradient(to right, transparent, black 15%, black 85%, transparent)' }}>
+                            <motion.div 
+                                style={{ x: skillsXReverse }}
+                                className="flex whitespace-nowrap gap-12"
+                            >
+                                {[...Array(4)].map((_, i) => (
+                                    <div key={i} className="flex items-center gap-12">
+                                        {(profile?.expertise || ['Stone Art', 'Oil Painting', 'Custom Portrait', 'Wall Decor', 'Charcoal Sketch']).reverse().map((skill) => (
+                                            <div key={`${i}-${skill}`} className="flex items-center gap-12 group pointer-events-auto">
+                                                <span className="text-[9px] md:text-[13px] uppercase tracking-[0.6em] font-light text-white/10 group-hover:text-[#D4AF37] transition-all duration-700 italic cursor-default">
+                                                    {skill}
+                                                </span>
+                                                <Brush size={12} className="text-white/5 group-hover:text-[#D4AF37]/20 transition-colors rotate-[-45deg]" />
+                                            </div>
+                                        ))}
+                                    </div>
+                                ))}
+                            </motion.div>
+                        </div>
                     </div>
 
                     <div className="max-w-xl mx-auto h-[1px] bg-black/10 mb-8 relative overflow-hidden">
@@ -519,11 +549,18 @@ const Home = () => {
                                     transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
                                     className="absolute inset-0 border-[1px] border-dashed border-white/5 rounded-full pointer-events-none"
                                 />
-                            </div>
-
-                            {/* Kinetic Brush Mark */}
-                            <div className="absolute -top-4 -right-4 w-10 h-10 bg-white text-black rounded-full flex items-center justify-center shadow-2xl z-20">
-                                <Brush size={16} />
+                                {/* Floating Instagram Link */}
+                                <motion.a 
+                                    href="https://www.instagram.com/i_anjalibisht?igsh=MTI4MzIydHoyMW0yMQ=="
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    whileHover={{ scale: 1.1, rotate: 10 }}
+                                    whileTap={{ scale: 0.9 }}
+                                    className="absolute top-4 right-4 w-12 h-12 bg-[#D4AF37] text-[#1A1512] rounded-full flex items-center justify-center shadow-2xl z-20 cursor-pointer"
+                                    title="Follow the Vision on Instagram"
+                                >
+                                    <Instagram size={20} />
+                                </motion.a>
                             </div>
                         </motion.div>
 
@@ -560,11 +597,9 @@ const Home = () => {
                                         <a href={`mailto:${profile?.email}`} title="Email" className="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center hover:bg-white hover:text-black transition-all border border-white/10 group">
                                             <Mail size={16} className="text-white/20 group-hover:text-black transition-colors" />
                                         </a>
-                                        {profile?.socialLinks?.instagram && (
-                                            <a href={profile.socialLinks.instagram} target="_blank" rel="noreferrer" title="Instagram" className="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center hover:bg-white hover:text-black transition-all border border-white/10 group">
-                                                <Instagram size={16} className="text-white/20 group-hover:text-black transition-colors" />
-                                            </a>
-                                        )}
+                                        <a href={profile?.socialLinks?.instagram || "https://www.instagram.com/i_anjalibisht?igsh=MTI4MzIydHoyMW0yMQ=="} target="_blank" rel="noreferrer" title="Instagram" className="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center hover:bg-white hover:text-black transition-all border border-white/10 group">
+                                            <Instagram size={16} className="text-white/20 group-hover:text-black transition-colors" />
+                                        </a>
                                         {profile?.socialLinks?.whatsapp && (
                                             <a href={`https://wa.me/${profile.socialLinks.whatsapp.replace(/\D/g, '')}`} target="_blank" rel="noreferrer" title="WhatsApp" className="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center hover:bg-white hover:text-black transition-all border border-white/10 group">
                                                 <MessageCircle size={16} className="text-white/20 group-hover:text-black transition-colors" />
@@ -717,7 +752,7 @@ const Home = () => {
                 </motion.h2>
                 <div className="flex justify-center gap-8 mb-8">
                     {[
-                        { icon: Instagram, href: "https://instagram.com/RWT._.ANURAG" },
+                        { icon: Instagram, href: "https://www.instagram.com/i_anjalibisht?igsh=MTI4MzIydHoyMW0yMQ==" },
                         { icon: Palette, href: "#" },
                         { icon: MessageCircle, href: "#" }
                     ].map((social, idx) => (
