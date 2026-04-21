@@ -130,6 +130,25 @@ const Home = () => {
         selectedCategory ? artworks.filter(a => a.category === selectedCategory) : []
     , [artworks, selectedCategory]);
 
+    // --- BROWSER BACK BUTTON INTEGRATION ---
+    useEffect(() => {
+        // When a modal or room is open, push a state
+        if (selectedArtwork || selectedCategory) {
+            window.history.pushState({ modalOpen: true }, "");
+        }
+        
+        const handlePopState = () => {
+            if (selectedArtwork) {
+                setSelectedArtwork(null);
+            } else if (selectedCategory) {
+                setSelectedCategory(null);
+            }
+        };
+
+        window.addEventListener("popstate", handlePopState);
+        return () => window.removeEventListener("popstate", handlePopState);
+    }, [selectedArtwork, selectedCategory]);
+
     // The Living Canvas: Background Cycling (10s rhythm)
     useEffect(() => {
         if (artworks.length <= 1) return;

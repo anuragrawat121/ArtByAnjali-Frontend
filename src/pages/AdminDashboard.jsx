@@ -213,6 +213,28 @@ const AdminDashboard = () => {
     checkAuth();
   }, []);
 
+  // --- BROWSER BACK BUTTON INTEGRATION ---
+  useEffect(() => {
+    const isModalOpen = deleteConfirm.show || editArtworkData || isDropdownOpen;
+    if (isModalOpen) {
+      window.history.pushState({ adminModalOpen: true }, "");
+    }
+    
+    const handlePopState = () => {
+      if (deleteConfirm.show) {
+        setDeleteConfirm({ show: false, id: null });
+      } else if (editArtworkData) {
+        setEditArtworkData(null);
+      } else if (isDropdownOpen) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, [deleteConfirm.show, editArtworkData, isDropdownOpen]);
+
+
   // Unlock the Studio Gate
   const handleLoginSubmit = async (e) => {
     e.preventDefault();

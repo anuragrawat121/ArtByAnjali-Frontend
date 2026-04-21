@@ -37,6 +37,23 @@ const PublicNavbar = () => {
         setLastScrollY(latest);
     });
 
+    // --- BROWSER BACK BUTTON INTEGRATION ---
+    useEffect(() => {
+        if (isOpen) {
+            window.history.pushState({ menuOpen: true }, "");
+        }
+        
+        const handlePopState = (e) => {
+            if (isOpen) {
+                setIsOpen(false);
+            }
+        };
+
+        window.addEventListener("popstate", handlePopState);
+        return () => window.removeEventListener("popstate", handlePopState);
+    }, [isOpen]);
+
+
     const navLinks = [
         { label: 'Exhibits', href: 'gallery' },
         { label: 'Atelier', href: 'about' },
