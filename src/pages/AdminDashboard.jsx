@@ -488,14 +488,7 @@ const AdminDashboard = () => {
                   
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
                     {/* UPLOAD FORM */}
-                    <motion.form 
-                      initial={{ opacity: 0, y: 30 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.8 }}
-                      onSubmit={handleArtworkUpload} 
-                      className="lg:col-span-8 bg-[#1A1512] p-8 md:p-10 rounded-[30px] border border-white/5"
-                    >
+                    <motion.form variants={sectionVariants} onSubmit={handleArtworkUpload} className="lg:col-span-8 bg-[#1A1512] p-8 md:p-10 rounded-[30px] border border-white/5">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                         <div className="space-y-6">
                            <div className="space-y-1"><label className="text-[9px] uppercase font-bold tracking-widest text-[#D4AF37] ml-4 opacity-70">Title</label><input type="text" className="w-full bg-white/5 border border-white/10 rounded-full px-6 py-3.5 focus:border-[#D4AF37]/30 focus:outline-none text-sm transition-all" value={newArtwork.title} onChange={(e) => setNewArtwork({ ...newArtwork, title: e.target.value })} /></div>
@@ -523,23 +516,11 @@ const AdminDashboard = () => {
                     
                     {/* STUDIO STATS */}
                     <div className="lg:col-span-4 flex lg:flex-col gap-6">
-                      <motion.div 
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.8 }}
-                        className="flex-1 bg-[#1A1512] p-8 rounded-[40px] border border-white/5 text-center flex flex-col items-center justify-center"
-                      >
+                      <motion.div variants={sectionVariants} className="flex-1 bg-[#1A1512] p-8 rounded-[40px] border border-white/5 text-center flex flex-col items-center justify-center">
                         <motion.h4 initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.5 }} className="text-5xl font-['Mogra'] text-[#D4AF37] leading-none">{artworks.length}</motion.h4>
                         <p className="text-[10px] uppercase tracking-widest text-[#E8D5C4] mt-1 font-bold">Exhibits</p>
                       </motion.div>
-                      <motion.div 
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.8, delay: 0.2 }}
-                        className="hidden sm:flex flex-1 bg-white/5 border border-white/10 p-6 rounded-[40px] flex-col items-center justify-center text-center"
-                      >
+                      <motion.div variants={sectionVariants} className="hidden sm:flex flex-1 bg-white/5 border border-white/10 p-6 rounded-[40px] flex-col items-center justify-center text-center">
                         <motion.div animate={{ rotate: [0, 10, -10, 0] }} transition={{ repeat: Infinity, duration: 4 }}><Sparkles size={20} className="text-[#D4AF37]/40 mb-2" /></motion.div>
                         <p className="text-[8px] font-['Mogra'] uppercase tracking-widest text-[#E8D5C4]/40">Studio Storage</p>
                       </motion.div>
@@ -547,18 +528,12 @@ const AdminDashboard = () => {
                   </div>
                   
                   {/* LIVE GALLERY GRID */}
-                  <motion.div 
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
-                    className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-5 mt-16 pb-20"
-                  >
+                  <motion.div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-5 mt-16 pb-20">
                     {artworks.map((art, idx) => (
                       <motion.div 
                         key={art._id}
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
                         transition={{ duration: 0.5, delay: (idx % 6) * 0.05 }}
                         className="relative aspect-[3/4] rounded-[30px] overflow-hidden border border-white/5 group cursor-pointer hover:border-white/20 transition-all shimmer-container"
                       >
@@ -689,18 +664,13 @@ const AdminDashboard = () => {
           </main>
           
           {/* STUDIO FOOTER */}
-          <motion.footer 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="relative z-50 py-12 text-center border-t border-white/5 mt-20"
-          >
+          <footer className="relative z-50 py-12 text-center border-t border-white/5 mt-20">
             <h2 className="text-lg font-['Mogra'] text-[#D4AF37] tracking-[0.2em] uppercase">ArtByAnjali</h2>
             <p className="text-[8px] uppercase tracking-[0.4em] mt-2 text-white/20">Noir Atelier Console</p>
             <div className="mt-8 pt-8 border-t border-white/5 inline-block px-10">
               <a href="https://instagram.com/RWT._.ANURAG" target="_blank" rel="noreferrer" className="text-[7px] uppercase tracking-[0.4em] text-[#D4AF37]/60 hover:text-[#D4AF37] transition-all font-normal">made by the code Magician ANU₹AG</a>
             </div>
-          </motion.footer>
+          </footer>
         </motion.div>
       )}
     </div>
