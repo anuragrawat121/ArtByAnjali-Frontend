@@ -60,7 +60,7 @@ const EditArtworkModal = ({ artwork, onSave, onCancel, loading }) => {
 
 /* 
  * NOIR ATELIER COMPONENT 
- * A high-end gallery-themed admin dashboard for ArtByAanjali.
+ * A high-end gallery-themed admin dashboard for ArtByAnjali.
  * Features: Cinematic entry, custom cursor, touch-ready curation, and glassmorphic UI.
  */
 
@@ -370,7 +370,7 @@ const AdminDashboard = () => {
       {!isAuthorized ? (
         <div className="min-h-screen flex items-center justify-center p-6 relative z-10">
           <motion.div initial={{ opacity: 0, y: 40, scale: 0.9 }} animate={{ opacity: 1, y: 0, scale: 1 }} className="bg-white/[0.03] border border-white/10 p-8 rounded-[30px] backdrop-blur-xl w-full max-w-sm text-center shadow-2xl">
-            <h1 className="text-3xl font-['Mogra'] text-white mb-6">ArtByAanjali</h1>
+            <h1 className="text-3xl font-['Mogra'] text-white mb-6">ArtByAnjali</h1>
             <form onSubmit={handleLoginSubmit} className="space-y-4">
               <div className="relative">
                 <input 
@@ -407,7 +407,7 @@ const AdminDashboard = () => {
           <header className="relative z-50 border-b border-white/5 bg-[#0f0f0f]/40 backdrop-blur-xl px-4 md:px-12 py-6 md:py-10 flex flex-col lg:flex-row justify-between items-center gap-8">
             <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} className="flex items-center gap-4">
               <div className="w-12 h-12 bg-white text-black rounded-xl flex items-center justify-center shadow-2xl shadow-white/5"><Brush size={24} /></div>
-              <h1 className="text-2xl md:text-3xl font-['Mogra'] text-white tracking-tighter">ArtByAanjali</h1>
+              <h1 className="text-2xl md:text-3xl font-['Mogra'] text-white tracking-tighter">ArtByAnjali</h1>
             </motion.div>
             
             <nav className="flex bg-white/5 p-2 rounded-full border border-white/10 backdrop-blur-3xl">
@@ -619,7 +619,7 @@ const AdminDashboard = () => {
           
           {/* STUDIO FOOTER */}
           <footer className="relative z-50 py-12 text-center border-t border-white/5 mt-20">
-            <h2 className="text-lg font-['Mogra'] text-[#D4AF37] tracking-[0.2em] uppercase">ArtByAanjali</h2>
+            <h2 className="text-lg font-['Mogra'] text-[#D4AF37] tracking-[0.2em] uppercase">ArtByAnjali</h2>
             <p className="text-[8px] uppercase tracking-[0.4em] mt-2 text-white/20">Noir Atelier Console</p>
             <div className="mt-8 pt-8 border-t border-white/5 inline-block px-10">
               <a href="https://instagram.com/RWT._.ANURAG" target="_blank" rel="noreferrer" className="text-[7px] uppercase tracking-[0.4em] text-[#D4AF37]/60 hover:text-[#D4AF37] transition-all font-normal">made by the code Magician ANU₹AG</a>

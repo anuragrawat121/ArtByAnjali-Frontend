@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { getArtworks, getProfile, submitContact } from '../api';
 import { 
     ImageIcon, Send, Instagram, Mail, 
@@ -33,8 +33,19 @@ const StatusNotification = ({ msg, type, clear }) => (
 );
 
 const Home = () => {
+    const { scrollY } = useScroll();
+    const skillsX = useTransform(scrollY, [0, 1000], [0, -500]);
+    
     // Core Data State
     const [artworks, setArtworks] = useState([]);
+    
+    const scrollToSection = (e, id) => {
+        e.preventDefault();
+        const element = document.getElementById(id);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    };
     const [profile, setProfile] = useState(null);
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [selectedArtwork, setSelectedArtwork] = useState(null);
@@ -269,39 +280,40 @@ const Home = () => {
                         </h1>
                     </div>
 
-                    {/* TAGLINE BELOW NAME */}
+                    {/* TAGLINE RESTORED */}
                     <motion.div 
                         initial={{ opacity: 0 }} 
                         animate={{ opacity: 0.4 }} 
-                        whileInView={{ opacity: 0.4 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.5, duration: 1 }}
-                        className="mt-6 mb-12"
+                        transition={{ delay: 2, duration: 1 }}
+                        className="mt-4 mb-4"
                     >
                         <p className="text-[12px] uppercase tracking-[0.4em] font-normal text-[#D4AF37]">PAHARI SOUL ARTISTIC HEART</p>
                     </motion.div>
 
-                    <div className="mt-8 overflow-hidden relative">
-                        <div className="flex animate-scroll hover:pause whitespace-nowrap gap-4 py-4">
-                            {[...(profile?.expertise || []), ...(profile?.expertise || [])].map((skill, i) => (
-                                <span 
-                                    key={`${skill}-${i}`}
-                                    className="px-8 py-3 bg-white/5 border border-white/10 rounded-full text-[10px] md:text-[11px] uppercase tracking-widest text-[#E8D5C4]/60"
-                                >
-                                    {skill}
-                                </span>
+                    {/* SKILLS SLIDING STRIPE - Scroll Driven */}
+                    <div className="relative w-screen left-1/2 -translate-x-1/2 overflow-hidden border-y border-white/5 py-4 my-2 bg-white/[0.01]">
+                        <motion.div 
+                            style={{ x: skillsX }}
+                            className="flex whitespace-nowrap gap-12"
+                        >
+                            {[...Array(4)].map((_, i) => (
+                                <div key={i} className="flex gap-12 py-2">
+                                    {(profile?.expertise || ['Canvas painting', 'Portrait', 'Sketch', 'Stone art', 'Wall painting']).map((skill) => (
+                                        <span key={`${i}-${skill}`} className="text-[10px] md:text-[14px] uppercase tracking-[0.5em] font-bold text-white/20 hover:text-[#D4AF37] transition-colors">{skill}</span>
+                                    ))}
+                                </div>
                             ))}
-                        </div>
+                        </motion.div>
                     </div>
 
-                    <div className="max-w-xl mx-auto h-[1px] bg-black/10 mb-12 relative overflow-hidden">
+                    <div className="max-w-xl mx-auto h-[1px] bg-black/10 mb-8 relative overflow-hidden">
                         <motion.div initial={{ width: 0 }} animate={{ width: "100%" }} transition={{ duration: 2, delay: 1.5 }} className="absolute inset-0 bg-gradient-to-r from-transparent via-black/20 to-transparent" />
                     </div>
                     <div className="flex flex-col sm:flex-row justify-center gap-6 items-center">
-                        <a href="#gallery" className="group px-10 py-5 bg-[#D4AF37] text-[#1A1512] font-normal uppercase text-[12px] tracking-[0.1em] rounded-full hover:bg-white transition-all flex items-center gap-3 shadow-2xl font-['Mogra']">
+                        <a href="#gallery" onClick={(e) => scrollToSection(e, 'gallery')} className="group px-10 py-5 bg-[#D4AF37] text-[#1A1512] font-normal uppercase text-[12px] tracking-[0.1em] rounded-full hover:bg-white transition-all flex items-center gap-3 shadow-2xl font-['Mogra']">
                             Enter Gallery <ChevronDown size={14} className="group-hover:translate-y-1 transition-transform" />
                         </a>
-                        <a href="#contact" className="px-10 py-5 border border-white/10 hover:bg-white/5 transition-all uppercase text-[12px] tracking-[0.1em] font-normal rounded-full backdrop-blur-sm font-['Mogra'] text-white">Begin Inquiry</a>
+                        <a href="#contact" onClick={(e) => scrollToSection(e, 'contact')} className="px-10 py-5 border border-white/10 hover:bg-white/5 transition-all uppercase text-[12px] tracking-[0.1em] font-normal rounded-full backdrop-blur-sm font-['Mogra'] text-white">Begin Inquiry</a>
                     </div>
                 </motion.div>
                 <motion.div animate={{ y: [0, 10, 0] }} transition={{ repeat: Infinity, duration: 2 }} className="absolute bottom-10 left-1/2 -translate-x-1/2 opacity-20">
@@ -440,7 +452,7 @@ const Home = () => {
                     )}
                 </AnimatePresence>
                 {artworks.length === 0 && (
-                    <div className="py-40 text-center border-2 border-dashed border-white/5 rounded-[40px] ">
+                    <div className="py-40 text-center border-2 border-dashed border-white/5 rounded-[40px]">
                         <p className="text-[10px] uppercase tracking-[1em] text-white/10 font-black italic">Exhibits arriving soon.</p>
                     </div>
                 )}
@@ -539,7 +551,7 @@ const Home = () => {
                                     <p className="text-[9px] uppercase tracking-widest text-white/20">Location</p>
                                     <div className="flex items-center justify-center lg:justify-start gap-3 text-white/60">
                                         <MapPin size={16} className="text-white/20" />
-                                        <span className="text-xs font-bold tracking-[0.2em] uppercase">{profile?.location || "Kotdwar, Uttarakhand"}</span>
+                                        <span className="text-xs font-bold tracking-[0.2em] uppercase">{profile?.location || "Kotdwar Pauri Garhwal Uttarakhand"}</span>
                                     </div>
                                 </div>
                                 <div className="space-y-1">
@@ -575,33 +587,7 @@ const Home = () => {
                     </div>
                 </div>
 
-                {/* THE KINETIC EXPERTISE SLIDER */}
-                <div className="mt-20 w-full overflow-hidden border-y border-white/5 bg-white/[0.01] backdrop-blur-sm relative group cursor-none">
-                    <div className="flex whitespace-nowrap py-8">
-                        {/* THE MARQUEE TRACK */}
-                        <motion.div 
-                            animate={{ x: [0, -500] }}
-                            transition={{ 
-                                repeat: Infinity, 
-                                duration: 20, 
-                                ease: "linear" 
-                            }}
-                            style={{ willChange: "transform" }}
-                            className="flex gap-12 px-6 items-center"
-                        >
-                            {[...(profile?.expertise || []), ...(profile?.expertise || []), ...(profile?.expertise || [])].map((skill, idx) => (
-                                <div key={idx} className="flex items-center gap-12 group/skill">
-                                    <span className="text-2xl md:text-4xl font-['Mogra'] tracking-tighter text-white opacity-10 group-hover/skill:opacity-100 transition-all duration-700 uppercase italic">
-                                        {skill}
-                                    </span>
-                                    <div className="w-2 h-2 bg-white/20 rounded-full group-hover/skill:bg-white transition-colors" />
-                                </div>
-                            ))}
-                        </motion.div>
-                    </div>
-                    <div className="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-[#231C18] to-transparent z-10 pointer-events-none" />
-                    <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-[#231C18] to-transparent z-10 pointer-events-none" />
-                </div>
+
             </section>
 
             {/* --- CONTACT: WHISPERS --- */}
@@ -721,8 +707,14 @@ const Home = () => {
             </AnimatePresence>
 
             {/* ARCHIVAL FOOTER */}
-            <footer className="relative z-50 py-12 text-center border-t border-white/5 mt-20">
-                <h2 className="text-lg font-['Mogra'] text-[#D4AF37] tracking-[0.2em] uppercase">ArtByAnjali</h2>
+            <footer className="relative z-10 py-20 border-t border-white/5 text-center mt-20">
+                <motion.h2 
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    className="text-2xl font-['Mogra'] text-[#D4AF37] tracking-[0.3em] uppercase mb-4"
+                >
+                    ArtByAnjali
+                </motion.h2>
                 <div className="flex justify-center gap-8 mb-8">
                     {[
                         { icon: Instagram, href: "https://instagram.com/RWT._.ANURAG" },
