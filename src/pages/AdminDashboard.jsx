@@ -193,6 +193,7 @@ const AdminDashboard = () => {
 
   // Persistent Session Recovery
   useEffect(() => {
+    const startTime = Date.now();
     const checkAuth = async () => {
       const savedKey = localStorage.getItem("admin_key");
       if (savedKey) {
@@ -204,7 +205,10 @@ const AdminDashboard = () => {
           await fetchAllData(cleanKey);
         } catch (e) { localStorage.removeItem("admin_key"); }
       }
-      setPageLoading(false);
+      
+      const elapsed = Date.now() - startTime;
+      const remaining = Math.max(0, 3000 - elapsed);
+      setTimeout(() => setPageLoading(false), remaining);
     };
     checkAuth();
   }, []);
@@ -338,10 +342,6 @@ const AdminDashboard = () => {
       <style>{`
         .no-scrollbar::-webkit-scrollbar { display: none; } 
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        @keyframes shimmer {
-          0% { transform: translateX(-100%) skewX(-20deg); }
-          100% { transform: translateX(200%) skewX(-20deg); }
-        }
       `}</style>
       
       
@@ -510,14 +510,11 @@ const AdminDashboard = () => {
                     {artworks.map((art, idx) => (
                       <motion.div 
                         key={art._id}
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, margin: "-50px" }}
-                        transition={{ duration: 0.8, ease: "easeOut", delay: (idx % 6) * 0.05 }}
-                        className="relative aspect-[3/4] rounded-[30px] overflow-hidden border border-white/5 bg-white/[0.03] group cursor-pointer hover:border-white/20 transition-all"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5, delay: (idx % 6) * 0.05 }}
+                        className="relative aspect-[3/4] rounded-[30px] overflow-hidden border border-white/5 group cursor-pointer hover:border-white/20 transition-all shimmer-container"
                       >
-                        {/* Shimmer Placeholder */}
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent skew-x-[-20deg] animate-[shimmer_2s_infinite] pointer-events-none" />
                         
                         <img 
                           src={art.imageUrl} 
@@ -582,7 +579,7 @@ const AdminDashboard = () => {
                       <motion.button whileHover={{ scale: 1.01 }} className="hidden md:block w-full bg-white text-black font-black py-4 rounded-full uppercase tracking-widest text-[11px] shadow-lg shadow-white/5">Save Atelier</motion.button>
                     </div>
                     <div className="flex flex-col items-center justify-center space-y-8">
-                      <motion.div whileHover={{ rotate: 2 }} className="w-48 h-48 sm:w-60 sm:h-60 rounded-full border-4 border-dashed border-white/5 flex items-center justify-center relative overflow-hidden bg-white/5 group shadow-xl">
+                      <motion.div whileHover={{ rotate: 2 }} className="w-48 h-48 sm:w-60 sm:h-60 rounded-full border-4 border-dashed border-white/5 flex items-center justify-center relative overflow-hidden group shadow-xl shimmer-container">
                         {profileFile || profile.profileImageUrl ? (
                           <motion.img 
                             initial={{ scale: 1.2 }} 

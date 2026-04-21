@@ -240,7 +240,9 @@ const Home = () => {
                                 <img 
                                     src={artworks[bgIndex]?.imageUrl || ""} 
                                     alt="Background Art" 
-                                    className="w-full h-full object-cover md:scale-105"
+                                    loading="lazy"
+                                    onLoad={(e) => e.target.classList.remove('opacity-0')}
+                                    className="w-full h-full object-cover md:scale-105 opacity-0 transition-opacity duration-1000"
                                 />
                         </motion.div>
                     </AnimatePresence>
@@ -296,7 +298,7 @@ const Home = () => {
                         {/* Upper Strip: Move Left */}
                         <div className="relative overflow-hidden py-4 bg-gradient-to-r from-transparent via-white/[0.02] to-transparent border-y border-white/5" style={{ maskImage: 'linear-gradient(to right, transparent, black 15%, black 85%, transparent)' }}>
                             <motion.div 
-                                style={{ x: skillsX }}
+                                style={{ x: skillsX, willChange: "transform" }}
                                 className="flex whitespace-nowrap gap-12"
                             >
                                 {[...Array(4)].map((_, i) => (
@@ -317,7 +319,7 @@ const Home = () => {
                         {/* Lower Strip: Move Right */}
                         <div className="relative overflow-hidden py-6 bg-gradient-to-r from-transparent via-white/[0.01] to-transparent border-b border-white/5 -mt-[1px]" style={{ maskImage: 'linear-gradient(to right, transparent, black 15%, black 85%, transparent)' }}>
                             <motion.div 
-                                style={{ x: skillsXReverse }}
+                                style={{ x: skillsXReverse, willChange: "transform" }}
                                 className="flex whitespace-nowrap gap-12"
                             >
                                 {[...Array(4)].map((_, i) => (
@@ -353,7 +355,7 @@ const Home = () => {
 
             {/* --- GALLERY: THE EXHIBITS --- */}
             <section id="gallery" className="max-w-7xl mx-auto px-6 py-16 min-h-screen">
-                <motion.div variants={sectionVariants} initial="hidden" whileInView="show" viewport={{ once: true }} className="flex flex-col items-center text-center">
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} className="flex flex-col items-center text-center">
                     <p className="text-[9px] uppercase tracking-[0.5em] text-white/30 font-black mb-2">
                         Curated Collection
                     </p>
@@ -388,16 +390,20 @@ const Home = () => {
                             {folders.map((folder, idx) => (
                                 <motion.div 
                                     key={folder.name} 
-                                    initial={{ opacity: 0, x: idx % 2 === 0 ? -50 : 50 }}
-                                    whileInView={{ opacity: 1, x: 0 }}
-                                    viewport={{ once: true, margin: "-50px" }}
-                                    transition={{ duration: 1, ease: [0.33, 1, 0.68, 1], delay: idx * 0.1 }}
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    transition={{ duration: 0.8, delay: idx * 0.1 }}
                                     whileHover={isMobile ? {} : { y: -10 }} 
                                     onClick={() => setSelectedCategory(folder.name)} 
                                     className="group cursor-none"
                                 >
-                                    <div className="relative aspect-[3/4] overflow-hidden bg-black/[0.02] rounded-[30px] mb-8 border border-black/5 shadow-2xl">
-                                        <img src={folder.cover} className="w-full h-full object-cover group-hover:scale-105 transition-all duration-1000 ease-out" />
+                                    <div className="relative aspect-[4/5] overflow-hidden bg-black/[0.1] shadow-2xl shimmer-container">
+                                        <img 
+                                            src={folder.cover} 
+                                            loading="lazy"
+                                            onLoad={(e) => e.target.classList.remove('opacity-0')}
+                                            className="w-full h-full object-cover group-hover:scale-105 transition-all duration-1000 ease-out opacity-0" 
+                                        />
                                         <div className="absolute inset-0 bg-black/10 transition-all" />
                                         <div className="absolute inset-0 flex items-center justify-center">
                                             <div className="text-center">
@@ -449,15 +455,20 @@ const Home = () => {
                             {displayedArt.map((art, idx) => (
                                 <motion.div 
                                     key={art._id} 
-                                    initial={{ opacity: 0, y: 40 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true, margin: "-50px" }}
-                                    transition={{ duration: 0.8, ease: [0.33, 1, 0.68, 1], delay: idx * 0.05 }}
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    transition={{ duration: 0.5, delay: idx * 0.05 }}
                                     onClick={() => setSelectedArtwork(art)}
                                     className="group cursor-none active:scale-95 transition-transform"
                                 >
-                                    <div className="relative aspect-[3/4] overflow-hidden bg-black/[0.02] rounded-[30px] mb-8 border border-black/5 shadow-2xl">
-                                        <img src={art.imageUrl} alt={art.title} className="w-full h-full object-cover md:group-hover:scale-110 transition-all duration-1000 ease-out" />
+                                    <div className="relative aspect-[3/4] overflow-hidden bg-black/[0.02] rounded-[30px] mb-8 border border-black/5 shadow-2xl shimmer-container">
+                                        <img 
+                                            src={art.imageUrl} 
+                                            alt={art.title} 
+                                            loading="lazy"
+                                            onLoad={(e) => e.target.classList.remove('opacity-0')}
+                                            className="w-full h-full object-cover md:group-hover:scale-110 transition-all duration-1000 ease-out opacity-0" 
+                                        />
                                     </div>
                                     <div className="px-4">
                                         <div className="flex justify-between items-start">
@@ -493,34 +504,14 @@ const Home = () => {
                 {/* ATMOSPHERIC SPECTERS (PARALLAX DEPTH) - Hidden on mobile for performance */}
                 {!isMobile && (
                     <>
-                        <motion.div 
-                            initial={{ opacity: 0, x: -50 }}
-                            whileInView={{ 
-                                opacity: [0.02, 0.05, 0.02],
-                                x: [-20, 30, -20]
-                            }}
-                            transition={{
-                                opacity: { repeat: Infinity, duration: 10, ease: "easeInOut" },
-                                x: { repeat: Infinity, duration: 15, ease: "easeInOut" }
-                            }}
-                            className="absolute top-10 left-10 text-[10rem] md:text-[20rem] font-['Mogra'] uppercase tracking-tighter leading-none select-none pointer-events-none italic whitespace-nowrap"
-                        >
+                    <>
+                        <div className="absolute top-10 left-10 text-[10rem] md:text-[20rem] font-['Mogra'] uppercase tracking-tighter leading-none select-none pointer-events-none italic whitespace-nowrap opacity-[0.02]">
                             A for Art
-                        </motion.div>
-                        <motion.div 
-                            initial={{ opacity: 0, x: 50 }}
-                            whileInView={{ 
-                                opacity: [0.02, 0.04, 0.02],
-                                x: [20, -40, 20]
-                            }}
-                            transition={{
-                                opacity: { repeat: Infinity, duration: 12, ease: "easeInOut" },
-                                x: { repeat: Infinity, duration: 18, ease: "easeInOut" }
-                            }}
-                            className="absolute bottom-20 right-10 text-[10rem] md:text-[20rem] font-['Mogra'] uppercase tracking-tighter leading-none select-none pointer-events-none whitespace-nowrap"
-                        >
+                        </div>
+                        <div className="absolute bottom-20 right-10 text-[10rem] md:text-[20rem] font-['Mogra'] uppercase tracking-tighter leading-none select-none pointer-events-none whitespace-nowrap opacity-[0.02]">
                             B for Brush
-                        </motion.div>
+                        </div>
+                    </>
                     </>
                 )}
                 <div className="max-w-6xl mx-auto px-10 relative z-10">
@@ -528,17 +519,18 @@ const Home = () => {
                         
                         {/* THE MASTER'S FRAME (Circular Portrait) */}
                         <motion.div 
-                            initial={{ opacity: 0, x: -50 }} 
-                            whileInView={{ opacity: 1, x: 0 }} 
-                            viewport={{ once: true }} 
-                            transition={{ duration: 1.2, ease: [0.33, 1, 0.68, 1] }}
+                            initial={{ opacity: 0 }} 
+                            animate={{ opacity: 1 }} 
+                            transition={{ duration: 1 }}
                             className="lg:col-span-5 flex justify-center lg:justify-start relative"
                         >
                             <div className="relative w-56 h-56 md:w-[360px] md:h-[360px] rounded-full overflow-hidden border border-black/10 shadow-2xl bg-black/5 group">
                                 <motion.img 
                                     whileHover={isMobile ? {} : { scale: 1.05 }}
                                     src={profile?.profileImageUrl || ""} 
-                                    className="w-full h-full object-cover group-hover:scale-105 transition-all duration-[2s] ease-out"
+                                    loading="lazy"
+                                    onLoad={(e) => e.target.classList.remove('opacity-0')}
+                                    className="w-full h-full object-cover group-hover:scale-105 transition-all duration-[2s] ease-out opacity-0"
                                     style={{ objectPosition: profile?.imagePosition || "center" }}
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-[#0f0f0f]/40 via-transparent to-transparent" />
@@ -566,14 +558,13 @@ const Home = () => {
 
                         {/* THE SOUL'S MANUSCRIPT */}
                         <motion.div 
-                            initial={{ opacity: 0, y: 30 }} 
-                            whileInView={{ opacity: 1, y: 0 }} 
-                            viewport={{ once: true }} 
+                            initial={{ opacity: 0 }} 
+                            animate={{ opacity: 1 }} 
                             transition={{ duration: 0.8, delay: 0.2 }}
                             className="lg:col-span-7 flex flex-col justify-center text-center lg:text-left space-y-6"
                         >
                             <div className="space-y-1">
-                                <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 0.3 }} className="text-[9px] uppercase tracking-[0.8em] font-black">Behind the Brush</motion.p>
+                                <motion.p initial={{ opacity: 0.3 }} className="text-[9px] uppercase tracking-[0.8em] font-black">Behind the Brush</motion.p>
                                 <h2 className="text-6xl md:text-8xl font-['Mogra'] tracking-tighter uppercase leading-[0.9]">
                                     The <span className="text-white/20 italic">Atelier</span>
                                 </h2>
@@ -626,7 +617,7 @@ const Home = () => {
             </section>
 
             {/* --- CONTACT: WHISPERS --- */}
-            <section id="contact" className="py-20 relative max-w-2xl mx-auto px-6 text-center">
+            <section id="contact" className="py-12 relative max-w-xl mx-auto px-6 text-center">
                 {/* THE BREATHING VOID */}
                 <motion.div 
                     animate={{ scale: [1, 1.2, 1], opacity: [0.03, 0.08, 0.03] }}
@@ -635,74 +626,70 @@ const Home = () => {
                 />
 
                 {/* Header with floating text effect */}
-                <div className="relative z-10 overflow-hidden mb-16">
+                <div className="relative z-10 overflow-hidden mb-10">
                     <motion.div 
-                        initial={{ opacity: 0, scale: 0.8 }} 
-                        whileInView={{ opacity: 1, scale: 1 }} 
-                        viewport={{ once: true }}
-                        transition={{ duration: 1, ease: "easeOut" }}
+                        initial={{ opacity: 0 }} 
+                        animate={{ opacity: 1 }} 
+                        transition={{ duration: 1 }}
                     >
-                        <p className="text-[10px] uppercase tracking-[1em] text-[#D4AF37] font-black mb-4 italic opacity-40">Inquire</p>
-                        <h2 className="text-7xl md:text-8xl font-['Mogra'] mb-4 tracking-tighter uppercase leading-none">Whispers</h2>
-                        <div className="w-12 h-[1px] bg-[#D4AF37]/30 mx-auto mb-6" />
-                        <p className="text-neutral-500 text-sm uppercase tracking-[0.3em] font-light max-w-sm mx-auto leading-relaxed">Collaborate or commission a unique vision.</p>
+                        <p className="text-[9px] uppercase tracking-[0.8em] text-[#D4AF37] font-black mb-3 italic opacity-40">Inquire</p>
+                        <h2 className="text-5xl md:text-6xl font-['Mogra'] mb-3 tracking-tighter uppercase leading-none">Whispers</h2>
+                        <div className="w-10 h-[1px] bg-[#D4AF37]/30 mx-auto mb-4" />
+                        <p className="text-neutral-500 text-xs uppercase tracking-[0.2em] font-light max-w-sm mx-auto leading-relaxed">Collaborate or commission a unique vision.</p>
                     </motion.div>
                 </div>
 
                 {/* Form Container with Glassmorphism */}
                 <motion.form 
-                    initial={{ opacity: 0, y: 50 }} 
-                    whileInView={{ opacity: 1, y: 0 }} 
-                    viewport={{ once: true }} 
-                    transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }} 
+                    initial={{ opacity: 0 }} 
+                    animate={{ opacity: 1 }} 
+                    transition={{ duration: 0.8 }} 
                     onSubmit={handleContactSubmit} 
-                    className="group space-y-10 text-left bg-white/[0.02] backdrop-blur-xl border border-white/5 p-10 md:p-16 rounded-[50px] shadow-2xl hover:border-white/10 transition-all duration-700"
+                    className="group space-y-6 text-left bg-white/[0.02] backdrop-blur-xl border border-white/5 p-8 md:p-10 rounded-[40px] shadow-2xl hover:border-white/10 transition-all duration-700"
                 >
-                    <div className="space-y-8">
+                    <div className="space-y-5">
                         {[
                             { id: 'name', label: 'Identity', type: 'text', placeholder: 'The seeker\'s name...', value: contactForm.name },
                             { id: 'email', label: 'Echo Path', type: 'email', placeholder: 'your@email.com', value: contactForm.email }
                         ].map((field, idx) => (
                             <motion.div 
                                 key={field.id}
-                                initial={{ opacity: 0, x: -20 }}
-                                whileInView={{ opacity: 1, x: 0 }}
-                                viewport={{ once: true }}
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
                                 transition={{ delay: 0.1 * idx }}
-                                className="space-y-3"
+                                className="space-y-2"
                             >
-                                <label className="text-[10px] uppercase tracking-[0.4em] text-[#D4AF37]/60 ml-6 font-bold">{field.label}</label>
+                                <label className="text-[9px] uppercase tracking-[0.3em] text-[#D4AF37]/50 ml-6 font-bold">{field.label}</label>
                                 <div className="relative group/input">
                                     <input 
                                         type={field.type} 
                                         placeholder={field.placeholder} 
                                         required 
-                                        className="w-full bg-white/[0.03] border border-white/5 rounded-full px-10 py-5 focus:outline-none focus:border-[#D4AF37]/30 focus:bg-white/[0.05] transition-all text-sm text-white placeholder:text-white/10 font-['Mogra']" 
+                                        className="w-full bg-white/[0.03] border border-white/5 rounded-full px-8 py-3.5 focus:outline-none focus:border-[#D4AF37]/30 focus:bg-white/[0.05] transition-all text-sm text-white placeholder:text-white/10 font-['Mogra']" 
                                         value={field.value} 
                                         onChange={(e) => setContactForm({...contactForm, [field.id]: e.target.value})} 
                                     />
-                                    <div className="absolute inset-x-10 bottom-0 h-[1px] bg-gradient-to-r from-transparent via-[#D4AF37]/0 to-transparent group-focus-within/input:via-[#D4AF37]/20 transition-all duration-700" />
+                                    <div className="absolute inset-x-8 bottom-0 h-[1px] bg-gradient-to-r from-transparent via-[#D4AF37]/0 to-transparent group-focus-within/input:via-[#D4AF37]/20 transition-all duration-700" />
                                 </div>
                             </motion.div>
                         ))}
                         
                         <motion.div 
-                            initial={{ opacity: 0, x: -20 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
                             transition={{ delay: 0.2 }}
-                            className="space-y-3"
+                            className="space-y-2"
                         >
-                             <label className="text-[10px] uppercase tracking-[0.4em] text-[#D4AF37]/60 ml-6 font-bold">The Whisper</label>
+                             <label className="text-[9px] uppercase tracking-[0.3em] text-[#D4AF37]/50 ml-6 font-bold">The Whisper</label>
                               <div className="relative group/input">
                                 <textarea 
                                     placeholder="Speak your vision into the void..." 
                                     required 
-                                    className="w-full bg-white/[0.03] border border-white/5 rounded-[40px] px-10 py-8 h-40 focus:outline-none focus:border-[#D4AF37]/30 focus:bg-white/[0.05] transition-all resize-none text-sm font-['Mogra'] text-white placeholder:text-white/10" 
+                                    className="w-full bg-white/[0.03] border border-white/5 rounded-[30px] px-8 py-5 h-28 focus:outline-none focus:border-[#D4AF37]/30 focus:bg-white/[0.05] transition-all resize-none text-sm font-['Mogra'] text-white placeholder:text-white/10" 
                                     value={contactForm.message} 
                                     onChange={(e) => setContactForm({...contactForm, message: e.target.value})} 
                                 />
-                                <div className="absolute inset-x-10 bottom-4 h-[1px] bg-gradient-to-r from-transparent via-[#D4AF37]/0 to-transparent group-focus-within/input:via-[#D4AF37]/20 transition-all duration-700" />
+                                <div className="absolute inset-x-8 bottom-3 h-[1px] bg-gradient-to-r from-transparent via-[#D4AF37]/0 to-transparent group-focus-within/input:via-[#D4AF37]/20 transition-all duration-700" />
                               </div>
                         </motion.div>
                     </div>
@@ -712,7 +699,7 @@ const Home = () => {
                         whileTap={{ scale: 0.98 }} 
                         type="submit" 
                         disabled={sending} 
-                        className="w-full bg-white/5 border border-white/10 py-6 rounded-full font-black uppercase tracking-[0.6em] text-[11px] flex items-center justify-center gap-4 transition-all duration-500 shadow-2xl relative overflow-hidden group/btn"
+                        className="w-full bg-white/5 border border-white/10 py-4 rounded-full font-black uppercase tracking-[0.4em] text-[10px] flex items-center justify-center gap-4 transition-all duration-500 shadow-2xl relative overflow-hidden group/btn"
                     >
                         <div className="absolute inset-0 bg-[#D4AF37] translate-y-full group-hover/btn:translate-y-0 transition-transform duration-500 ease-[0.16, 1, 0.3, 1] z-0" />
                         <span className="relative z-10 flex items-center gap-4">
@@ -798,13 +785,9 @@ const Home = () => {
 
             {/* ARCHIVAL FOOTER */}
             <footer className="relative z-10 py-20 border-t border-white/5 text-center mt-20">
-                <motion.h2 
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    className="text-2xl font-['Mogra'] text-[#D4AF37] tracking-[0.3em] uppercase mb-4"
-                >
+                <h2 className="text-2xl font-['Mogra'] text-[#D4AF37] tracking-[0.3em] uppercase mb-4">
                     ArtByAnjali
-                </motion.h2>
+                </h2>
                 <div className="flex justify-center gap-8 mb-8">
                     {[
                         { icon: Instagram, href: "https://www.instagram.com/i_anjalibisht?igsh=MTI4MzIydHoyMW0yMQ==" },
