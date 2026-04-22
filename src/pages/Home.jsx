@@ -145,12 +145,20 @@ const Home = () => {
     fetchData();
   }, []);
 
-  // Grouping Logic for "Exhibition Rooms" (Memoized for Production)
+  const categoryOrder = [
+    "Canvas painting",
+    "Colour portrait",
+    "Sketch",
+    "Stone art",
+    "Wall painting",
+    "Wooden painting",
+    "Other work"
+  ];
+
   const folders = useMemo(() => {
     const groups = artworks.reduce((acc, art) => {
-      // Normalize: Trim and Ensure First Letter Capital (e.g. "wall painting" -> "Wall painting")
       const rawCat = art.category?.trim();
-      const catName = rawCat ? rawCat.charAt(0).toUpperCase() + rawCat.slice(1) : "Uncategorized";
+      const catName = rawCat ? rawCat.charAt(0).toUpperCase() + rawCat.slice(1) : "Other work";
       
       if (!acc[catName]) {
         acc[catName] = {
@@ -164,14 +172,22 @@ const Home = () => {
       acc[catName].count += 1;
       return acc;
     }, {});
-    return Object.values(groups);
+    
+    // Sort specifically by the user's requested order
+    return Object.values(groups).sort((a, b) => {
+      let idxA = categoryOrder.indexOf(a.name);
+      let idxB = categoryOrder.indexOf(b.name);
+      if (idxA === -1) idxA = 100;
+      if (idxB === -1) idxB = 100;
+      return idxA - idxB || a.name.localeCompare(b.name);
+    });
   }, [artworks]);
 
   const displayedArt = useMemo(() => {
     if (!selectedCategory) return [];
     return artworks.filter((a) => {
       const raw = a.category?.trim();
-      const norm = raw ? raw.charAt(0).toUpperCase() + raw.slice(1) : "Uncategorized";
+      const norm = raw ? raw.charAt(0).toUpperCase() + raw.slice(1) : "Other work";
       return norm === selectedCategory;
     });
   }, [artworks, selectedCategory]);

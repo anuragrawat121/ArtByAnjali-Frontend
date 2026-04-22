@@ -145,13 +145,33 @@ const AdminDashboard = () => {
   const [artworkFile, setArtworkFile] = useState(null);
   const [profileFile, setProfileFile] = useState(null);
 
-  const baseCategories = ["Canvas painting", "Colour portrait", "Sketch", "Stone art", "Wall painting", "Wooden painting"];
+  const categoryOrder = [
+    "Canvas painting",
+    "Colour portrait",
+    "Sketch",
+    "Stone art",
+    "Wall painting",
+    "Wooden painting",
+    "Other work"
+  ];
+
   const dynamicCategories = React.useMemo(() => {
     const existing = artworks.map(a => {
       const raw = a.category?.trim();
       return raw ? raw.charAt(0).toUpperCase() + raw.slice(1) : null;
     }).filter(Boolean);
-    const unique = [...new Set([...baseCategories, ...existing])];
+    
+    const unique = [...new Set([...categoryOrder, ...existing])];
+    
+    // Sort according to categoryOrder
+    unique.sort((a, b) => {
+      let idxA = categoryOrder.indexOf(a);
+      let idxB = categoryOrder.indexOf(b);
+      if (idxA === -1) idxA = 100;
+      if (idxB === -1) idxB = 100;
+      return idxA - idxB || a.localeCompare(b);
+    });
+
     return ["custom", ...unique];
   }, [artworks]);
 
@@ -262,7 +282,7 @@ const AdminDashboard = () => {
   const handleArtworkUpload = async (e) => {
     e.preventDefault();
     setLoginLoading(true);
-    const rawCategory = isCustomCategory ? (newArtwork.customCategory || "Painting") : newArtwork.category;
+    const rawCategory = isCustomCategory ? (newArtwork.customCategory || "Other work") : newArtwork.category;
     const finalCategory = rawCategory.trim().charAt(0).toUpperCase() + rawCategory.trim().slice(1);
     const formData = new FormData();
     formData.append("title", newArtwork.title || "Masterpiece");
@@ -312,7 +332,7 @@ const AdminDashboard = () => {
     try {
         const formData = new FormData();
         formData.append("title", updatedData.title);
-        const normCat = updatedData.category?.trim() ? updatedData.category.trim().charAt(0).toUpperCase() + updatedData.category.trim().slice(1) : "Painting";
+        const normCat = updatedData.category?.trim() ? updatedData.category.trim().charAt(0).toUpperCase() + updatedData.category.trim().slice(1) : "Other work";
         formData.append("category", normCat);
         formData.append("description", updatedData.description);
         formData.append("price", updatedData.price);
