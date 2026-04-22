@@ -148,7 +148,10 @@ const Home = () => {
   // Grouping Logic for "Exhibition Rooms" (Memoized for Production)
   const folders = useMemo(() => {
     const groups = artworks.reduce((acc, art) => {
-      const catName = art.category?.trim() || "Uncategorized";
+      // Normalize: Trim and Ensure First Letter Capital (e.g. "wall painting" -> "Wall painting")
+      const rawCat = art.category?.trim();
+      const catName = rawCat ? rawCat.charAt(0).toUpperCase() + rawCat.slice(1) : "Uncategorized";
+      
       if (!acc[catName]) {
         acc[catName] = {
           name: catName,
@@ -164,13 +167,14 @@ const Home = () => {
     return Object.values(groups);
   }, [artworks]);
 
-  const displayedArt = useMemo(
-    () =>
-      selectedCategory
-        ? artworks.filter((a) => a.category?.trim() === selectedCategory)
-        : [],
-    [artworks, selectedCategory],
-  );
+  const displayedArt = useMemo(() => {
+    if (!selectedCategory) return [];
+    return artworks.filter((a) => {
+      const raw = a.category?.trim();
+      const norm = raw ? raw.charAt(0).toUpperCase() + raw.slice(1) : "Uncategorized";
+      return norm === selectedCategory;
+    });
+  }, [artworks, selectedCategory]);
 
   const activeFolder = useMemo(() => 
     folders.find(f => f.name === selectedCategory),

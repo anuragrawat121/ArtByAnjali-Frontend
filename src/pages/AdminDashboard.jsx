@@ -145,7 +145,15 @@ const AdminDashboard = () => {
   const [artworkFile, setArtworkFile] = useState(null);
   const [profileFile, setProfileFile] = useState(null);
 
-  const categories = ["custom", "Canvas painting", "Colour portrait", "Sketch", "Stone art", "Wall painting", "Wooden painting"];
+  const baseCategories = ["Canvas painting", "Colour portrait", "Sketch", "Stone art", "Wall painting", "Wooden painting"];
+  const dynamicCategories = React.useMemo(() => {
+    const existing = artworks.map(a => {
+      const raw = a.category?.trim();
+      return raw ? raw.charAt(0).toUpperCase() + raw.slice(1) : null;
+    }).filter(Boolean);
+    const unique = [...new Set([...baseCategories, ...existing])];
+    return ["custom", ...unique];
+  }, [artworks]);
 
   /** --- ATELIER LOGIC HANDLERS --- **/
 
@@ -254,7 +262,8 @@ const AdminDashboard = () => {
   const handleArtworkUpload = async (e) => {
     e.preventDefault();
     setLoginLoading(true);
-    const finalCategory = isCustomCategory ? newArtwork.customCategory || "Painting" : newArtwork.category;
+    const rawCategory = isCustomCategory ? (newArtwork.customCategory || "Painting") : newArtwork.category;
+    const finalCategory = rawCategory.trim().charAt(0).toUpperCase() + rawCategory.trim().slice(1);
     const formData = new FormData();
     formData.append("title", newArtwork.title || "Masterpiece");
     formData.append("category", finalCategory);
@@ -303,7 +312,8 @@ const AdminDashboard = () => {
     try {
         const formData = new FormData();
         formData.append("title", updatedData.title);
-        formData.append("category", updatedData.category);
+        const normCat = updatedData.category?.trim() ? updatedData.category.trim().charAt(0).toUpperCase() + updatedData.category.trim().slice(1) : "Painting";
+        formData.append("category", normCat);
         formData.append("description", updatedData.description);
         formData.append("price", updatedData.price);
         
@@ -522,7 +532,7 @@ const AdminDashboard = () => {
                             <div onClick={() => setIsDropdownOpen(!isDropdownOpen)} className="w-full bg-white/5 border border-white/10 rounded-full px-6 py-3.5 flex justify-between items-center cursor-pointer text-sm hover:border-white/20 transition-all"><span className="text-neutral-400">{isCustomCategory ? newArtwork.customCategory || "Custom..." : newArtwork.category}</span><ChevronDown size={14} className="text-white/20" /></div>
                             <AnimatePresence>{isDropdownOpen && (
                               <motion.div initial={{ opacity: 0, y: 10, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 10, scale: 0.95 }} className="absolute top-full left-0 w-full mt-2 bg-neutral-900 border border-white/10 rounded-[24px] p-2 z-[999] shadow-2xl backdrop-blur-3xl max-h-64 overflow-y-auto no-scrollbar">
-                                {categories.map((cat) => (<button key={cat} type="button" onClick={() => { if (cat === "custom") setIsCustomCategory(true); else { setIsCustomCategory(false); setNewArtwork({ ...newArtwork, category: cat }); } setIsDropdownOpen(false); }} className={`w-full text-left px-5 py-3 rounded-xl text-[11px] transition-all ${cat === "custom" ? "text-white font-bold border-b border-white/5 mb-1" : "text-neutral-500 hover:text-white hover:bg-white/5"}`}>{cat === "custom" ? "+ New Folder" : cat}</button>))}
+                                {dynamicCategories.map((cat) => (<button key={cat} type="button" onClick={() => { if (cat === "custom") setIsCustomCategory(true); else { setIsCustomCategory(false); setNewArtwork({ ...newArtwork, category: cat }); } setIsDropdownOpen(false); }} className={`w-full text-left px-5 py-3 rounded-xl text-[11px] transition-all ${cat === "custom" ? "text-white font-bold border-b border-white/5 mb-1" : "text-neutral-500 hover:text-white hover:bg-white/5"}`}>{cat === "custom" ? "+ New Folder" : cat}</button>))}
                               </motion.div>
                             )}</AnimatePresence>
                           </div>
