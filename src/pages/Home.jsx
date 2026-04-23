@@ -198,7 +198,27 @@ const Home = () => {
   );
 
   // PRE-SELECT HERO BACKGROUNDS: Only use first 5 high-res masterpieces to save bandwidth
-  const heroArtworks = useMemo(() => artworks.slice(0, 5), [artworks]);
+  const heroArtworks = useMemo(() => {
+    const mainCategories = categoryOrder.slice(0, 6);
+    const selected = [];
+    
+    mainCategories.forEach(cat => {
+      // Filter artworks matching this specific category (normalized)
+      const inCat = artworks.filter(a => {
+        const raw = a.category?.trim();
+        const norm = raw ? raw.charAt(0).toUpperCase() + raw.slice(1) : "Other work";
+        return norm === cat;
+      });
+      
+      // If we have items in this category, pick the OLDEST one 
+      // (The API returns them newest-first, so the last item is the oldest)
+      if (inCat.length > 0) {
+        selected.push(inCat[inCat.length - 1]);
+      }
+    });
+    
+    return selected;
+  }, [artworks]);
 
   // --- BROWSER BACK BUTTON INTEGRATION ---
   useEffect(() => {
